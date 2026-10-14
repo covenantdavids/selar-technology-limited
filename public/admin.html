@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin – Selar Technology Limited</title>
+<style>
+:root{--bg:#f4f6fb;--surface:#fff;--ink:#101a33;--muted:#5a6580;--line:#dde3f0;--brand:#1d4ed8;--soft:#e6edfc;--red:#c0343a}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.app{display:flex;min-height:100vh}
+.side{width:230px;flex:none;background:#0a1224;color:#c7d0e4;padding:22px 16px;display:flex;flex-direction:column;gap:22px;position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;line-height:1.15}
+.mark{width:32px;height:32px;border-radius:9px;background:#3b6fe0;display:grid;place-items:center;font-size:13px;flex:none}
+.side nav a{display:block;color:#9aa8c4;text-decoration:none;padding:10px 12px;border-radius:10px;font-weight:500}
+.side nav a:hover{background:#16213b;color:#fff}
+.side nav a[aria-current]{background:var(--brand);color:#fff}
+.side small{margin-top:auto;color:#7886a3}
+.main{flex:1;min-width:0;padding:24px 28px 60px;max-width:1100px}
+.warn{background:#fff8e1;border:1px solid #f3dd9b;color:#7a4a00;border-radius:12px;padding:12px 16px;font-size:13.5px}
+h1{font-size:26px;margin:22px 0 14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.stats small{color:var(--muted);font-size:13px}
+.stats b{display:block;font-size:28px}
+.row{display:grid;grid-template-columns:1.2fr 1.3fr 1.2fr auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-top:12px}
+.row.wd{grid-template-columns:1.1fr 1.4fr 1.2fr auto}
+.row b{display:block}.row span{color:var(--muted);font-size:13px;display:block}
+.shot{display:inline-block;margin-top:6px;border:1.5px dashed var(--line);border-radius:8px;padding:10px 16px;color:var(--muted);font-size:12.5px}
+.btn{font:inherit;font-weight:600;font-size:14px;border:1.5px solid transparent;border-radius:9px;padding:8px 16px;cursor:pointer}
+.ok{background:var(--brand);color:#fff}
+.no{background:#fff;color:var(--red);border-color:#f0c4c6}
+.acts{display:flex;flex-direction:column;gap:8px;min-width:150px}
+.acts select{font:inherit;font-size:13px;padding:7px;border:1px solid var(--line);border-radius:8px}
+.chip{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px;margin-top:4px}
+.good{background:var(--soft);color:var(--brand)}
+.bad{background:#fde8e8;color:var(--red)}
+.empty{text-align:center;padding:40px;border:1.5px dashed var(--line);border-radius:14px;margin-top:12px;color:var(--muted)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#0a1224;color:#fff;padding:12px 20px;border-radius:12px;max-width:90vw;z-index:9}
+@media (max-width:860px){.app{flex-direction:column}.side{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center}.side small{display:none}.stats{grid-template-columns:1fr 1fr}.row,.row.wd{grid-template-columns:1fr}.acts{flex-direction:row;flex-wrap:wrap}.main{padding:18px 16px 60px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="logo"><span class="mark">ST</span><span>Selar Technology Limited<br><small style="color:#9aa8c4;font-weight:500">Admin</small></span></div>
+    <nav aria-label="Admin">
+      <a href="#/overview" data-v="overview">Overview</a>
+      <a href="#/submissions" data-v="submissions">Submissions</a>
+      <a href="#/withdrawals" data-v="withdrawals">Withdrawals</a>
+    </nav>
+    <small>Owner only</small>
+  </aside>
+  <main class="main">
+    <div class="warn"><b>Preview with sample data.</b> This page is not protected. Before real use it must sit behind a secure server login that only you can pass. Never share its address with workers.</div>
+
+    <section id="overview"><h1>Overview</h1>
+      <div class="stats">
+        <div class="card"><small>Submissions to review</small><b id="sSubs">0</b></div>
+        <div class="card"><small>Withdrawals to pay</small><b id="sWd">0</b></div>
+        <div class="card"><small>Approved today</small><b id="sApp">0</b></div>
+        <div class="card"><small>Paid out today</small><b id="sPaid">&#8358;0</b></div>
+      </div>
+    </section>
+
+    <section id="submissions" hidden><h1>Submissions to review</h1>
+      <div id="subList"></div>
+    </section>
+
+    <section id="withdrawals" hidden><h1>Withdrawals to pay</h1>
+      <p style="color:var(--muted);margin:0">You pay these by hand from your own bank. Check the account name before you send.</p>
+      <div id="wdList"></div>
+    </section>
+  </main>
+</div>
+<div id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function norm(s){return s.toLowerCase().split(/\s+/).filter(Boolean).sort().join(' ')}
+function naira(n){return '\u20A6'+n.toLocaleString('en-NG')}
+/* sample data: this will come from the database later */
+var subs=[
+ {worker:'Ada Obi',task:'Download Kuda App',id:'4N844ML6KX3REJM',at:'13 Oct, 10:42 AM',pay:100},
+ {worker:'Chika Nwosu',task:'Create new email account',id:'T7QWB93HXK2LMPD',at:'13 Oct, 11:05 AM',pay:50},
+ {worker:'Tunde Adeyemi',task:'Download Kuda App',id:'M2KX8RB4ZP6VNHC',at:'13 Oct, 11:20 AM',pay:100}
+];
+var wds=[
+ {worker:'Ada Obi',reg:'Ada Obi',amt:1000,bank:'Guaranty Trust Bank',no:'0123456789',name:'ADA OBI'},
+ {worker:'Tunde Adeyemi',reg:'Tunde Adeyemi',amt:500,bank:'OPay',no:'8012345678',name:'GRACE OKAFOR'}
+];
+var REASONS=['It shows an old email account','Email address cut off or unreadable','Edited, copied or blurry screenshot','Kuda not installed (no Open button)'];
+var approved=0,paid=0;
+function toast(t){var e=$('toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){e.hidden=true},4500);}
+function stats(){$('sSubs').textContent=subs.length;$('sWd').textContent=wds.length;$('sApp').textContent=approved;$('sPaid').textContent=naira(paid);}
+function drawSubs(){
+  $('subList').innerHTML=subs.length?subs.map(function(s,i){
+    return '<div class="row"><div><b>'+esc(s.worker)+'</b><span>'+esc(s.at)+'</span></div>'
+    +'<div><b>'+esc(s.task)+'</b><span>Task ID: '+esc(s.id)+'</span><span class="shot">Screenshot appears here</span></div>'
+    +'<div><b>'+naira(s.pay)+'</b><span>Reward if approved</span></div>'
+    +'<div class="acts"><button class="btn ok" data-a="ok" data-i="'+i+'">Approve</button>'
+    +'<select aria-label="Reject reason" data-r="'+i+'"><option value="">Reject reason...</option>'+REASONS.map(function(r){return '<option>'+esc(r)+'</option>'}).join('')+'</select>'
+    +'<button class="btn no" data-a="no" data-i="'+i+'">Reject</button></div></div>';
+  }).join(''):'<div class="empty">No submissions waiting. Nice work.</div>';
+}
+function drawWds(){
+  $('wdList').innerHTML=wds.length?wds.map(function(w,i){
+    var same=norm(w.reg)===norm(w.name);
+    return '<div class="row wd"><div><b>'+esc(w.worker)+'</b><span>Registered name: '+esc(w.reg)+'</span></div>'
+    +'<div><b>'+esc(w.bank)+' &middot; '+esc(w.no)+'</b><span>Account name: '+esc(w.name)+'</span>'
+    +'<span class="chip '+(same?'good':'bad')+'">'+(same?'Names match':'Name mismatch: check before paying')+'</span></div>'
+    +'<div><b>'+naira(w.amt)+'</b><span>To pay</span></div>'
+    +'<div class="acts"><button class="btn ok" data-a="paid" data-i="'+i+'">Mark as paid</button></div></div>';
+  }).join(''):'<div class="empty">No withdrawals waiting.</div>';
+}
+$('subList').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-a]');if(!b)return;
+  var i=+b.dataset.i,s=subs[i];
+  if(b.dataset.a==='ok'){
+    subs.splice(i,1);approved++;
+    toast(s.task==='Download Kuda App'?'Approved. '+naira(s.pay)+' added to '+s.worker+'. Their next task now starts its 00:35:00 countdown.':'Approved. '+naira(s.pay)+' added to '+s.worker+'.');
+  }else{
+    var r=document.querySelector('select[data-r="'+i+'"]').value;
+    if(!r){toast('Choose a reject reason first.');return;}
+    subs.splice(i,1);toast('Rejected '+s.worker+': '+r+'.');
+  }
+  drawSubs();stats();
+});
+$('wdList').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-a="paid"]');if(!b)return;
+  var w=wds.splice(+b.dataset.i,1)[0];paid+=w.amt;
+  toast('Marked as paid: '+naira(w.amt)+' to '+w.name+'.');drawWds();stats();
+});
+function route(){
+  var v=(location.hash.replace('#/','')||'overview');if(!$(v))v='overview';
+  ['overview','submissions','withdrawals'].forEach(function(x){$(x).hidden=x!==v;});
+  [].forEach.call(document.querySelectorAll('.side nav a'),function(a){if(a.dataset.v===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+drawSubs();drawWds();stats();route();
+})();
+</script>
+</body>
+</html>

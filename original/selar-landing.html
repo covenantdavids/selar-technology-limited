@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Selar Technology Limited – Do simple tasks, get paid to your bank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f7fc;--surface:#ffffff;--ink:#101a33;--muted:#55607a;--line:#dde3f0;
+  --brand:#1d4ed8;--brand-2:#2563eb;--on-brand:#ffffff;--accent:#f2b640;--accent-ink:#2a1d00;--soft:#e6edfc;
+  --head:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0b1220;--surface:#121b2e;--ink:#e8edf8;--muted:#9aa8c4;--line:#25314d;--brand:#3b6fe0;--brand-2:#4f83f0;--on-brand:#ffffff;--soft:#17233d}
+}
+:root[data-theme="dark"]{--bg:#0b1220;--surface:#121b2e;--ink:#e8edf8;--muted:#9aa8c4;--line:#25314d;--brand:#3b6fe0;--brand-2:#4f83f0;--on-brand:#ffffff;--soft:#17233d}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:var(--head);line-height:1.1;margin:0;letter-spacing:-.02em}
+
+/* top bar */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:28px;height:66px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--head);font-weight:800;font-size:22px;text-decoration:none}
+.mark{width:32px;height:32px;border-radius:9px;background:var(--brand);color:var(--on-brand);display:grid;place-items:center;font-size:13px;font-weight:800;letter-spacing:0}
+.lname{font-size:16px;line-height:1.15;letter-spacing:-.01em}
+nav{display:flex;gap:22px;margin-left:12px}
+nav a{text-decoration:none;color:var(--muted);font-weight:500;font-size:15px}
+nav a:hover{color:var(--ink)}
+.auth{margin-left:auto;display:flex;gap:10px;align-items:center}
+.btn{display:inline-block;text-decoration:none;font-weight:600;font-size:15px;padding:11px 20px;border-radius:10px;border:1.5px solid transparent;cursor:pointer;font-family:var(--body)}
+.btn-main{background:var(--brand);color:var(--on-brand)}
+.btn-main:hover{background:var(--brand-2)}
+.btn-line{border-color:var(--line);background:var(--surface);color:var(--ink)}
+.btn-line:hover{border-color:var(--brand)}
+.btn-lg{padding:15px 26px;font-size:16px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.login{font-weight:600;font-size:15px;text-decoration:none;padding:10px 6px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:76px 0 84px}
+.hero h1{font-size:clamp(38px,5.4vw,62px);font-weight:800}
+.hl{color:#2563eb}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--soft);color:var(--brand);font-weight:600;font-size:13.5px;padding:6px 14px;border-radius:99px;margin-bottom:20px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--brand)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hl{color:#8aacff}}
+:root[data-theme="dark"] .hl{color:#8aacff}
+.hero p.lead{font-size:19px;color:var(--muted);max-width:30em;margin:22px 0 30px}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.fine{color:var(--muted);font-size:14.5px;margin-top:18px}
+
+/* wallet + tasks */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 18px 40px -22px rgba(29,78,216,.35)}
+.panel-top{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--muted);margin-bottom:14px}
+.tag{background:var(--soft);color:var(--brand);font-weight:600;font-size:12.5px;padding:3px 10px;border-radius:99px}
+.bal{background:var(--brand);color:var(--on-brand);border-radius:16px;padding:20px 22px}
+.bal small{opacity:.8;font-size:14px}
+.bal .amt{font-family:var(--head);font-size:40px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.mini div{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--muted)}
+.mini b{display:block;font-size:18px;color:var(--ink);font-family:var(--head)}
+.tasks{list-style:none;margin:18px 0 0;padding:0}
+.tasks li{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line);font-size:15px}
+.tasks span{color:var(--muted);font-size:13.5px;display:block}
+.pay{font-family:var(--head);font-weight:700;background:var(--accent);color:var(--accent-ink);padding:4px 12px;border-radius:99px;white-space:nowrap}
+
+/* sections */
+section{padding:72px 0}
+.sec-title{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:12px}
+.sec-sub{color:var(--muted);max-width:34em;margin:0 0 40px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--ink)}
+.step{padding:26px 28px 6px 0}
+.step+.step{padding-left:28px;border-left:1px solid var(--line)}
+.step .n{font-family:var(--head);font-weight:800;font-size:44px;color:var(--brand);line-height:1}
+.step h3{font-size:22px;margin:14px 0 8px}
+.step p{margin:0;color:var(--muted)}
+
+.earn{background:var(--brand);color:var(--on-brand);border-radius:26px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.earn h2{font-size:clamp(28px,3.6vw,40px);font-weight:800}
+.earn p{opacity:.85;margin:14px 0 24px}
+.earn ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.earn li{display:flex;gap:12px;align-items:flex-start}
+.earn li::before{content:"✓";flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:14px;display:grid;place-items:center;margin-top:2px}
+.btn-acc{background:var(--accent);color:var(--accent-ink)}
+.btn-acc:hover{filter:brightness(1.06)}
+
+.about{display:grid;grid-template-columns:1fr 1.2fr;gap:48px}
+.about p{margin:0 0 14px;color:var(--muted)}
+
+details{border-top:1px solid var(--line);padding:18px 0}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-family:var(--head);font-weight:700;font-size:20px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:26px;line-height:1;color:var(--brand)}
+details[open] summary::after{content:"–"}
+details p{margin:12px 0 0;color:var(--muted);max-width:44em}
+
+.final{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:var(--on-brand);border-radius:26px;padding:48px;display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center}
+.final h2{font-size:clamp(26px,3.4vw,38px);font-weight:800}
+.final p{margin:8px 0 0;opacity:.85}
+.final .btn-line{background:transparent;color:inherit;border-color:rgba(255,255,255,.55)}
+
+footer{background:#0a1224;color:#c7d0e4;margin-top:72px;padding:56px 0 28px;font-size:15px}
+.fgrid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px}
+footer h4{font-family:var(--head);color:#fff;margin:0 0 12px;font-size:16px}
+footer a{display:block;text-decoration:none;color:#9aa8c4;padding:4px 0}
+footer a:hover{color:#fff}
+footer .logo{color:#fff}
+footer .mark{background:#3b6fe0;color:#ffffff}
+.copy{border-top:1px solid #1f2a45;margin-top:36px;padding-top:20px;color:#7886a3;font-size:14px}
+
+@media (max-width:860px){
+  nav{display:none}
+  .hero{grid-template-columns:1fr;gap:40px;padding:48px 0 56px}
+  .steps{grid-template-columns:1fr;border-top:0}
+  .step,.step+.step{padding:22px 0;border-left:0;border-top:2px solid var(--ink)}
+  .earn,.about{grid-template-columns:1fr;padding:32px 24px;gap:28px}
+  .about{padding:0}
+  .final{padding:32px 24px}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .auth .btn-main{padding:10px 16px}
+  .lname{font-size:13px;max-width:120px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+[hidden]{display:none!important}
+.reg{min-height:100vh;display:flex;align-items:center;padding:48px 22px;color:#fff;
+ background:radial-gradient(700px 520px at 18% 52%,rgba(61,84,255,.55),transparent 70%),radial-gradient(520px 480px at 88% 28%,rgba(214,64,176,.38),transparent 70%),radial-gradient(560px 520px at 82% 88%,rgba(36,120,255,.32),transparent 70%),#0a0d2e}
+.reg-wrap{max-width:900px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 400px;gap:72px;align-items:center}
+.reg .logo{color:#fff}
+.reg h1{font-size:clamp(34px,4.6vw,48px);font-weight:800;margin:36px 0 14px;line-height:1.08}
+.reg-intro p{color:rgba(255,255,255,.78);max-width:26em;margin:0 0 22px}
+.ticks{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.ticks li{display:flex;align-items:center;gap:10px;font-size:15px;color:rgba(255,255,255,.9)}
+.ticks li::before{content:"\2713";width:22px;height:22px;border-radius:6px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);display:grid;place-items:center;font-size:13px}
+.reg-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:22px;padding:26px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.reg-card h2{font-size:26px;font-weight:800;color:#fff}
+.reg-card .sub{color:rgba(255,255,255,.72);font-size:14px;margin:6px 0 18px}
+.fld{margin-bottom:14px}
+.fld label{display:block;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.82);margin-bottom:6px}
+.fld input{width:100%;font:inherit;font-size:15px;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:11px 14px}
+.fld input::placeholder{color:rgba(255,255,255,.45)}
+.fld input:focus{outline:none;border-color:#8aacff;box-shadow:0 0 0 3px rgba(138,172,255,.3)}
+.fld input[aria-invalid="true"]{border-color:#ff8f9d}
+.err{display:block;color:#ffb3bd;font-size:12.5px;margin-top:5px}
+.terms{font-size:12.5px;color:rgba(255,255,255,.72);margin:4px 0 14px}
+.terms a,.signin a{color:#fff;font-weight:700}
+.reg-btn{width:100%;border:0;border-radius:12px;padding:13px;font:inherit;font-weight:700;font-size:16px;color:#fff;cursor:pointer;background:linear-gradient(90deg,#3b82f6,#7c5cff)}
+.reg-btn:hover{filter:brightness(1.08)}
+.or{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.6);font-size:12.5px;margin:16px 0}
+.or::before,.or::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.2)}
+.g-btn{width:100%;border-radius:12px;padding:12px;font:inherit;font-weight:600;font-size:15px;color:#fff;cursor:pointer;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25)}
+.g-btn:hover{background:rgba(255,255,255,.16)}
+.signin{text-align:center;font-size:13.5px;color:rgba(255,255,255,.75);margin:16px 0 0}
+.fld select{width:100%;font:inherit;font-size:15px;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:11px 14px}
+.fld select:focus{outline:none;border-color:#8aacff;box-shadow:0 0 0 3px rgba(138,172,255,.3)}
+.fld select[aria-invalid="true"]{border-color:#ff8f9d}
+.fld select option{color:#111;background:#fff}
+.fld input[readonly]{opacity:.75;cursor:not-allowed}
+.fld input.verified{opacity:1;color:#fff;border-color:rgba(138,172,255,.7);cursor:default}
+.hint{display:block;font-size:12.5px;color:rgba(255,255,255,.62);margin-top:5px}
+.reg-btn:disabled{opacity:.55;cursor:not-allowed}
+.spin{flex:none;width:22px;height:22px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:3s}}
+.confirm{display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(138,172,255,.14);border:1px solid rgba(138,172,255,.4);font-size:14px}
+.confirm .tick{flex:none;width:28px;height:28px;border-radius:50%;background:#3b82f6;display:grid;place-items:center;font-weight:800}
+.confirm small{display:block;opacity:.8;font-size:12.5px;margin-top:2px}
+.status{margin-top:14px;padding:10px 12px;border-radius:10px;background:rgba(138,172,255,.16);border:1px solid rgba(138,172,255,.4);font-size:13.5px}
+@media (max-width:860px){.reg-wrap{grid-template-columns:1fr;gap:32px}.reg h1{margin-top:28px}}
+
+/* dashboard */
+.app{min-height:100vh;display:flex;background:var(--bg)}
+.side{width:230px;flex:none;background:#0a1224;color:#c7d0e4;padding:22px 16px;display:flex;flex-direction:column;gap:26px;position:sticky;top:0;height:100vh}
+.side .logo{color:#fff}
+.side .mark{background:#3b6fe0;color:#fff}
+.snav{display:grid;gap:4px}
+.snav a{text-decoration:none;color:#9aa8c4;font-weight:500;font-size:15px;padding:10px 12px;border-radius:10px}
+.snav a:hover{color:#fff;background:#16213b}
+.snav a[aria-current]{background:var(--brand);color:#fff}
+.slogout{margin-top:auto;text-align:center;text-decoration:none;color:#fff;font-weight:600;font-size:15px;padding:11px;border:1px solid rgba(255,255,255,.28);border-radius:10px}
+.slogout:hover{background:#16213b}
+.amain{flex:1;min-width:0;padding:22px 28px 56px;max-width:1180px;margin:0 auto}
+.atop{display:flex;justify-content:flex-end;align-items:center;gap:14px;position:relative}
+.bell{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--brand);display:grid;place-items:center;cursor:pointer}
+.bell svg{width:20px;height:20px}
+.balpill{background:#0a1224;color:#fff;border-radius:99px;padding:9px 18px;font-size:14px}
+.balpill b{font-family:var(--head)}
+.ubtn{font:inherit;font-weight:600;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 16px;cursor:pointer}
+.ubox{position:absolute;right:0;top:52px;width:270px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:0 18px 40px -22px rgba(29,78,216,.45);z-index:3}
+.ubox h4{margin:0;font-family:var(--head);font-size:16px}
+.ubox .hint{color:var(--muted)}
+.acct{margin:8px 0 14px}
+.acct dt{font-size:12.5px;color:var(--muted);margin-top:10px}
+.acct dd{margin:2px 0 0;font-weight:600;font-size:15px}
+.ubox .btn{width:100%;text-align:center}
+.atitle{font-size:26px;font-weight:800;margin:26px 0 16px}
+.filters{display:flex;flex-wrap:wrap;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.filters input,.filters select{font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
+.filters .fq{flex:1 1 200px}
+.filters .fn{width:110px}
+.filters .btn{padding:9px 22px;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin-top:18px}
+.tc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.tc-top{display:flex;justify-content:space-between;align-items:center}
+.badge{background:var(--brand);color:#fff;font-weight:700;font-size:11.5px;padding:5px 10px;border-radius:8px;letter-spacing:.02em}
+.lockchip{background:var(--soft);color:var(--muted);font-weight:700;font-size:11.5px;padding:5px 10px;border-radius:8px}
+.tc h3{font-size:16px;line-height:1.25;font-weight:700}
+.tc-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.rw{color:var(--brand);font-weight:700}
+.tc-desc{font-size:13px;color:var(--muted);margin:0;line-height:1.45}
+.slots{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.prog{height:7px;border-radius:99px;background:var(--soft);overflow:hidden;margin-top:-6px}
+.prog i{display:block;height:100%;background:var(--brand);border-radius:99px}
+.lockbox{display:flex;align-items:center;gap:10px;background:var(--soft);color:var(--brand);border-radius:12px;padding:12px 14px;font-weight:600;font-size:14px}
+.lockbox svg{flex:none;width:16px;height:16px}
+.lockbox b{margin-left:auto;font-family:var(--head);font-size:16px;font-variant-numeric:tabular-nums}
+.tc-act{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:12px;margin-top:auto}
+.tc-act .btn{padding:8px 16px;font-size:13.5px}
+.lockchip.open{background:var(--brand);color:#fff}
+.modal{position:fixed;inset:0;background:rgba(10,18,36,.55);display:grid;place-items:center;padding:20px;z-index:20}
+.mbox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;max-width:420px;width:100%}
+.mbox h2{font-size:22px;font-weight:800;margin-bottom:10px}
+.mbox p{color:var(--muted);margin:0 0 18px}
+.pager{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:28px;font-size:14.5px;color:var(--muted)}
+.pager .btn{padding:9px 20px;font-size:14px}
+.soon{margin-top:24px;text-align:center;padding:30px 20px;border:1.5px dashed var(--line);border-radius:16px;background:var(--surface)}
+.soon h2{font-size:24px;font-weight:800;color:var(--brand)}
+.soon p{margin:8px 0 0;color:var(--muted);font-size:15px}
+@media (max-width:860px){
+  .app{flex-direction:column}
+  .side{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center;padding:14px 16px;gap:12px}
+  .snav{display:flex;overflow-x:auto;width:100%;order:3}
+  .snav a{white-space:nowrap}
+  .slogout{margin:0 0 0 auto;padding:8px 14px}
+  .amain{padding:18px 16px 44px}
+}
+
+.ssub{margin:0 0 20px;font-size:13px;color:var(--muted)}
+.sstats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.sst{border-radius:14px;padding:16px 18px;border:1px solid;color:#101a33}
+.sst small{display:block;font-size:11.5px;font-weight:700;letter-spacing:.04em}
+.sst b{display:block;font-family:var(--head);font-size:26px;margin:6px 0 2px}
+.sst span{font-size:12px;opacity:.8}
+.sst.ok{background:#eafaf1;border-color:#bfead2}.sst.ok small{color:#16794a}
+.sst.pe{background:#f3f5f9;border-color:#dde3f0}.sst.pe small{color:#55607a}
+.sst.di{background:#fff8e1;border-color:#f3dd9b}.sst.di small{color:#a35f00}
+.stabs{display:flex;gap:6px;margin-top:22px;border-bottom:1px solid var(--line);padding-bottom:12px;flex-wrap:wrap}
+.stabs button{font:inherit;font-size:13.5px;font-weight:600;color:var(--muted);background:none;border:0;border-radius:99px;padding:8px 16px;cursor:pointer}
+.stabs button[aria-selected="true"]{background:#0a1224;color:#fff}
+.sempty{text-align:center;padding:56px 16px}
+.sempty .semoji{font-size:40px}
+.sempty b{display:block;font-size:15px;margin-top:10px}
+.sempty p{margin:6px 0 0;font-size:13px;color:var(--muted)}
+@media (max-width:860px){.sstats{grid-template-columns:1fr}}
+.wcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;margin-top:20px}
+.wcard h2{font-size:17px;font-weight:800}
+.wnote{background:#fff8e1;border:1px solid #f3dd9b;color:#7a4a00;border-radius:10px;padding:12px 14px;font-size:13px;margin:14px 0 18px;line-height:1.5}
+.wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.wf label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.wf input{width:100%;font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.wf input[readonly]{opacity:.8;cursor:not-allowed}
+.wf input[aria-invalid="true"]{border-color:#e5484d}
+.wfull{margin-top:14px}
+.werr{display:block;color:#c0343a;font-size:12.5px;margin:8px 0 12px;min-height:1em}
+.whist{border-top:1px solid var(--line);margin-top:22px;padding-top:16px}
+.whist h3{font-size:15px}
+.whist p{font-size:13px;color:var(--muted);margin:8px 0 0}
+.wstats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}
+.wst{border-radius:12px;padding:14px 16px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.wst small{font-size:11px;font-weight:700;letter-spacing:.04em;display:block;color:var(--muted)}
+.wst b{display:block;font-family:var(--head);font-size:20px;margin-top:6px}
+.wst.cr{background:#eafaf1;border-color:#bfead2;color:#101a33}.wst.cr small{color:#16794a}
+.wst.db{background:#fdecee;border-color:#f5c2c7;color:#101a33}.wst.db small{color:#b4232f}
+.wchips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.wchips span{font-size:12px;padding:5px 12px;border:1px solid var(--line);border-radius:99px;background:var(--surface);color:var(--muted)}
+.wchips span.on{background:#0a1224;color:#fff;border-color:#0a1224}
+@media (max-width:860px){.wgrid,.wstats{grid-template-columns:1fr}}
+/* profile page */
+.pwrap{max-width:780px;margin:26px auto 0}
+.phead{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:linear-gradient(90deg,#4f46e5,#9333ea);color:#fff;border-radius:16px;padding:22px 24px}
+.pav{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:20px;flex:none}
+.phead h1{font-size:20px}
+.pmeta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12.5px;margin-top:4px}
+.role{background:rgba(255,255,255,.22);border-radius:99px;padding:2px 10px;font-weight:600;font-size:11.5px}
+.wbox{margin-left:auto;background:#fff;color:#101a33;border-radius:10px;padding:10px 18px;min-width:150px}
+.wbox small{display:block;font-size:11px;color:#6b7692}
+.wbox b{font-family:var(--head);font-size:20px}
+.pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 18px}
+.pstats>div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.pstats small{display:block;font-size:11.5px;color:var(--muted)}
+.pstats b{font-size:13.5px;overflow-wrap:anywhere}
+.pstats .ok{color:#15803d}
+.pcol{display:grid;gap:16px}
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
+.pcard h2{font-size:16px;margin:0 0 2px}
+.pcard .sub{font-size:12.5px;color:var(--muted);margin:0 0 16px}
+.pf{margin-bottom:14px}
+.pf label{display:block;font-size:12.5px;font-weight:600;margin-bottom:5px}
+.pf input{width:100%;font:inherit;font-size:14px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.pf input:focus{outline:none;border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.2)}
+.pf input[aria-invalid="true"]{border-color:#dc2626}
+.pcard .err{color:#dc2626;font-size:12.5px;margin-top:4px;display:block}
+.pbtn{font:inherit;font-size:14px;font-weight:600;color:#fff;background:#4f46e5;border:0;border-radius:8px;padding:10px 20px;cursor:pointer}
+.pbtn:hover{background:#4338ca}
+.pbtn.dark{background:#101a33}
+.pmsg{margin:12px 0 0;font-size:13px;font-weight:600;color:#15803d}
+@media (max-width:860px){.pstats{grid-template-columns:repeat(2,1fr)}.wbox{margin-left:0}}
+/* redeem task */
+.rwrap{max-width:760px;margin:0 auto}
+.rtitle{font-size:28px;font-weight:800;margin:26px 0 16px}
+.rhow{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px}
+.rhow h2{font-size:17px;font-weight:800;margin-bottom:12px}
+.rhow ol{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:s}
+.rhow li{display:flex;align-items:center;gap:12px;font-size:15px;counter-increment:s}
+.rhow li::before{content:counter(s);flex:none;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;font-size:13px;display:grid;place-items:center}
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+.rcard label.rlab{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.rcard input[type=text]{width:100%;font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 12px}
+.rcard input[aria-invalid="true"]{border-color:#e5484d}
+.rerr{display:block;color:#c0343a;font-size:12.5px;margin-top:5px;min-height:1em}
+.rsec{margin-top:18px}
+.rsec h3{font-size:15px;font-weight:700}
+.rhint{font-size:13px;color:var(--muted);margin:4px 0 12px}
+.rdrop{border:1.5px dashed var(--line);border-radius:12px;background:var(--bg);text-align:center;padding:30px 16px;cursor:pointer;color:var(--muted)}
+.rdrop:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(29,78,216,.18)}
+.rdrop b{color:var(--ink)}
+.rbig{font-size:16px;font-weight:600;color:var(--ink)}
+.rdrop small{display:block;margin-top:8px;font-size:12.5px}
+.rprev{display:block;max-width:100%;max-height:260px;margin:0 auto;border-radius:8px}
+.rfile{margin-top:12px;font-size:13.5px}
+.rnote{background:#fff8e1;border:1px solid #f3dd9b;color:#7a4a00;border-radius:12px;padding:16px 18px;margin-top:20px;font-size:14px;line-height:1.55}
+.rnote h3{font-size:15px;margin-bottom:8px}
+.rnote ul{margin:0 0 14px;padding-left:18px}
+.rnote label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.rnote input{margin-top:4px}
+.ract{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px}
+.ract a{color:var(--muted);text-decoration:none;font-size:14px}
+.ract a:hover{color:var(--ink)}
+.rok{margin-top:16px;background:#eafaf1;border:1px solid #bfead2;color:#16794a;border-radius:10px;padding:12px 14px;font-size:14px;font-weight:600}
+.rup{padding:6px 4px}
+.rname{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:12px;overflow-wrap:anywhere}
+.rbar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.rbar i{display:block;height:100%;width:0;background:var(--brand);border-radius:99px;transition:width .06s linear}
+.rbar.done i{background:#16a34a}
+.rstat{margin-top:10px;font-size:13.5px;color:var(--muted)}
+.rstat.done{color:#16794a;font-weight:700}
+/* redeem: pending review page */
+.rpend{max-width:620px;margin:26px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:32px 26px;text-align:center}
+.rpicon{width:84px;height:84px;margin:0 auto 14px;border-radius:50%;background:#fff4d6;color:#d97706;display:grid;place-items:center;animation:rpp 2s ease-in-out infinite}
+@keyframes rpp{0%,100%{box-shadow:0 0 0 0 rgba(217,119,6,.28)}50%{box-shadow:0 0 0 14px rgba(217,119,6,0)}}
+.rpbadge{display:inline-block;background:#fff4d6;color:#a35f00;border:1px solid #f3dd9b;font-weight:700;font-size:12px;letter-spacing:.06em;padding:5px 14px;border-radius:99px}
+.rpsub{color:var(--muted);margin:0 auto 22px;max-width:30em;font-size:15px}
+.rpdl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 24px;text-align:left}
+.rpdl>div{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.rpdl dt{font-size:12px;color:var(--muted)}
+.rpdl dd{margin:3px 0 0;font-weight:700;font-size:14.5px;overflow-wrap:anywhere}
+.rsteps{list-style:none;margin:0 0 20px;padding:0;text-align:left}
+.rsteps li{position:relative;padding:0 0 18px 38px;font-size:14px}
+.rsteps li::before{content:"";position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--line);border:2px solid var(--line)}
+.rsteps li::after{content:"";position:absolute;left:11px;top:28px;bottom:2px;width:2px;background:var(--line)}
+.rsteps li:last-child::after{display:none}
+.rsteps b{display:block}
+.rsteps span{color:var(--muted);font-size:13px}
+.rsteps li.done::before{background:#16a34a;border-color:#16a34a;content:"\2713";color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+.rsteps li.done::after{background:#16a34a}
+.rsteps li.now::before{background:var(--surface);border-color:#d97706;animation:rpp 2s ease-in-out infinite}
+.rpnote{font-size:13px;color:var(--muted);margin:0 0 20px}
+.rpact{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@media (max-width:520px){.rpdl{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.rpicon,.rsteps li.now::before{animation:none}}
+/* my submissions: pending list */
+.subrow{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px}
+.subico{flex:none;width:40px;height:40px;border-radius:50%;background:#fff4d6;color:#d97706;display:grid;place-items:center}
+.subtx{flex:1;min-width:0}
+.subtx b{display:block;font-size:14.5px;overflow-wrap:anywhere}
+.subtx span{font-size:12.5px;color:var(--muted)}
+.subst{flex:none;background:#fff4d6;color:#a35f00;border:1px solid #f3dd9b;font-weight:700;font-size:11.5px;letter-spacing:.04em;padding:5px 12px;border-radius:99px}
+/* task card colors: blue, green, yellow, purple */
+.tc.c0{--cc:#2563eb;--cs:#e6edfc;--ct:#1d4ed8}
+.tc.c1{--cc:#16a34a;--cs:#eafaf1;--ct:#15803d}
+.tc.c2{--cc:#eab308;--cs:#fff8e1;--ct:#a16207}
+.tc.c3{--cc:#7c3aed;--cs:#f1ebff;--ct:#6d28d9}
+.tc .rw{color:var(--ct)}
+.tc .prog{background:var(--cs)}
+.tc .prog i{background:var(--cc)}
+.tc .lockbox{background:var(--cs);color:var(--ct)}
+.tc .btn-main{background:var(--cc);border-color:var(--cc)}
+.tc .btn-main:hover{background:var(--cc);filter:brightness(1.08)}
+.tc .lockchip.open{background:var(--cc)}
+.tc.c2 .btn-main,.tc.c2 .lockchip.open{color:#2a1d00}
+/* task page */
+.tkwrap{max-width:900px;margin:26px auto 0}
+.tkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+.tklab{font-family:var(--head);font-size:22px;font-weight:800;margin:0}
+.tkname{font-family:var(--head);font-size:28px;font-weight:800;color:#16a34a;margin:6px 0 0}
+.tkearn{text-align:right}
+.tkearn small{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+.tkearn b{display:block;font-family:var(--head);font-size:32px;color:#0f766e;margin:2px 0}
+.tkearn span{font-size:13px;color:var(--muted)}
+.tkgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.tkcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
+.tkcard h2{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;margin:0 0 14px}
+.tki{font-size:22px}
+.tkchk{width:26px;height:26px;border-radius:6px;background:#16a34a;color:#fff;display:grid;place-items:center;font-size:16px;font-weight:700}
+.tksteps{list-style:none;margin:0;padding:14px 0 0;border-top:1.5px dashed var(--line);display:grid;gap:12px;counter-reset:k}
+.tksteps li{position:relative;padding-left:34px;font-size:15px;line-height:1.5;color:var(--muted);counter-increment:k}
+.tksteps li::before{content:counter(k);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--soft);color:var(--brand);font-weight:700;font-size:13px;display:grid;place-items:center}
+.tkproof{margin:0;border-top:1.5px dashed var(--line);padding-top:14px;font-size:15px;line-height:1.55;color:var(--muted)}
+.tkback{margin:20px 0 0}
+@media (max-width:860px){.tkgrid{grid-template-columns:1fr}.tkearn{text-align:left}}
+/* task reservation page */
+.tkact{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:20px 0 0}
+.rsvwrap{max-width:760px;margin:26px auto 0}
+.rsvhero{text-align:center;padding:10px 0 26px}
+.rsvtick{width:140px;height:140px;margin:0 auto 18px;animation:rsvpop .45s ease-out}
+.rsvtick svg{width:100%;height:100%;display:block}
+@keyframes rsvpop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.rsvtick{animation:none}}
+.rsvhero h1{font-size:clamp(24px,4vw,32px);font-weight:800;margin-bottom:8px}
+.rsvhero p{color:var(--muted);font-size:17px;margin:0}
+.rsvbox{background:#eef4ff;border:1px solid #bcd5ff;border-radius:16px;padding:22px 26px;color:#33427e}
+.rsvtop{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid #bcd5ff}
+.rsvtop b{display:block;font-size:19px}
+.rsvtop span{color:#4668e8;font-size:15.5px}
+.rsvtime{text-align:right}
+.rsvtime small{display:block;color:#5b79e6;font-size:13px}
+.rsvtime b{font-family:var(--head);font-size:36px;color:#1e2a8a;line-height:1.1;font-variant-numeric:tabular-nums}
+.rsvbox.off{background:#fef2f2;border-color:#f5c2c7;color:#7f1d1d}
+.rsvbox.off .rsvtop{border-color:#f5c2c7}
+.rsvbox.off .rsvtop span,.rsvbox.off .rsvtime small,.rsvbox.off .rsvtime b{color:#b4232f}
+.rsvgen{padding-top:20px;text-align:center}
+.rsvgen .btn-lg{min-width:230px}
+.rsvidout small{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;color:#5b79e6;margin-bottom:8px}
+.rsvrow{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.rsvrow code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:clamp(19px,4.6vw,28px);font-weight:700;letter-spacing:.12em;color:#1e2a8a;background:#fff;border:1px solid #bcd5ff;border-radius:12px;padding:10px 16px;overflow-wrap:anywhere}
+.rsvcopy{width:44px;height:44px;border-radius:12px;border:1px solid #bcd5ff;background:#fff;color:#1d4ed8;display:grid;place-items:center;cursor:pointer}
+.rsvcopy:hover{background:#e6edfc}
+.rsvok{display:inline-block;margin-top:10px;color:#15803d;font-weight:700;font-size:14px}
+.rsvhow{margin-top:18px}
+@media (max-width:520px){.rsvtime{text-align:left}}
+.tkrej{margin:10px 0 0;padding-left:20px;font-size:15px;line-height:1.55;color:var(--muted)}
+.tkrej li{margin-bottom:6px}
+.prevbtn{position:fixed;left:12px;bottom:12px;z-index:30;font:inherit;font-size:12px;font-weight:600;color:#7a4a00;background:#fff8e1;border:1px solid #f3dd9b;border-radius:99px;padding:7px 12px;cursor:pointer}
+/* task 3: create new palmpay account */
+.t3wrap{max-width:900px;margin:26px auto 0}
+.t3head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+.t3lab{font-family:var(--head);font-size:22px;font-weight:800;margin:0}
+.t3name{font-family:var(--head);font-size:28px;font-weight:800;color:#16a34a;margin:6px 0 0}
+.t3earn{text-align:right}
+.t3earn small{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+.t3earn b{display:block;font-family:var(--head);font-size:32px;color:#0f766e;margin:2px 0}
+.t3earn span{font-size:13px;color:var(--muted)}
+.t3grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;align-items:start}
+.t3card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
+.t3card h2{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;margin:0 0 14px}
+.t3chk{width:26px;height:26px;border-radius:6px;background:#16a34a;color:#fff;display:grid;place-items:center;font-size:16px;font-weight:700}
+.t3steps{list-style:none;margin:0;padding:14px 0 0;border-top:1.5px dashed var(--line);display:grid;gap:14px;counter-reset:q}
+.t3steps li{position:relative;padding-left:34px;font-size:15px;line-height:1.5;color:var(--muted);counter-increment:q}
+.t3steps li::before{content:counter(q);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--soft);color:var(--brand);font-weight:700;font-size:13px;display:grid;place-items:center}
+.t3proof{margin:0;border-top:1.5px dashed var(--line);padding-top:14px;font-size:15px;line-height:1.55;color:var(--muted)}
+.t3rules{margin:14px 0 0;padding:14px 16px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px}
+.t3rules b{display:block;font-size:14px;color:#991b1b;margin-bottom:8px}
+.t3rules ul{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:#7f1d1d}
+.t3form{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.t3fh{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;padding:20px 24px}
+.t3fh h2{font-size:20px;font-weight:800;color:#fff}
+.t3fh p{margin:6px 0 0;font-size:14px;opacity:.9}
+.t3fb{padding:22px 24px}
+.t3safe{display:flex;gap:10px;align-items:center;background:#eafaf1;border:1px solid #bfead2;color:#16794a;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:600;margin-bottom:18px}
+.t3safe svg{flex:none;width:20px;height:20px}
+.t3f{margin-bottom:16px}
+.t3f label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+.t3in{display:flex;align-items:center;gap:10px;background:var(--bg);border:2px solid transparent;border-radius:12px;padding:0 14px;transition:border-color .15s,box-shadow .15s}
+.t3in:focus-within{border-color:var(--brand);box-shadow:0 0 0 4px rgba(29,78,216,.14)}
+.t3in.bad{border-color:#e5484d}
+.t3in svg{flex:none;width:18px;height:18px;color:var(--muted)}
+.t3in input{flex:1;min-width:0;font:inherit;font-size:15px;color:var(--ink);background:none;border:0;outline:0;padding:14px 0}
+.t3hint{display:block;font-size:12.5px;color:var(--muted);margin-top:6px}
+.t3err{display:block;color:#c0343a;font-size:12.5px;margin-top:6px;min-height:1em}
+.t3act{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:6px;flex-wrap:wrap}
+@media (max-width:860px){.t3grid{grid-template-columns:1fr}.t3earn{text-align:left}}
+.tc.st-pending,.tc.st-retry{pointer-events:none}
+.tc.st-failed{cursor:pointer}
+.tc.st-failed .tc-act button{pointer-events:none}
+.lockchip.pend{background:#fff4d6;color:#a35f00}
+.lockchip.fail{background:#fde8e8;color:#b4232f}
+.lockchip.retr{background:var(--soft);color:var(--brand)}
+.tc .lockbox.pend{background:#fff4d6;color:#a35f00}
+.tc .lockbox.fail{background:#fde8e8;color:#b4232f}
+.spin2{flex:none;display:inline-block;width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .8s linear infinite}
+</style>
+</head>
+<body>
+<div id="home">
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top"><span class="mark" aria-hidden="true">ST</span><span class="lname">Selar Technology Limited</span></a>
+    <nav aria-label="Main">
+      <a href="#top">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="auth">
+      <a class="login" href="#/login">Login</a>
+      <a class="btn btn-main" href="#/register">Register</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <div class="pill"><i></i>Micro-tasks • Wallet • Fast approvals</div>
+      <h1>Do <span class="hl">simple tasks</span>. Get <span class="hl">paid</span> straight to your <span class="hl">bank</span>.</h1>
+      <p class="lead">Pick a task, send your proof, and your reward lands in your wallet once it is approved. Withdraw to any Nigerian bank account.</p>
+      <div class="cta-row">
+        <a class="btn btn-main btn-lg" href="#/register">Create free account</a>
+        <a class="login" href="#/login">I already have an account</a>
+      </div>
+      <p class="fine">Free to join. Rewards are paid in naira (₦).</p>
+    </div>
+
+    <aside class="panel" aria-label="Sample wallet and tasks">
+      <div class="panel-top"><strong style="color:var(--ink)">Your wallet</strong><span class="tag">Sample</span></div>
+      <div class="bal"><small>Available balance</small><div class="amt">₦24,500</div></div>
+      <div class="mini">
+        <div>Pending<b>₦3,200</b></div>
+        <div>This week<b>₦11,800</b></div>
+      </div>
+      <ul class="tasks">
+        <li><div>Follow a page and send a screenshot<span>12 slots left</span></div><b class="pay">₦150</b></li>
+        <li><div>Install an app and open it once<span>5 slots left</span></div><b class="pay">₦300</b></li>
+        <li><div>Answer a 3-minute survey<span>40 slots left</span></div><b class="pay">₦200</b></li>
+      </ul>
+    </aside>
+  </div>
+
+  <div class="wrap" id="how">
+    <section style="padding-top:0">
+      <h2 class="sec-title">How it works</h2>
+      <p class="sec-sub">Three steps from sign-up to payout. Every task shows exactly what you need to do and what proof to send.</p>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><h3>Find a task</h3><p>Browse open tasks, see the reward and the instructions, and take a slot.</p></div>
+        <div class="step"><div class="n">2</div><h3>Submit your proof</h3><p>Send a screenshot, link, or short text that shows the task is done.</p></div>
+        <div class="step"><div class="n">3</div><h3>Get paid</h3><p>Once approved, the reward goes into your wallet. Withdraw it to your bank.</p></div>
+      </div>
+    </section>
+
+    <div class="earn" id="earn">
+      <div>
+        <h2>Start earning today</h2>
+        <p>Create your account in a minute and see the tasks that are open right now.</p>
+        <a class="btn btn-acc btn-lg" href="#/register">Create free account</a>
+      </div>
+      <ul>
+        <li>Clear instructions and proof rules on every task</li>
+        <li>Screenshot, link, or text proof</li>
+        <li>Rewards approved within 24 hours</li>
+        <li>Withdraw to your Nigerian bank account</li>
+      </ul>
+    </div>
+
+    <section class="about" id="about">
+      <div>
+        <h2 class="sec-title">About Selar Technology Limited</h2>
+      </div>
+      <div>
+        <p>Selar Technology Limited gives people a simple way to earn from short online tasks, with clear rules up front and payouts that go straight to a bank account.</p>
+        <p>We never ask you to pay to start earning. If a task is unclear or a payment looks wrong, our support team is here to help.</p>
+      </div>
+    </section>
+
+    <section id="faq" style="padding-top:8px">
+      <h2 class="sec-title">Questions people ask first</h2>
+      <p class="sec-sub">Short answers before you sign up.</p>
+      <details><summary>Is it free to join?</summary><p>Yes. Creating an account is free, and you never pay to take a task.</p></details>
+      <details><summary>What kind of tasks are there?</summary><p>Short online tasks such as following a page, trying an app, or answering a survey. Each task lists the steps and the proof you need to send.</p></details>
+      <details><summary>How do I get paid?</summary><p>When your proof is approved, the reward is added to your wallet. You can then request a withdrawal to your Nigerian bank account.</p></details>
+      <details><summary>How long does approval take?</summary><p>Submissions are reviewed within 24 hours. If a review is not done in that time, your task is approved automatically.</p></details>
+      <details><summary>What is the minimum withdrawal?</summary><p>The minimum withdrawal is ₦100.</p></details>
+      <details><summary>Can I delete my account?</summary><p>Yes. Use the Delete Account link at the bottom of any page.</p></details>
+    </section>
+
+    <div class="final">
+      <div><h2>Ready to start earning?</h2><p>Join Selar Technology Limited and complete your first task today.</p></div>
+      <div class="cta-row"><a class="btn btn-acc btn-lg" href="#/register">Create account</a><a class="btn btn-line btn-lg" href="#">Contact support</a></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <a class="logo" href="#top" style="padding:0"><span class="mark" aria-hidden="true">ST</span><span class="lname">Selar Technology Limited</span></a>
+        <p style="margin:14px 0 0;max-width:20em">Simple tasks, clear rules, and payouts to your bank.</p>
+      </div>
+      <div><h4>Company</h4><a href="#about">About Us</a><a href="#faq">FAQ</a></div>
+      <div><h4>Support</h4><a href="#">Support Center</a><a href="#">Contact Us</a><a href="#">Delete Account</a></div>
+      <div><h4>Legal</h4><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">User Policy</a></div>
+    </div>
+    <div class="copy">© 2026 Selar Technology Limited. All rights reserved.</div>
+  </div>
+</footer>
+</div>
+<div id="register" class="reg" hidden>
+  <div class="reg-wrap">
+    <div class="reg-intro">
+      <a class="logo" href="#top"><span class="mark" aria-hidden="true">ST</span><span class="lname">Selar Technology Limited</span></a>
+      <h1>Get Paid Faster.<br>Start Earning Today.</h1>
+      <p>Create your account and start completing simple tasks in minutes.</p>
+      <ul class="ticks"><li>Clear task instructions</li><li>Fast approvals</li><li>Withdraw to your bank</li></ul>
+    </div>
+    <form class="reg-card" id="regForm" novalidate>
+    <h2>Create your account</h2><p class="sub">Step 1 of 2: your details</p>
+    <div class="fld"><label for="name">Full Name</label><input id="name" name="name" type="text" placeholder="John Doe" autocomplete="name"><span class="err" aria-live="polite"></span></div>
+    <div class="fld"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"><span class="err" aria-live="polite"></span></div>
+    <div class="fld"><label for="phone">Phone Number</label><input id="phone" name="phone" type="tel" placeholder="e.g. 08012345678" autocomplete="tel"><span class="err" aria-live="polite"></span></div>
+    <div class="fld"><label for="password">Password</label><input id="password" name="password" type="password" placeholder="At least 8 characters" autocomplete="new-password"><span class="err" aria-live="polite"></span></div>
+    <div class="fld"><label for="confirm">Confirm Password</label><input id="confirm" name="confirm" type="password" placeholder="Repeat your password" autocomplete="new-password"><span class="err" aria-live="polite"></span></div>
+    <p class="terms">By creating an account, you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>.</p>
+    <button class="reg-btn" type="submit">Create Account</button>
+    
+    
+    <p class="signin">Already have an account? <a href="#/login">Sign in</a></p>
+    <div class="status" id="regStatus" role="status" hidden></div>
+    </form>
+  </div>
+</div>
+<div id="payout" class="reg" hidden>
+  <div class="reg-wrap">
+    <div class="reg-intro">
+      <a class="logo" href="#top"><span class="mark" aria-hidden="true">ST</span><span class="lname">Selar Technology Limited</span></a>
+      <h1>Set Up How<br>You Get Paid.</h1>
+      <p>Add the bank account where your earnings will be sent.</p>
+      <ul class="ticks"><li>Withdraw straight to your bank</li><li>Takes less than a minute</li><li>Check your account number before saving</li></ul>
+    </div>
+    <form class="reg-card" id="payForm" novalidate>
+    <h2>Set up payout details</h2><p class="sub">Step 2 of 2: where we send your earnings</p>
+    <div class="fld"><label for="bank">Bank</label><select id="bank" name="bank"><option value="">Select your bank</option><option value="044">Access Bank</option><option value="023">Citibank Nigeria</option><option value="050">Ecobank Nigeria</option><option value="070">Fidelity Bank</option><option value="011">First Bank of Nigeria</option><option value="214">First City Monument Bank (FCMB)</option><option value="103">Globus Bank</option><option value="058">Guaranty Trust Bank (GTBank)</option><option value="030">Heritage Bank</option><option value="082">Keystone Bank</option><option value="50211">Kuda Bank</option><option value="50515">Moniepoint MFB</option><option value="999992">OPay</option><option value="999991">PalmPay</option><option value="076">Polaris Bank</option><option value="101">Providus Bank</option><option value="221">Stanbic IBTC Bank</option><option value="068">Standard Chartered Bank</option><option value="232">Sterling Bank</option><option value="100">SunTrust Bank</option><option value="000025">Titan Trust Bank</option><option value="032">Union Bank</option><option value="033">United Bank for Africa (UBA)</option><option value="215">Unity Bank</option><option value="035">Wema Bank</option><option value="057">Zenith Bank</option></select><span class="err" aria-live="polite"></span></div>
+    <div class="fld"><label for="account">Account Number</label><input id="account" name="account" type="text" inputmode="numeric" maxlength="10" placeholder="10-digit account number" autocomplete="off"><span class="err" aria-live="polite"></span></div>
+    <div class="fld"><label for="acname">Account Name</label><input id="acname" name="acname" type="text" placeholder="Name on your bank account" autocomplete="off"><span class="err" aria-live="polite"></span></div>
+    <button class="reg-btn" id="payBtn" type="submit">Confirm Details</button>
+    <p class="signin"><a href="#/register">Back</a></p>
+    <div class="confirm" id="payBusy" role="status" hidden><span class="spin" aria-hidden="true"></span><span>Saving your details...</span></div>
+    <div class="confirm" id="payDone" role="status" hidden><span class="tick" aria-hidden="true">&#10003;</span><div><b>Details saved</b><small>Payouts are sent to exactly these details, so check them carefully.</small></div></div>
+    </form>
+  </div>
+</div>
+<div id="dashboard" class="app" hidden>
+  <aside class="side">
+    <a class="logo" href="#top"><span class="mark" aria-hidden="true">ST</span><span class="lname">Selar Technology Limited</span></a>
+    <div class="snav" role="navigation" aria-label="Dashboard">
+      <a href="#/dashboard" id="navExplore" aria-current="page">Explore Jobs</a>
+      <a href="#/submissions" id="navSubs">My Submissions</a>
+      <a href="#/wallet" id="navWallet">Wallet</a>
+      <a href="#/redeem" id="navRedeem">Redeem Task</a>
+      <a href="#/profile" id="navProfile">Profile</a>
+    </div>
+    <a class="slogout" href="#top">Logout</a>
+  </aside>
+  <div class="amain">
+    <div class="atop">
+      <button class="bell" type="button" aria-label="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 22a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5-6.7V3a2 2 0 0 0-4 0v1.3A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2z"/></svg></button>
+      <div class="balpill">Balance: <b>&#8358;0.00</b></div>
+      <button class="ubtn" id="ubtn" type="button" aria-expanded="false" aria-controls="ubox"><span id="dName">there</span> &#9662;</button>
+      <div class="ubox" id="ubox" hidden>
+        <h4>Payout account</h4>
+        <dl class="acct"><dt>Bank</dt><dd id="dBank">Not added yet</dd><dt>Account number</dt><dd id="dAcct">-</dd><dt>Account name</dt><dd id="dAcName">-</dd></dl>
+        <button class="btn btn-main" type="button" disabled>Withdraw</button>
+        <p class="hint">You can withdraw once your balance reaches &#8358;100.</p>
+      </div>
+    </div>
+    <div id="viewExplore"><h1 class="atitle">Explore Tasks</h1>
+    <form class="filters" id="filt">
+      <input class="fq" id="fq" type="search" placeholder="Search tasks..." aria-label="Search tasks">
+      <select id="fc" aria-label="Category"><option value="">All Categories</option><option>Reward</option></select>
+      <input class="fn" id="fmin" type="number" min="0" placeholder="Min &#8358;" aria-label="Minimum reward">
+      <input class="fn" id="fmax" type="number" min="0" placeholder="Max &#8358;" aria-label="Maximum reward">
+      <button class="btn btn-main" type="submit">Filter</button>
+    </form>
+    <div class="cards" id="cards"></div>
+    <div class="pager" id="pager"></div>
+    <div class="soon" id="soon" hidden><h2>Coming soon</h2><p>More tasks are on the way. Check back later.</p></div>
+    <div class="modal" id="tmodal" role="dialog" aria-modal="true" aria-labelledby="mt" hidden><div class="mbox"><h2 id="mt">Task</h2><p id="mp"></p><button class="btn btn-main" id="mc" type="button">Close</button></div></div>
+</div>
+<div id="viewWallet" hidden>
+  <div class="wcard" style="margin-top:26px">
+    <h2>Withdraw Funds</h2>
+    <div class="wnote"><b>Withdrawal fee: &#8358;0</b><br>The minimum withdrawal amount is <b>&#8358;100</b>. No transfer fee is deducted from your withdrawal.<br>Example: Withdraw &#8358;100 &rarr; you receive &#8358;100.</div>
+    <form class="wf" id="wForm" novalidate>
+      <div class="wgrid">
+        <div><label for="wAmt">Amount (&#8358;)</label><input id="wAmt" type="number" min="100" inputmode="numeric" placeholder="Minimum &#8358;100"></div>
+        <div><label for="wBank">Bank Name</label><input id="wBank" type="text" readonly placeholder="Not added yet"></div>
+        <div><label for="wAcct">Account Number</label><input id="wAcct" type="text" readonly placeholder="Not added yet"></div>
+      </div>
+      <div class="wfull"><label for="wName">Account Name</label><input id="wName" type="text" readonly placeholder="Not added yet"></div>
+      <span class="werr" id="wErr" role="alert"></span>
+      <button class="btn btn-main" type="submit">Withdraw</button>
+    </form>
+    <div class="whist"><h3>Withdrawal History</h3><p>No withdrawal requests yet.</p></div>
+  </div>
+  <h1 class="atitle" style="font-size:20px;margin:28px 0 4px">Wallet</h1>
+  <p class="ssub">Track your balance and all wallet activity.</p>
+  <div class="wstats">
+    <div class="wst"><small>CURRENT BALANCE</small><b>&#8358;0.00</b></div>
+    <div class="wst cr"><small>TOTAL CREDITS</small><b>&#8358;0.00</b></div>
+    <div class="wst db"><small>TOTAL DEBITS</small><b>&#8358;0.00</b></div>
+  </div>
+  <div class="wchips"><span class="on">All</span><span>Deposits</span><span>Earnings</span><span>Withdrawals</span><span>Refunds</span></div>
+  <div class="wcard" style="padding:0;margin-top:0"><h3 style="padding:14px 18px;border-bottom:1px solid var(--line);font-size:15px">Transaction History</h3><p style="padding:14px 18px;margin:0;font-size:13px;color:var(--muted)">No wallet activity yet.</p></div>
+</div>
+<div id="viewProfile" hidden>
+  <div class="pwrap">
+    <div class="phead">
+      <div class="pav" id="pAv">?</div>
+      <div><h1 id="pHeadName">Your name</h1><div class="pmeta"><span class="role">Worker</span><span id="pHeadEmail">-</span></div></div>
+      <div class="wbox"><small>Wallet Balance</small><b>&#8358;0.00</b></div>
+    </div>
+    <div class="pstats">
+      <div><small>User ID</small><b id="pUid">-</b></div>
+      <div><small>Email Status</small><b class="ok">Verified</b></div>
+      <div><small>Member Since</small><b id="pSince">-</b></div>
+      <div><small>Role</small><b>Worker</b></div>
+    </div>
+    <div class="pcol">
+      <div class="pcard">
+        <h2>Profile Information</h2><p class="sub">Update your profile details</p>
+        <form id="profForm" novalidate>
+          <div class="pf"><label for="pname">Full Name</label><input id="pname" type="text" autocomplete="name"><span class="err" aria-live="polite"></span></div>
+          <div class="pf"><label for="pemail">Email</label><input id="pemail" type="email" autocomplete="email"><span class="err" aria-live="polite"></span></div>
+          <button class="pbtn" type="submit">Save Changes</button>
+          <p class="pmsg" id="profMsg" role="status" hidden></p>
+        </form>
+      </div>
+      <div class="pcard">
+        <h2>Password &amp; Security</h2><p class="sub">Update your password</p>
+        <form id="pwForm" novalidate>
+          <div class="pf"><label for="pcur">Current Password</label><input id="pcur" name="cur" type="password" autocomplete="current-password"><span class="err" aria-live="polite"></span></div>
+          <div class="pf"><label for="pnew">New Password</label><input id="pnew" name="nw" type="password" autocomplete="new-password"><span class="err" aria-live="polite"></span></div>
+          <div class="pf"><label for="pcf">Confirm Password</label><input id="pcf" name="cf" type="password" autocomplete="new-password"><span class="err" aria-live="polite"></span></div>
+          <button class="pbtn dark" type="submit">Update Password</button>
+          <p class="pmsg" id="pwMsg" role="status" hidden></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="viewRedeem" hidden>
+  <div class="rpend" id="rPend" hidden>
+    <div class="rpicon" aria-hidden="true"><svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19"/><path d="M24 13v11l7 4"/></svg></div>
+    <span class="rpbadge">PENDING REVIEW</span>
+    <h1 class="rtitle" style="margin:14px 0 6px">Submission received</h1>
+    <p class="rpsub">Your task is now waiting to be reviewed. Your reward is added once it is approved.</p>
+    <dl class="rpdl">
+      <div><dt>Task ID</dt><dd id="rpId">-</dd></div>
+      <div><dt>Submitted</dt><dd id="rpAt">-</dd></div>
+      <div><dt>Status</dt><dd>Pending review</dd></div>
+      
+    </dl>
+    <ol class="rsteps">
+      <li class="done"><b>Submitted</b><span>Your Task ID and screenshot were sent for review.</span></li>
+      <li class="now"><b>Under review</b><span>Your proof is checked against the task. This can take up to 24 hours.</span></li>
+      <li><b>Reward added to your wallet</b><span>This happens once your task is approved.</span></li>
+    </ol>
+    <p class="rpnote">Please do not submit the same task again. Fake, edited or duplicate proof is rejected.</p>
+    <div class="rpact"><a class="btn btn-main" href="#/dashboard">Back to tasks</a><button class="btn btn-line" type="button" id="rpAgain">Redeem another task</button></div>
+  </div>
+  <div class="rpend" id="rPend" hidden>
+    <div class="rpicon" aria-hidden="true"><svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19"/><path d="M24 13v11l7 4"/></svg></div>
+    <span class="rpbadge">PENDING REVIEW</span>
+    <h1 class="rtitle" style="margin:14px 0 6px">Submission received</h1>
+    <p class="rpsub">Your task is now waiting to be reviewed. Your reward is added once it is approved.</p>
+    <dl class="rpdl">
+      <div><dt>Task ID</dt><dd id="rpId">-</dd></div>
+      <div><dt>Submitted</dt><dd id="rpAt">-</dd></div>
+      <div><dt>Status</dt><dd>Pending review</dd></div>
+      
+    </dl>
+    <ol class="rsteps">
+      <li class="done"><b>Submitted</b><span>Your Task ID and screenshot were sent for review.</span></li>
+      <li class="now"><b>Under review</b><span>Your proof is checked against the task. This can take up to 24 hours.</span></li>
+      <li><b>Reward added to your wallet</b><span>This happens once your task is approved.</span></li>
+    </ol>
+    <p class="rpnote">Please do not submit the same task again. Fake, edited or duplicate proof is rejected.</p>
+    <div class="rpact"><a class="btn btn-main" href="#/dashboard">Back to tasks</a><button class="btn btn-line" type="button" id="rpAgain">Redeem another task</button></div>
+  </div>
+  <div class="rwrap">
+    <h1 class="rtitle">Redeem Task</h1>
+    <div class="rhow">
+      <h2>How to redeem your task to earn reward</h2>
+      <ol>
+        <li>Fill in your Task ID</li>
+        <li>Upload a screenshot of your performed task</li>
+        <li>Redeem your reward</li>
+      </ol>
+    </div>
+    <form class="rcard" id="rForm" novalidate>
+      <label class="rlab" for="rId">Task ID</label>
+      <input id="rId" type="text" placeholder="Enter your Task ID" autocomplete="off">
+      <span class="rerr" id="rIdErr" role="alert"></span>
+      <div class="rsec">
+        <h3>Screenshot</h3>
+        <p class="rhint">Upload a screenshot or copy it and press <b>Ctrl + V</b> inside the box.</p>
+        <div class="rdrop" id="rDrop" tabindex="0" role="button" aria-label="Paste screenshot here">
+          <div id="rDropIn"><div class="rbig">&#128203; Paste screenshot here</div><small>Press <b>Ctrl + V</b></small><small>or select a file below</small></div>
+        </div>
+        <div class="rfile"><input id="rFile" type="file" accept="image/*"></div>
+        <span class="rerr" id="rShotErr" role="alert"></span>
+      </div>
+      <div class="rnote">
+        <h3>&#9888;&#65039; Important Notice</h3>
+        <ul>
+          <li>Only ONE account per user is allowed. Multiple accounts will be permanently banned without warning.</li>
+          <li>Fake, edited, or misleading proof will result in immediate suspension/ban without warning.</li>
+          <li>Submit only genuine and verifiable work.</li>
+        </ul>
+        <label><input type="checkbox" id="rAgree"> I agree to the rules above and confirm my submission is genuine.</label>
+      </div>
+      <div class="ract"><a href="#/dashboard">&larr; Back</a><button class="btn btn-main" id="rBtn" type="submit" disabled>Redeem Reward</button></div>
+      <div class="rok" id="rOk" role="status" hidden></div>
+    </form>
+  </div>
+</div>
+<div id="viewTask" hidden>
+  <div class="tkwrap">
+    <div class="tkhead">
+      <div><p class="tklab">Task</p><h1 class="tkname">Download Kuda App</h1></div>
+      <div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;100.00</b><span>&#8358;100.00 will be credited after approval.</span></div>
+    </div>
+    <div class="tkgrid">
+      <div class="tkcard">
+        <h2><span class="tki" aria-hidden="true">&#128203;</span>Instructions</h2>
+        <ol class="tksteps">
+          <li>Open the Google Play Store (Android) or the App Store (iPhone).</li>
+          <li>Search for Kuda App for Africans</li>
+          <li>Tap Install and wait for the download to finish.</li>
+        </ol>
+      </div>
+      <div class="tkcard">
+        <h2><span class="tkchk" aria-hidden="true">&#10003;</span>Proof Required</h2>
+        <p class="tkproof">Upload one screenshot that shows the Kuda app was installed successfully from the Google Play Store or the App Store.</p>
+      </div>
+    </div>
+    <div class="tkact"><button type="button" class="btn btn-line" id="tkBack">&larr; Back to tasks</button><button type="button" class="btn btn-main" id="tkStart">Start task</button></div>
+  </div>
+</div>
+<div id="viewReserve" hidden>
+  <div class="rsvwrap">
+    <div class="rsvhero">
+      <div class="rsvtick" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="#16a34a"/><path d="M34 62l17 17 36-38" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h1>Task reserved successfully</h1>
+      <p>You have 60 minutes to submit your proof.</p>
+    </div>
+    <div class="rsvbox" id="rsvBox">
+      <div class="rsvtop">
+        <div><b id="rsvT">Reservation Active</b><span id="rsvS">Complete and submit this task before your reservation expires.</span></div>
+        <div class="rsvtime"><small>TIME REMAINING</small><b id="rsvClock" role="timer">60:00</b></div>
+      </div>
+      <div class="rsvgen">
+        <button type="button" class="btn btn-main btn-lg" id="rsvGen">Generate Task ID</button>
+        <div class="rsvidout" id="rsvOut" hidden>
+          <small>YOUR TASK ID</small>
+          <div class="rsvrow"><code id="rsvCode"></code><button type="button" class="rsvcopy" id="rsvCopy" aria-label="Copy Task ID" title="Copy"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div>
+          <span class="rsvok" id="rsvOk" role="status" hidden>Copied</span>
+        </div>
+      </div>
+    </div>
+    <div class="rhow rsvhow">
+      <h2>How to redeem your task to earn reward</h2>
+      <ol>
+        <li>Copy and save your Task ID</li>
+        <li>Screenshot the task you performed</li>
+        <li>Go to Redeem Task on your dashboard</li>
+        <li>Fill in your Task ID and upload a screenshot of your performed task to redeem your reward</li>
+      </ol>
+    </div>
+    <p class="tkback"><button type="button" class="btn btn-line" id="rsvBack">&larr; Back to tasks</button></p>
+  </div>
+</div>
+<div id="viewTask2" hidden>
+  <div class="tkwrap">
+    <div class="tkhead">
+      <div><p class="tklab">Task</p><h1 class="tkname">Create new email account</h1></div>
+      <div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;50.00</b><span>&#8358;50.00 will be credited after approval.</span></div>
+    </div>
+    <div class="tkgrid">
+      <div class="tkcard">
+        <h2><span class="tki" aria-hidden="true">&#128203;</span>Instructions</h2>
+        <ol class="tksteps">
+          <li>Open the email website or app you want to use (Gmail, Yahoo or Outlook).</li>
+          <li>Tap Create account and fill in your details. The account must be brand new and in your own name.</li>
+          <li>Finish the sign-up and wait until you land on your new inbox.</li>
+          <li>Do not use an email address you already have.</li>
+        </ol>
+      </div>
+      <div class="tkcard">
+        <h2><span class="tkchk" aria-hidden="true">&#10003;</span>Proof Required</h2>
+        <div class="tkproof">
+          <p style="margin:0 0 14px">Upload one screenshot of your new email inbox, showing your new email address clearly.</p>
+          <b>Your proof will be rejected if:</b>
+          <ul class="tkrej">
+            <li>It shows an old email account you already had.</li>
+            <li>The new email address is cut off or can&rsquo;t be read.</li>
+            <li>The screenshot is edited, copied from someone else, or blurry.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="tkact"><button type="button" class="btn btn-line" id="tk2Back">&larr; Back to tasks</button><button type="button" class="btn btn-main" id="tk2Start">Start task</button></div>
+  </div>
+</div>
+<button type="button" class="prevbtn" id="prevAppr" hidden>Preview only: approve task 1</button>
+<div id="viewTask3" hidden>
+  <div class="t3wrap">
+    <div class="t3head">
+      <div><p class="t3lab">Task</p><h1 class="t3name">Create New PalmPay Account</h1></div>
+      <div class="t3earn"><small>YOU WILL EARN</small><b>&#8358;250.00</b><span>&#8358;250.00 will be credited after approval.</span></div>
+    </div>
+    <div class="t3grid">
+      <div class="t3card">
+        <h2><span aria-hidden="true">&#128203;</span>Instructions</h2>
+        <ol class="t3steps">
+          <li>Submit your name and your new phone number, your request will be placed on the waitlist while your submission is being tracked.</li>
+          <li>Go to Google Play Store and download the official PalmPay app. Create a new PalmPay account using the same phone number you submitted on Selar Technology Limited.</li>
+          <li>Complete the required PalmPay registration process and make sure the information provided is accurate and belongs to you.</li>
+        </ol>
+      </div>
+      <div class="t3card">
+        <h2><span class="t3chk" aria-hidden="true">&#10003;</span>Proof Required</h2>
+        <p class="t3proof">Upload a screenshot of your newly created PalmPay account profile, showing your name or phone number. Do not show your password or PIN.</p>
+        <div class="t3rules">
+          <b>Your proof will be rejected if:</b>
+          <ul>
+            <li>The screenshot is edited, cropped to hide details, or not clear.</li>
+            <li>It does not show your name or phone number.</li>
+            <li>The name or phone number does not match what you submitted.</li>
+            <li>The screenshot belongs to someone else, or the same screenshot is used for more than one submission.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <form class="t3form" id="t3Form" novalidate>
+      <div class="t3fh"><h2>Create a new PalmPay account</h2><p>This must be a brand new account, not one you already use</p></div>
+      <div class="t3fb">
+        <div class="t3safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>We never ask for your existing account, PIN, or password.</div>
+        <div class="t3f">
+          <label for="t3n">Full name</label>
+          <div class="t3in" id="t3nb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><input id="t3n" type="text" placeholder="Name used on your new PalmPay account" autocomplete="name"></div>
+          <span class="t3err" id="t3ne"></span>
+        </div>
+        <div class="t3f">
+          <label for="t3p">New phone number</label>
+          <div class="t3in" id="t3pb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg><input id="t3p" type="tel" inputmode="numeric" placeholder="Number used to sign up" autocomplete="tel"></div>
+          <span class="t3hint">Must be the number on your new account, not an existing one</span>
+          <span class="t3err" id="t3pe"></span>
+        </div>
+        <div class="t3act"><button class="btn btn-line" type="button" id="t3Back">&larr; Back to tasks</button><button class="btn btn-main" type="submit">Start task</button></div>
+      </div>
+    </form>
+  </div>
+</div>
+<div id="viewSubs" hidden>
+  <h1 class="atitle" style="margin-bottom:4px">My Submissions</h1>
+  <p class="ssub">Your completed tasks, approval status &amp; dispute history.</p>
+  <div class="sstats">
+    <div class="sst ok"><small>APPROVED</small><b>0</b><span>Completed &amp; paid tasks</span></div>
+    <div class="sst pe"><small>PENDING</small><b>0</b><span>Waiting approval</span></div>
+    <div class="sst di"><small>DISPUTES</small><b>0</b><span>Issues or rejected tasks</span></div>
+  </div>
+  <div class="stabs" role="tablist" id="stabs">
+    <button type="button" role="tab" data-t="a" aria-selected="true">Approved (0)</button>
+    <button type="button" role="tab" data-t="p" aria-selected="false">Pending (0)</button>
+    <button type="button" role="tab" data-t="d" aria-selected="false">Disputes (0)</button>
+  </div>
+  <div class="sempty">
+    <div class="semoji" aria-hidden="true">🎉</div>
+    <b id="sET">No approved submissions yet</b>
+    <p id="sEP">Once your work is approved and payment is processed, it will appear here.</p>
+  </div>
+</div>
+  </div>
+</div>
+<script>
+(function(){
+var home=document.getElementById('home'),reg=document.getElementById('register'),pay=document.getElementById('payout'),dash=document.getElementById('dashboard');
+var homeTitle='Selar Technology Limited \u2013 Do simple tasks, get paid to your bank';
+function route(){var h=location.hash,r=h==='#/register',p=h==='#/payout',d=h==='#/dashboard'||h==='#/submissions'||h==='#/wallet'||h==='#/profile';reg.hidden=!r;pay.hidden=!p;dash.hidden=!d;home.hidden=r||p||d;document.title=r?'Create your account \u2013 Selar Technology Limited':p?'Set up payout details \u2013 Selar Technology Limited':d?'Dashboard \u2013 Selar Technology Limited':homeTitle;window.scrollTo(0,0);}
+window.addEventListener('hashchange',route);route();
+var f=document.getElementById('regForm'),st=document.getElementById('regStatus');
+f.addEventListener('submit',function(e){
+  e.preventDefault();var ok=true;
+  function chk(id,test,msg){var i=f.elements[id],bad=!test(i.value);i.parentNode.querySelector('.err').textContent=bad?msg:'';i.setAttribute('aria-invalid',bad?'true':'false');if(bad)ok=false;}
+  chk('name',function(v){return v.trim().length>=3},'Enter your full name.');
+  chk('email',function(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())},'Enter a valid email address.');
+  chk('phone',function(v){return /^(0|\+?234)[789][01]\d{8}$/.test(v.replace(/\s/g,''))},'Enter a valid Nigerian phone number.');
+  chk('password',function(v){return v.length>=8},'Use at least 8 characters.');
+  chk('confirm',function(v){return v===f.elements.password.value},'Passwords do not match.');
+  if(ok){user.name=f.elements.name.value.trim();user.email=f.elements.email.value.trim();saveUser();location.hash='#/payout';}
+});
+var VERIFY_SECONDS=10; /* how long the spinner shows before the tick */
+var user={name:'',bank:'',account:'',acname:''};try{user=JSON.parse(sessionStorage.getItem('stUser'))||user;}catch(x){}function saveUser(){try{sessionStorage.setItem('stUser',JSON.stringify(user));}catch(x){}}
+var pf=document.getElementById('payForm'),bank=pf.elements.bank,acct=pf.elements.account,nm=pf.elements.acname,
+ btn=document.getElementById('payBtn'),busy=document.getElementById('payBusy'),done=document.getElementById('payDone'),timer=null;
+function errOf(el){return el.parentNode.querySelector('.err');}
+function chk(el,test,msg){var bad=!test(el.value);errOf(el).textContent=bad?msg:'';el.setAttribute('aria-invalid',bad?'true':'false');return !bad;}
+function setLocked(l){bank.disabled=l;acct.disabled=l;nm.disabled=l;btn.disabled=l;}
+function resetPay(){clearTimeout(timer);setLocked(false);busy.hidden=true;done.hidden=true;}
+function fillDash(){
+  document.getElementById('dName').textContent=(user.name||'there').split(' ')[0];
+  document.getElementById('dBank').textContent=user.bank||'Not added yet';
+  document.getElementById('dAcct').textContent=user.account?'******'+user.account.slice(-4):'-';
+  document.getElementById('dAcName').textContent=user.acname||'-';document.getElementById('wBank').value=user.bank||'';document.getElementById('wAcct').value=user.account||'';document.getElementById('wName').value=user.acname||'';
+}
+acct.addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,10);});
+pf.addEventListener('submit',function(e){
+  e.preventDefault();
+  var a=chk(bank,function(v){return v!==''},'Choose your bank.');
+  var b=chk(acct,function(v){return /^\d{10}$/.test(v)},'Enter your 10-digit account number.');
+  var c=chk(nm,function(v){return /^[A-Za-z][A-Za-z .'-]{2,}$/.test(v.trim())},'Enter the account name as it appears at your bank.');
+  if(!(a&&b&&c))return;
+  setLocked(true);done.hidden=true;busy.hidden=false;
+  timer=setTimeout(function(){
+    busy.hidden=true;done.hidden=false;
+    user.bank=bank.options[bank.selectedIndex].text;user.account=acct.value;user.acname=nm.value.trim().toUpperCase();saveUser();saveUser();saveUser();saveUser();
+    fillDash();
+    timer=setTimeout(function(){location.hash='#/dashboard';},2200);
+  },VERIFY_SECONDS*1000);
+});
+window.addEventListener('hashchange',function(){if(location.hash!=='#/payout')resetPay();});fillDash();window.addEventListener('hashchange',fillDash);
+})();
+</script>
+<script>
+["viewProfile","navProfile","viewRedeem","navRedeem"].forEach(function(i){if(!document.getElementById(i)){var d=document.createElement("div");d.id=i;d.hidden=true;document.body.appendChild(d);}});/* dashboard: 50 locked task cards, 10 per page, "Coming soon" after the last card */
+(function(){
+var $=function(id){return document.getElementById(id)};
+/* shown only after the first task unlocks and the person opens it: put the real task here */
+var FIRST={title:'Your task',steps:'Your task instructions will appear here.'};
+var R=[100,300,200,250,120,180,220,160,280,140],T=[487,16,36,50,100,200,300,60,25,40];
+var L=[],i;
+for(i=0;i<50;i++){var t=T[i%10];L.push({n:i+1,r:R[i%10]+Math.floor(i/10)*10,s:t,k:i===0?480:Math.round(t*(((i*17)%90)+5)/100)});}
+var per=10,pg=1,list=L,cd=600,tm=null,unl=false,T0=0;function calcCd(){return Math.max(0,600-Math.floor((Date.now()-T0)/1000));}
+var LK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V7z"/></svg>';
+function fmt(s){return [Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(function(x){return (x<10?'0':'')+x}).join(':')}
+function card(x){
+  var p=Math.round(x.k/x.s*100),u=x.n===1&&unl;
+  return '<article class="tc c'+((x.n-1)%4)+'"><div class="tc-top"><span></span><span class="lockchip'+(u?' open':'')+'">'+(u?'OPEN':'LOCKED')+'</span></div>'
+  +(x.n===1&&unl?'<h3>Download Kuda App</h3>':'')+'<div class="tc-meta"><span>Reward</span><span class="rw">&#8358;'+x.r+'.00</span></div>'
+  
+  +'<div class="lockbox">'+(x.n===1?(u?'<span>Task unlocked</span>':LK+'<span>Task unlocks in</span><b id="cdown">'+fmt(cd)+'</b>'):LK+'<span>Locked</span>')+'</div>'
+  +'<div class="tc-act"><button type="button" class="btn btn-line" data-a="d" data-n="'+x.n+'">Details</button><button type="button" class="btn btn-main" data-a="s" data-n="'+x.n+'"'+(u?'':' disabled')+'>Start task</button></div></article>';
+}
+function render(){
+  var pages=Math.max(1,Math.ceil(list.length/per));if(pg>pages)pg=pages;
+  var s=(pg-1)*per;
+  $('cards').innerHTML=list.length?list.slice(s,s+per).map(card).join(''):'<p class="tc-desc">No tasks match your filter.</p>';
+  $('pager').innerHTML='<button type="button" class="btn btn-line" id="pp"'+(pg===1?' disabled':'')+'>Previous</button><span>Page '+pg+' of '+pages+'</span><button type="button" class="btn btn-line" id="pn"'+(pg===pages?' disabled':'')+'>Next</button>';
+  $('soon').hidden=pg!==pages;
+}
+function showM(n){
+  var ok=n===1&&unl;if(ok){window.stOpenTask();return;}
+  $('mt').textContent=ok?FIRST.title:'Task locked';
+  $('mp').textContent=ok?FIRST.steps:'This task is locked. You will see what to do once it unlocks.';
+  $('tmodal').hidden=false;$('mc').focus();
+}
+$('cards').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-a]');if(!b||b.disabled)return;
+  showM(+b.getAttribute('data-n'));
+});
+$('mc').addEventListener('click',function(){$('tmodal').hidden=true;});
+$('tmodal').addEventListener('click',function(e){if(e.target===this)this.hidden=true;});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')$('tmodal').hidden=true;});
+$('pager').addEventListener('click',function(e){
+  var id=e.target.id;if(id==='pp')pg--;else if(id==='pn')pg++;else return;
+  render();window.scrollTo(0,0);
+});
+$('filt').addEventListener('submit',function(e){
+  e.preventDefault();
+  var q=$('fq').value.trim().toLowerCase(),c=$('fc').value,mn=parseFloat($('fmin').value),mx=parseFloat($('fmax').value);
+  list=L.filter(function(x){return (!q||('reward '+x.r+' '+x.n).indexOf(q)>-1)&&(!c||c==='Reward')&&(isNaN(mn)||x.r>=mn)&&(isNaN(mx)||x.r<=mx)});
+  pg=1;render();
+});
+$('ubtn').addEventListener('click',function(){
+  var open=$('ubox').hidden;$('ubox').hidden=!open;this.setAttribute('aria-expanded',open?'true':'false');
+});
+function tick(){cd=calcCd();var e=$('cdown');if(e)e.textContent=fmt(cd);if(!cd){clearInterval(tm);unl=true;render();}}
+var wasDash=false;
+function sync(){
+  var h=location.hash,onDash=h==='#/dashboard'||h==='#/submissions'||h==='#/wallet'||h==='#/profile',subs=h==='#/submissions',wal=h==='#/wallet',prof=h==='#/profile';$('viewExplore').hidden=subs||wal||prof;$('viewProfile').hidden=!prof;$('navProfile').toggleAttribute('aria-current',prof);$('viewSubs').hidden=!subs;$('viewWallet').hidden=!wal;$('navWallet').toggleAttribute('aria-current',wal);$('navSubs').toggleAttribute('aria-current',subs);$('navExplore').toggleAttribute('aria-current',!subs&&!wal&&!prof);$('ubox').hidden=true;$('ubtn').setAttribute('aria-expanded','false');$('tmodal').hidden=true;
+  if(onDash&&!wasDash){clearInterval(tm);try{T0=+sessionStorage.getItem('stT1')||0;if(!T0){T0=Date.now();sessionStorage.setItem('stT1',String(T0));}}catch(e){T0=T0||Date.now();}cd=calcCd();unl=cd===0;pg=1;render();tm=setInterval(tick,1000);}if(!onDash){clearInterval(tm);}wasDash=onDash;
+}
+window.addEventListener('hashchange',sync);sync();
+})();
+</script>
+<script>
+(function(){
+var msg={a:['No approved submissions yet','Once your work is approved and payment is processed, it will appear here.'],
+p:['No pending submissions','Tasks waiting for approval will appear here.'],
+d:['No disputes','Rejected or disputed tasks will appear here.']};
+var tabs=document.getElementById('stabs');
+tabs.addEventListener('click',function(e){
+  var b=e.target.closest('button[data-t]');if(!b)return;
+  [].forEach.call(tabs.children,function(x){x.setAttribute('aria-selected',x===b?'true':'false')});
+  document.getElementById('sET').textContent=msg[b.dataset.t][0];
+  document.getElementById('sEP').textContent=msg[b.dataset.t][1];
+});
+})();
+</script>
+<script>
+(function(){
+var MIN=100,BAL=0;
+var f=document.getElementById('wForm'),a=document.getElementById('wAmt'),e=document.getElementById('wErr');
+f.addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var v=parseFloat(a.value),m='';
+  if(isNaN(v)||v<MIN)m='The minimum withdrawal is \u20A6100.';
+  else if(!document.getElementById('wAcct').value)m='Add your payout account first.';
+  else if(v>BAL)m='Insufficient balance.';
+  e.textContent=m;a.setAttribute('aria-invalid',m?'true':'false');
+  if(m)return;
+  /* TODO: send the withdrawal request to your backend here */
+});
+})();
+</script>
+<script>
+/* profile page: reads the saved sign-up details and does not change the account side */
+(function(){
+var $=function(i){return document.getElementById(i)},KEY='stProfile';
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function rd(k){try{return JSON.parse(sessionStorage.getItem(k))||{}}catch(e){return {}}}
+function wr(p){try{sessionStorage.setItem(KEY,JSON.stringify(p))}catch(e){}}
+function data(){
+  var u=rd('stUser'),p=rd(KEY);
+  if(!p.id){p.id='ST-'+Math.floor(100000+Math.random()*900000);p.since=Date.now();wr(p);}
+  return {id:p.id,since:p.since,edited:!!p.edited,name:p.edited?p.name:(u.name||''),email:p.edited?p.email:(u.email||'')};
+}
+function fill(){
+  var d=data(),t=new Date(d.since),n=d.name||'Your name';
+  $('pAv').textContent=(d.name||'?').charAt(0).toUpperCase();
+  $('pHeadName').textContent=n;$('pHeadEmail').textContent=d.email||'-';
+  $('pUid').textContent=d.id;
+  $('pSince').textContent=t.getDate()+' '+MON[t.getMonth()]+' '+t.getFullYear();
+  $('pname').value=d.name;$('pemail').value=d.email;
+}
+function applyName(){var d=data();if(d.edited&&d.name)$('dName').textContent=d.name.split(' ')[0];}
+function bad(i,t){var e=i.parentNode.querySelector('.err');e.textContent=t||'';i.setAttribute('aria-invalid',t?'true':'false');return !!t}
+function flash(el,t){el.textContent=t;el.hidden=false;clearTimeout(el._t);el._t=setTimeout(function(){el.hidden=true},4000)}
+$('profForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var n=$('pname'),m=$('pemail');
+  var a=bad(n,n.value.trim().length<3?'Enter your full name.':'');
+  var b=bad(m,/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m.value.trim())?'':'Enter a valid email address.');
+  if(a||b)return;
+  data();var p=rd(KEY);p.name=n.value.trim();p.email=m.value.trim();p.edited=true;wr(p);
+  applyName();fill();flash($('profMsg'),'Changes saved.');
+});
+$('pwForm').addEventListener('submit',function(e){
+  e.preventDefault();var f=this.elements;
+  var a=bad(f.cur,f.cur.value?'':'Enter your current password.');
+  var b=bad(f.nw,f.nw.value.length>=8?'':'Use at least 8 characters.');
+  var c=bad(f.cf,f.cf.value===f.nw.value?'':'Passwords do not match.');
+  if(a||b||c)return;
+  this.reset();flash($('pwMsg'),'Password updated.');
+});
+window.addEventListener('hashchange',function(){if(location.hash==='#/profile')fill();applyName();});
+if(location.hash==='#/profile')fill();
+applyName();
+})();
+</script>
+<script>
+/* redeem task page: works on its own and does not touch the other pages' code */
+(function(){
+var $=function(i){return document.getElementById(i)},view=$('viewRedeem'),file=null,url=null;
+var orig=$('rDropIn').innerHTML;
+function setFile(f){
+  var err=$('rShotErr');
+  if(!f)return;
+  if(f.type.indexOf('image/')!==0||f.size>5*1024*1024){err.textContent='Choose an image file under 5 MB.';$('rFile').value='';return;}
+  err.textContent='';file=f;
+  if(url)URL.revokeObjectURL(url);
+  url=URL.createObjectURL(f);
+  var img=document.createElement('img');img.className='rprev';img.alt='Your screenshot';img.src=url;
+  (function(){var box=$('rDropIn'),n=0;clearInterval(box._t);box.innerHTML='<div class="rup"><div class="rname"></div><div class="rbar"><i></i></div><div class="rstat">Uploading... 0%</div></div>';box.querySelector('.rname').textContent=f.name;var bar=box.querySelector('i'),st=box.querySelector('.rstat'),rb=box.querySelector('.rbar');box._t=setInterval(function(){n+=4;if(n>=100){n=100;clearInterval(box._t);rb.className='rbar done';st.textContent='\u2713 Screenshot uploaded';st.className='rstat done';}else{st.textContent='Uploading... '+n+'%';}bar.style.width=n+'%';},60);})();
+}
+function clearShot(){
+  file=null;if(url)URL.revokeObjectURL(url);url=null;
+  $('rFile').value='';$('rDropIn').innerHTML=orig;
+}
+$('rDrop').addEventListener('click',function(){this.focus();});
+$('rFile').addEventListener('change',function(){setFile(this.files[0]);});
+document.addEventListener('paste',function(e){
+  if(view.hidden||!e.clipboardData)return;
+  var it=[].slice.call(e.clipboardData.items||[]).filter(function(x){return x.type.indexOf('image/')===0})[0];
+  if(!it)return;
+  e.preventDefault();setFile(it.getAsFile());
+});
+$('rAgree').addEventListener('change',function(){$('rBtn').disabled=!this.checked;});
+$('rForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var id=$('rId'),a=!id.value.trim(),b=!file;
+  $('rIdErr').textContent=a?'Enter your Task ID.':'';
+  id.setAttribute('aria-invalid',a?'true':'false');
+  if(b)$('rShotErr').textContent='Upload a screenshot of your performed task.';
+  if(a||b)return;
+  /* TODO: send the Task ID and the screenshot to your backend here */
+  window.stShowPending(id.value.trim(),clearShot);
+  
+  
+});
+var dash=$('dashboard'),home=$('home');
+function sync(){
+  var on=location.hash==='#/redeem',nav=$('navRedeem');
+  view.hidden=!on;
+  if(!on){if(nav)nav.removeAttribute('aria-current');return;}
+  home.hidden=true;dash.hidden=false;
+  ['viewExplore','viewWallet','viewSubs','viewProfile'].forEach(function(i){var x=$(i);if(x)x.hidden=true;});
+  [].forEach.call(document.querySelectorAll('.snav a'),function(a){a.removeAttribute('aria-current');});
+  nav.setAttribute('aria-current','page');
+  document.title='Redeem Task \u2013 Selar Technology Limited';
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',sync);sync();
+})();
+</script>
+<script>
+/* redeem task: pending review page shown after a submission */
+(function(){
+var $=function(i){return document.getElementById(i)};
+function fmt(d){return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase();}
+function wrap(){return document.querySelector('#viewRedeem .rwrap');}
+function back(){$('rPend').hidden=true;wrap().hidden=false;$('rOk').hidden=true;}
+window.stShowPending=function(taskId,clean){
+  var now=new Date(),by=new Date(now.getTime()+24*3600*1000),b=$('rBtn');
+  $('rpId').textContent=taskId||'-';if(window.stAddSub)window.stAddSub(taskId,now.getTime());$('rpAt').textContent=fmt(now);
+  b.disabled=true;b.textContent='Submitting...';
+  setTimeout(function(){
+    b.textContent='Redeem Reward';$('rForm').reset();if(clean)clean();b.disabled=true;
+    if(location.hash!=='#/redeem')return;
+    wrap().hidden=true;$('rPend').hidden=false;window.scrollTo(0,0);
+  },1500);
+};
+$('rpAgain').addEventListener('click',function(){back();window.scrollTo(0,0);});
+window.addEventListener('hashchange',function(){if(location.hash!=='#/redeem')back();});
+})();
+</script>
+<script>
+/* my submissions: show pending redeem submissions */
+(function(){
+var KEY='stSubs',$=function(i){return document.getElementById(i)};
+function load(){try{return JSON.parse(sessionStorage.getItem(KEY))||[]}catch(e){return []}}
+function save(a){try{sessionStorage.setItem(KEY,JSON.stringify(a))}catch(e){}}
+function fmt(t){var d=new Date(t);return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase();}
+var tabs=$('stabs'),view=$('viewSubs'),empty=view.querySelector('.sempty'),list=document.createElement('div');
+list.hidden=true;empty.parentNode.insertBefore(list,empty.nextSibling);
+function row(s){
+  var r=document.createElement('div');r.className='subrow';
+  r.innerHTML='<div class="subico" aria-hidden="true"><svg viewBox="0 0 48 48" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19"/><path d="M24 13v11l7 4"/></svg></div><div class="subtx"><b></b><span></span></div><span class="subst">PENDING REVIEW</span>';
+  r.querySelector('b').textContent='Task ID: '+s.id;
+  r.querySelector('span').textContent='Submitted '+fmt(s.at);
+  return r;
+}
+function show(){
+  var a=load(),sel=tabs.querySelector('[aria-selected="true"]'),p=!!sel&&sel.getAttribute('data-t')==='p'&&a.length>0;
+  list.hidden=!p;empty.hidden=p;
+}
+function update(){
+  var a=load(),c=view.querySelector('.sst.pe b'),t=tabs.querySelector('[data-t="p"]');
+  if(c)c.textContent=a.length;
+  if(t)t.textContent='Pending ('+a.length+')';
+  list.innerHTML='';
+  a.slice().reverse().forEach(function(s){list.appendChild(row(s));});
+  show();
+}
+function openPending(){
+  var t=tabs.querySelector('[data-t="p"]');
+  if(load().length&&t)t.click();
+}
+window.stAddSub=function(id,at){var a=load();a.push({id:id||'-',at:at||Date.now()});save(a);update();};
+tabs.addEventListener('click',function(){setTimeout(show,0);});
+window.addEventListener('hashchange',function(){
+  if(location.hash==='#/submissions'){update();openPending();}
+});
+update();
+if(location.hash==='#/submissions')openPending();
+})();
+</script>
+<script>
+/* open Explore Jobs when the address is /dashboard with nothing after it */
+if(location.pathname.replace(/\/$/,'')==='/dashboard'&&!location.hash)location.hash='#/dashboard';
+</script>
+<script>
+/* task page for task #1: opens when the unlocked task is started */
+(function(){
+var $=function(i){return document.getElementById(i)},view=$('viewTask');
+window.stOpenTask=function(){
+  var ex=$('viewExplore');if(ex)ex.hidden=true;
+  view.hidden=false;window.scrollTo(0,0);
+};
+function close(){view.hidden=true;var ex=$('viewExplore');if(ex)ex.hidden=false;window.scrollTo(0,0);}
+$('tkBack').addEventListener('click',close);
+$('navExplore').addEventListener('click',function(){if(!view.hidden)close();});
+window.addEventListener('hashchange',function(){view.hidden=true;});
+})();
+</script>
+<script>
+/* task reservation: Start task -> "reserved" page with a 60 minute timer, Task ID generator and how-to */
+(function(){
+var $=function(i){return document.getElementById(i)},KEY='stRsv',GEN_MS=12000,HOLD_MS=60*60*1000;
+var vT=$('viewTask'),vR=$('viewReserve'),clock=$('rsvClock'),box=$('rsvBox'),gen=$('rsvGen'),out=$('rsvOut'),code=$('rsvCode'),ok=$('rsvOk');
+var tm=null,gt=null,okT=null,rsv=load();
+function load(){try{var r=JSON.parse(sessionStorage.getItem(KEY));return r&&r.end>Date.now()?r:null}catch(e){return null}}
+function save(){try{if(rsv)sessionStorage.setItem(KEY,JSON.stringify(rsv));else sessionStorage.removeItem(KEY)}catch(e){}}
+/* 15 characters, letters and numbers mixed (no O, 0, I or 1, so it is easy to read and type) */
+function make(){
+  var A='ABCDEFGHJKLMNPQRSTUVWXYZ',N='23456789',all=A+N,s,L,D,b,i,c;
+  do{
+    b=new Uint8Array(15);(window.crypto||window.msCrypto).getRandomValues(b);s='';L=0;D=0;
+    for(i=0;i<15;i++){c=all.charAt(b[i]%all.length);s+=c;if(N.indexOf(c)>-1)D++;else L++;}
+  }while(L<4||D<4);
+  return s;
+}
+function fmt(ms){var s=Math.ceil(ms/1000),m=Math.floor(s/60);s=s%60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s}
+function fresh(){
+  clearTimeout(gt);box.classList.remove('off');
+  $('rsvT').textContent='Reservation Active';
+  $('rsvS').textContent='Complete and submit this task before your reservation expires.';
+  gen.hidden=false;gen.disabled=false;gen.textContent='Generate Task ID';
+  out.hidden=true;code.textContent='';ok.hidden=true;
+}
+function showId(){gen.hidden=true;out.hidden=false;code.textContent=rsv.id;}
+function expire(){
+  clearInterval(tm);clearTimeout(gt);rsv=null;save();
+  box.classList.add('off');
+  $('rsvT').textContent='Reservation expired';
+  $('rsvS').textContent='Your 60 minutes are over. Go back to the tasks to start again.';
+  clock.textContent='00:00';gen.disabled=true;
+}
+function paint(){
+  if(!rsv){return;}
+  var left=rsv.end-Date.now();
+  if(left<=0){expire();return;}
+  clock.textContent=fmt(left);
+}
+function showR(){
+  var ex=$('viewExplore');if(ex)ex.hidden=true;
+  vT.hidden=true;vR.hidden=false;
+  clearInterval(tm);paint();tm=setInterval(paint,1000);
+  window.scrollTo(0,0);
+}
+function leave(){
+  vR.hidden=true;clearInterval(tm);
+  var ex=$('viewExplore');if(ex)ex.hidden=false;
+  window.scrollTo(0,0);
+}
+/* Start task button on the task page */
+$('tkStart').addEventListener('click',function(){
+  rsv={end:Date.now()+HOLD_MS,id:''};save();fresh();showR();
+});
+/* clicking the unlocked card again while a reservation is running goes straight back to it */
+var openTask=window.stOpenTask;
+window.stOpenTask=function(){
+  if(rsv&&rsv.end>Date.now()){showR();return;}
+  rsv=null;if(openTask)openTask();
+};
+/* Generate Task ID: shows "Generating..." for about 12 seconds, then the ID */
+gen.addEventListener('click',function(){
+  if(!rsv||gen.disabled)return;
+  gen.disabled=true;
+  gen.innerHTML='<span class="spin" style="display:inline-block;width:16px;height:16px;border-width:2px;vertical-align:-3px;margin-right:8px"></span>Generating...';
+  gt=setTimeout(function(){
+    if(!rsv)return;
+    rsv.id=make();save();gen.textContent='Generate Task ID';showId();
+  },GEN_MS);
+});
+/* copy icon */
+$('rsvCopy').addEventListener('click',function(){
+  var t=rsv&&rsv.id;if(!t)return;
+  function done(){ok.textContent='Copied';ok.hidden=false;clearTimeout(okT);okT=setTimeout(function(){ok.hidden=true},2500);}
+  function fallback(){
+    var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;opacity:0';
+    document.body.appendChild(a);a.select();
+    try{document.execCommand('copy');done();}catch(e){ok.textContent='Press Ctrl + C to copy';ok.hidden=false;}
+    document.body.removeChild(a);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback);}else{fallback();}
+});
+$('rsvBack').addEventListener('click',leave);
+$('navExplore').addEventListener('click',function(){if(!vR.hidden)leave();});
+window.addEventListener('hashchange',function(){vR.hidden=true;clearInterval(tm);});
+/* after a page refresh, bring back a reservation that is still running */
+if(rsv){fresh();if(rsv.id)showId();}
+})();
+</script>
+<script>
+/* task 2 (Create new email account): unlocks 01:25:00 after task 1 is approved */
+(function(){
+var $=function(i){return document.getElementById(i)},DELAY=35*60*1000,KEY='stAppr1';
+var LK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V7z"/></svg>';
+var cards=$('cards'),v2=$('viewTask2'),pb=$('prevAppr'),tm=null,last='';
+/* when task 1 is approved this is set. For now the preview button below sets it; your admin panel will do it later. */
+function appr(){try{return +sessionStorage.getItem(KEY)||0}catch(e){return 0}}
+function setAppr(t){try{if(t)sessionStorage.setItem(KEY,String(t));else sessionStorage.removeItem(KEY)}catch(e){}}
+function state(){var a=appr();if(!a)return 'locked';return a+DELAY>Date.now()?'count':'open';}
+function fmt(ms){var s=Math.ceil(ms/1000),h=Math.floor(s/3600),m=Math.floor(s/60)%60;s=s%60;return [h,m,s].map(function(x){return (x<10?'0':'')+x}).join(':')}
+function card2(){var b=cards.querySelector('button[data-n="2"]');return b?b.closest('article'):null}
+function patch(){
+  var c=card2();if(!c)return;
+  var s=state(),chip=c.querySelector('.lockchip'),rw=c.querySelector('.rw'),lb=c.querySelector('.lockbox'),st=c.querySelector('button[data-a="s"]'),h=c.querySelector('h3');
+  rw.innerHTML='&#8358;50.00';
+  chip.textContent=s==='open'?'OPEN':'LOCKED';chip.classList.toggle('open',s==='open');
+  if(s==='open'){if(!h){h=document.createElement('h3');h.textContent='Create new email account';c.insertBefore(h,c.querySelector('.tc-meta'));}}else if(h){h.remove();}
+  lb.innerHTML=s==='open'?'<span>Task unlocked</span>':LK+(s==='count'?'<span>Task unlocks in</span><b data-cd2></b>':'<span>Locked</span>');
+  st.disabled=s!=='open';
+  tick();
+}
+function tick(){
+  var s=state(),e=cards.querySelector('[data-cd2]');
+  if(s==='count'&&e)e.textContent=fmt(appr()+DELAY-Date.now());
+  if(s!==last){last=s;patch();}
+  pb.textContent=appr()?'Preview only: reset approval':'Preview only: approve task 1';
+}
+new MutationObserver(function(){patch();}).observe(cards,{childList:true});
+/* Details or Start task on card 2 once it is unlocked */
+cards.addEventListener('click',function(e){
+  var b=e.target.closest('button[data-n="2"]');if(!b||b.disabled||state()!=='open')return;
+  e.stopPropagation();
+  var r=null;try{r=JSON.parse(sessionStorage.getItem('stRsv'))}catch(x){}
+  if(r&&r.end>Date.now()){window.stOpenTask();return;}   /* a reservation is already running: go back to it */
+  $('viewExplore').hidden=true;v2.hidden=false;window.scrollTo(0,0);
+},true);
+function back(){v2.hidden=true;var ex=$('viewExplore');if(ex)ex.hidden=false;window.scrollTo(0,0);}
+$('tk2Back').addEventListener('click',back);
+$('navExplore').addEventListener('click',function(){if(!v2.hidden)back();});
+window.addEventListener('hashchange',function(){v2.hidden=true;});
+/* Start task on the task 2 page uses the same reservation page as task 1 */
+$('tk2Start').addEventListener('click',function(){v2.hidden=true;$('tkStart').click();});
+pb.addEventListener('click',function(){setAppr(appr()?0:Date.now());last='';tick();});
+patch();tick();tm=setInterval(tick,1000);
+})();
+</script>
+<script>
+/* when a task is submitted on Redeem Task, remove it from Explore Jobs */
+(function(){
+var $=function(i){return document.getElementById(i)},cards=$('cards');
+function get(k){try{return JSON.parse(sessionStorage.getItem(k))}catch(e){return null}}
+function done(){return get('stDone')||[]}
+function prune(){
+  var d=done();if(!d.length)return;
+  [].forEach.call(cards.querySelectorAll('article'),function(a){
+    var b=a.querySelector('button[data-n]');
+    /* cards now stay until you approve them */
+  });
+}
+/* remember which task a reservation belongs to (task 1 or task 2) */
+$('tkStart').addEventListener('click',function(){
+  try{sessionStorage.setItem('stRsvTask',$('viewTask').hidden?'2':'1');}catch(e){}
+},true);
+/* a submission on the Redeem page removes the task that was reserved */
+var addSub=window.stAddSub;
+window.stAddSub=function(){
+  if(get('stRsv')){
+    var t=+sessionStorage.getItem('stRsvTask')||1,d=done();
+    if(d.indexOf(t)<0)d.push(t);
+    try{sessionStorage.setItem('stDone',JSON.stringify(d));sessionStorage.removeItem('stRsv');sessionStorage.removeItem('stRsvTask');}catch(e){}
+    prune();
+  }
+  if(addSub)return addSub.apply(this,arguments);
+};
+new MutationObserver(prune).observe(cards,{childList:true});
+prune();
+})();
+</script>
+<script>
+/* Explore Jobs task status: Reward pending, Failed, Retrying. A card is only removed when the task is approved. */
+(function(){
+var $=function(i){return document.getElementById(i)},cards=$('cards');
+var RETRY_MS=10000,HOLD_MS=60*60*1000,FAIL_AFTER_SUBMIT=true; /* HOLD_MS must match the reservation timer */
+var css=document.createElement('style');
+css.textContent='.tc[data-st=pend],.tc[data-st=retry]{pointer-events:none}.tc[data-st=fail]{cursor:pointer;border-color:#f5c2c7}.tc[data-st=fail] .tc-act button{pointer-events:none}.tc[data-st=pend] .tc-act button,.tc[data-st=retry] .tc-act button,.tc[data-st=fail] .tc-act button{opacity:.55}.tc .lockchip.tpend{background:#fff4d6;color:#a35f00}.tc .lockchip.tfail{background:#fdecee;color:#b4232f}.tc .lockbox.lpend{background:#fff4d6;color:#a35f00}.tc .lockbox.lfail{background:#fdecee;color:#b4232f}.tsp{flex:none;width:16px;height:16px;border:3px solid currentColor;border-top-color:transparent;border-radius:50%;animation:sp .8s linear infinite}';
+document.head.appendChild(css);
+var CLK='<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="M24 13v11l7 4"/></svg>';
+var BAD='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>';
+var PEND=['OPEN','tpend','lpend',CLK+'<span>Reward pending</span>'];
+var LABEL={pend:PEND,prog:PEND,
+  fail:['FAILED','tfail','lfail',BAD+'<span>Failed</span>'],
+  retry:['RETRYING','tpend','lpend','<i class="tsp" aria-hidden="true"></i><span>Retrying task...</span>']};
+function get(k){try{return JSON.parse(sessionStorage.getItem(k))}catch(e){return null}}
+function put(k,v){try{if(v==null)sessionStorage.removeItem(k);else sessionStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+/* jobs: {"1":{end:<ms>,sub:0|1,fail:0|1}}  sub = proof submitted, fail = time ran out before approval */
+function sweep(){
+  var now=Date.now(),j=get('stJobs')||{},rt=get('stRetry')||{},ch=0;
+  Object.keys(j).forEach(function(k){
+    var x=j[k];
+    if(!x.fail&&x.end<=now&&(!x.sub||FAIL_AFTER_SUBMIT)){x.fail=1;ch=1;}
+  });
+  Object.keys(rt).forEach(function(k){
+    if(rt[k]<=now){delete rt[k];delete j[k];ch=1;}   /* retry finished: task can be started again */
+  });
+  if(ch){put('stJobs',j);put('stRetry',rt);}
+}
+function status(n){
+  var j=(get('stJobs')||{})[n],rt=get('stRetry')||{};
+  if(rt[n]&&rt[n]>Date.now())return 'retry';
+  if(!j)return '';
+  if(j.fail)return 'fail';
+  return j.sub?'pend':'prog';
+}
+function paint(a,n){
+  var s=status(n),cur=a.getAttribute('data-st')||'';
+  var chip=a.querySelector('.lockchip'),lb=a.querySelector('.lockbox'),bt=a.querySelectorAll('.tc-act button');
+  if(!chip||!lb)return;
+  if(s===cur&&(!s||chip.textContent===LABEL[s][0]))return;
+  chip.classList.remove('tpend','tfail');
+  if(!s){
+    a.removeAttribute('data-st');
+    chip.textContent='OPEN';chip.classList.add('open');
+    lb.className='lockbox';lb.innerHTML='<span>Task unlocked</span>';
+    [].forEach.call(bt,function(b){b.disabled=false;});
+    return;
+  }
+  var L=LABEL[s];
+  a.setAttribute('data-st',s);
+  chip.classList.remove('open');chip.classList.add(L[1]);chip.textContent=L[0];
+  lb.className='lockbox '+L[2];lb.innerHTML=L[3];
+  /* while the task is only started (not submitted) the card stays clickable so the user can get back to the reservation */
+  [].forEach.call(bt,function(b){b.disabled=(s!=='prog');});
+}
+function apply(){
+  var ok=get('stOK')||[];
+  [].forEach.call(cards.querySelectorAll('article'),function(a){
+    var b=a.querySelector('button[data-n]');if(!b)return;
+    var n=+b.getAttribute('data-n');
+    if(ok.indexOf(n)>-1){a.remove();return;}   /* approved: now the card goes */
+    if(n===1||n===2||n===3)paint(a,n);
+  });
+}
+function run(){sweep();apply();}
+/* clicking a failed card starts the 7 second "Retrying" spinner */
+cards.addEventListener('click',function(e){
+  var a=e.target.closest('article[data-st="fail"]');if(!a)return;
+  var b=a.querySelector('button[data-n]'),n=b?+b.getAttribute('data-n'):0;if(!n)return;
+  e.stopPropagation();e.preventDefault();
+  var rt=get('stRetry')||{};rt[n]=Date.now()+RETRY_MS;put('stRetry',rt);run();
+},true);
+/* Start task: remember which task (1 or 2) and when its reservation ends */
+$('tkStart').addEventListener('click',function(){
+  var n=window.__t3?3:($('viewTask').hidden?2:1),j=get('stJobs')||{};
+  j[n]={end:Date.now()+HOLD_MS,sub:0,fail:0};put('stJobs',j);put('stCur',n);run();
+},true);
+/* a proof submission on Redeem Task marks that job as submitted (card stays, shows Reward pending) */
+var prev=window.stAddSub;
+window.stAddSub=function(){
+  var n=get('stCur'),j=get('stJobs')||{};
+  if(n&&j[n]&&!j[n].fail){j[n].sub=1;put('stJobs',j);}
+  var r=prev?prev.apply(this,arguments):undefined;run();return r;
+};
+/* call this when you approve a task. Your admin dashboard will trigger it later; for now you can run stApproveTask(1) in the browser console. */
+window.stApproveTask=function(n){
+  n=+n||1;var j=get('stJobs')||{},ok=get('stOK')||[];
+  delete j[n];if(ok.indexOf(n)<0)ok.push(n);put('stJobs',j);put('stOK',ok);
+  if(n===1){try{sessionStorage.setItem('stAppr1',String(Date.now()));}catch(e){}}   /* starts task 2's unlock countdown */
+  run();
+};
+$('rsvBack').addEventListener('click',run);
+$('navExplore').addEventListener('click',run);
+window.addEventListener('hashchange',run);
+new MutationObserver(apply).observe(cards,{childList:true});
+run();setInterval(run,500);
+})();
+</script>
+<script>
+/* task 3: Create New PalmPay Account (card, countdown, task page, form, reservation) */
+(function(){
+var $=function(i){return document.getElementById(i)},UNLOCK=85*60*1000,AT='stT3at',FORM='stT3form';
+var t0;try{t0=+sessionStorage.getItem(AT)||0;if(!t0){t0=Date.now();sessionStorage.setItem(AT,t0);}}catch(e){t0=Date.now();}
+var END=t0+UNLOCK;
+var LK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V7z"/></svg>';
+function fmt(s){return [Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(function(x){return (x<10?'0':'')+x}).join(':');}
+function left(){return Math.max(0,Math.ceil((END-Date.now())/1000));}
+function pageOne(){var p=document.querySelector('#pager span');return !p||/Page 1 of/.test(p.textContent);}
+function cardOf(){
+  var cs=document.querySelectorAll('#cards .tc'),i,b;
+  for(i=0;i<cs.length;i++){
+    b=cs[i].querySelector('[data-n]');
+    if(b?b.getAttribute('data-n')==='3':(pageOne()&&i===2))return cs[i];
+  }
+  return null;
+}
+function skin(){
+  var c=cardOf();if(!c)return;
+  var unl=left()===0,chip=c.querySelector('.lockchip'),rw=c.querySelector('.rw'),box=c.querySelector('.lockbox'),h=c.querySelector('h3'),meta=c.querySelector('.tc-meta'),go=c.querySelector('.tc-act .btn-main');
+  if(rw)rw.innerHTML='&#8358;250.00';
+  if(chip){chip.textContent=unl?'OPEN':'LOCKED';chip.className='lockchip'+(unl?' open':'');}
+  if(unl){
+    if(!h&&meta){h=document.createElement('h3');meta.parentNode.insertBefore(h,meta);}
+    if(h)h.textContent='Create New PalmPay Account';
+  }else if(h){h.parentNode.removeChild(h);}
+  if(box)box.innerHTML=unl?'<span>Task unlocked</span>':LK+'<span>Locked</span>';
+  if(go)go.disabled=!unl;
+}
+var cards=$('cards'),view=$('viewTask3');
+if(cards)new MutationObserver(skin).observe(cards,{childList:true});
+setInterval(function(){
+  var e=$('cdown3');
+  var cc=cardOf();if(cc&&left()===0&&!cc.querySelector('h3'))skin();
+},1000);
+skin();
+function open(){var x=$('viewExplore');if(x)x.hidden=true;view.hidden=false;window.scrollTo(0,0);}
+function close(){view.hidden=true;var x=$('viewExplore');if(x)x.hidden=false;window.scrollTo(0,0);}
+cards.addEventListener('click',function(e){
+  var b=e.target.closest('.tc-act button');if(!b)return;
+  var c=b.closest('.tc');if(!c||c!==cardOf()||left()>0)return;
+  e.stopPropagation();e.preventDefault();open();
+},true);
+$('t3Back').addEventListener('click',close);
+$('navExplore').addEventListener('click',function(){if(!view.hidden)close();});
+window.addEventListener('hashchange',function(){view.hidden=true;});
+$('t3Form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var n=$('t3n').value.trim(),p=$('t3p').value.replace(/\s/g,'');
+  var okN=/^[A-Za-z][A-Za-z .'-]{2,}$/.test(n),okP=/^(0|\+?234)[789][01]\d{8}$/.test(p);
+  $('t3ne').textContent=okN?'':'Enter the name used on your new PalmPay account.';
+  $('t3pe').textContent=okP?'':'Enter a valid Nigerian phone number.';
+  $('t3nb').className='t3in'+(okN?'':' bad');$('t3pb').className='t3in'+(okP?'':' bad');
+  if(!(okN&&okP))return;
+  try{sessionStorage.setItem(FORM,JSON.stringify({name:n,phone:p,at:Date.now()}));}catch(x){}
+  view.hidden=true;window.__t3=true;
+  var s=$('tkStart');if(s)s.click();
+});
+var note=document.createElement('p');note.className='rvsub';note.id='t3note';note.hidden=true;
+var sub=document.querySelector('#viewReserve .rvsub');if(sub)sub.parentNode.insertBefore(note,sub.nextSibling);
+var ts=$('tkStart');
+if(ts)ts.addEventListener('click',function(){
+  var f=window.__t3,d={};window.__t3=false;
+  window.stResKey=f?'stRes3':'stRes';
+  try{d=JSON.parse(sessionStorage.getItem(FORM))||{};}catch(x){}
+  note.hidden=!f;
+  if(f)note.textContent='Details received for '+(d.name||'')+' ('+(d.phone||'')+'). Your request is on the waitlist while your submission is tracked.';
+},true);
+})();
+</script>
+<script>
+/* task states on Explore Jobs: Pending -> Failed -> Retrying (10 s) -> Start task again */
+(function(){
+var $=function(i){return document.getElementById(i)},cards=$('cards'),KEY='stTaskState',HOLD=60*60*1000,RETRY=10*1000;
+var NAMES={1:'Download Kuda App',2:'Create new email account'};
+var CLOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5v5.4l3.6 2.1-1 1.7L11 13V7h2z"/></svg>';
+function load(){try{return JSON.parse(sessionStorage.getItem(KEY))||{}}catch(e){return {}}}
+function save(o){try{sessionStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+function eff(n){
+  var o=load(),r=o[n];if(!r)return null;
+  if(r.s==='pending'&&Date.now()>=r.end){r.s='failed';save(o);}
+  if(r.s==='retry'&&Date.now()>=r.until){r.s='open';save(o);}
+  return r.s;
+}
+function fmt(ms){var s=Math.max(0,Math.ceil(ms/1000)),m=Math.floor(s/60);s=s%60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s}
+function cardOf(n){var b=cards.querySelector('button[data-n="'+n+'"]');return b?b.closest('article'):null}
+function paint(n){
+  var a=cardOf(n),s=eff(n);if(!a||!s)return;
+  if(s==='done'){a.remove();return;}
+  var r=load()[n],chip=a.querySelector('.lockchip'),lb=a.querySelector('.lockbox'),h=a.querySelector('h3');
+  ['st-pending','st-failed','st-retry'].forEach(function(c){a.classList.remove(c)});
+  chip.className='lockchip';lb.className='lockbox';
+  if(!h){h=document.createElement('h3');h.textContent=NAMES[n];a.insertBefore(h,a.querySelector('.tc-meta'));}
+  [].forEach.call(a.querySelectorAll('button[data-a]'),function(b){b.disabled=s!=='open';});
+  if(s==='pending'){a.classList.add('st-pending');chip.classList.add('pend');chip.textContent='PENDING';lb.classList.add('pend');lb.innerHTML=CLOCK+'<span>In progress</span><b>'+fmt(r.end-Date.now())+'</b>';}
+  else if(s==='failed'){a.classList.add('st-failed');chip.classList.add('fail');chip.textContent='FAILED';lb.classList.add('fail');lb.innerHTML='<span aria-hidden="true">&#10005;</span><span>Failed. Time ran out</span><b style="font-size:12px;font-weight:600">Tap to retry</b>';}
+  else if(s==='retry'){a.classList.add('st-retry');chip.classList.add('retr');chip.textContent='RETRYING';lb.innerHTML='<span class="spin2" aria-hidden="true"></span><span>Retrying...</span>';}
+  else{chip.classList.add('open');chip.textContent='OPEN';lb.innerHTML='<span>Task unlocked</span>';}
+}
+function all(){}
+/* Start task (task 1, or task 2 which clicks this button for you): the task becomes Pending for 60 minutes */
+$('tkStart').addEventListener('click',function(){
+  var n=$('viewTask').hidden?2:1,o=load();o[n]={s:'pending',end:Date.now()+HOLD};save(o);all();
+},true);
+/* tap a Failed card: it shows Retrying for 10 seconds, then goes back to Start task */
+cards.addEventListener('click',function(e){
+  var a=e.target.closest('article.st-failed');if(!a)return;
+  var n=+a.querySelector('button[data-n]').getAttribute('data-n'),o=load();
+  o[n]={s:'retry',until:Date.now()+RETRY};save(o);paint(n);
+});
+/* task 1 after a retry: open its page even if the old unlock timer was reset */
+cards.addEventListener('click',function(e){
+  var b=e.target.closest('button[data-n="1"]');if(!b||b.disabled||eff(1)!=='open')return;
+  e.stopPropagation();window.stOpenTask();
+},true);
+/* a submission on Redeem Task finishes the pending task (its card is removed) */
+var prev=window.stAddSub;
+window.stAddSub=function(){
+  var o=load();[1,2].forEach(function(n){if(o[n]&&o[n].s==='pending')o[n].s='done';});save(o);all();
+  if(prev)return prev.apply(this,arguments);
+};
+new MutationObserver(all).observe(cards,{childList:true});
+setInterval(all,1000);
+document.addEventListener('click',function(){setTimeout(all,0)});
+all();
+})();
+</script>
+<style>
+.pgbar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:66px}
+.pgback{font-weight:600;font-size:15px;text-decoration:none;color:var(--brand)}
+.pgback:hover{text-decoration:underline}
+.pgwrap{max-width:820px;margin:0 auto;padding:44px 22px 72px}
+.pgwrap h1{font-size:clamp(32px,5vw,46px);font-weight:800;margin-bottom:10px}
+.pgwrap h2{font-size:22px;font-weight:700;margin:34px 0 10px}
+.pgwrap h3{font-size:18px;font-weight:700;margin:24px 0 6px}
+.pgwrap p{color:var(--muted);margin:0 0 14px}
+.pgwrap ul{color:var(--muted);margin:0 0 14px;padding-left:22px}
+.pgwrap li{margin-bottom:8px}
+.pgwrap a{color:var(--brand);font-weight:600}
+.pgtag{display:inline-block;background:var(--soft);color:var(--brand);font-weight:600;font-size:13.5px;padding:6px 14px;border-radius:99px;margin-bottom:18px}
+.pgnote{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14.5px;color:var(--muted);margin:16px 0}
+.pgcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+.pgcard h3{margin-top:0}
+.pgcard p:last-child{margin-bottom:0}
+.pgfoot{border-top:1px solid var(--line);padding:22px 0;text-align:center;color:var(--muted);font-size:14px}
+</style>
+
+<div id="pages" hidden>
+  <header>
+    <div class="wrap pgbar">
+      <a class="logo" href="#top"><span class="mark" aria-hidden="true">ST</span><span class="lname">Selar Technology Limited</span></a>
+      <a class="pgback" href="#top">&larr; Back to home</a>
+    </div>
+  </header>
+
+  <main class="pgwrap">
+
+    <section data-p="about" hidden>
+      <span class="pgtag">🇳🇬 Built for Nigeria • Transparent payouts • Verified micro-tasks</span>
+      <h1>About Selar Technology Limited</h1>
+      <p>Selar Technology Limited is a platform that connects people who need small tasks completed (&ldquo;Employers&rdquo;) with people who want to earn by completing verified online tasks (&ldquo;Workers&rdquo;). We focus on clear proof requirements, fair task rules, and a wallet-based payout experience designed for speed and transparency.</p>
+      <div class="pgcard"><h3>Our mission: Work should be simple and transparent</h3><p>We want micro-work to be clear: set the task, define proof, verify outcomes, and pay fairly, without confusion.</p></div>
+      <div class="pgcard"><h3>Our approach: Proof-first execution</h3><p>Tasks must include instructions and proof rules. Workers submit proof (text/link/screenshot), then employers review, approve, or dispute based on those rules.</p></div>
+      <div class="pgcard"><h3>Our promise: Safer micro-tasks</h3><p>We use platform rules, anti-spam controls, and dispute handling to protect both employers and workers.</p></div>
+    </section>
+
+    <section data-p="faq" hidden>
+      <h1>FAQ</h1>
+      <p>Answers for Employers and Workers using Selar Technology Limited. If you still need help, email <a href="mailto:supportstl@yahoo.com">supportstl@yahoo.com</a>.</p>
+      <h2>For Workers</h2>
+      <div class="pgcard"><h3>How do I start earning?</h3><p>Create an account, browse available tasks, read the proof requirements carefully, complete the task, and submit proof. Once approved, earnings reflect in your wallet.</p></div>
+      <div class="pgcard"><h3>What counts as valid proof?</h3><p>Proof depends on the task. Common examples: screenshots, links, text confirmations, or forms. Always follow the employer&rsquo;s stated proof rules. Incomplete or unrelated proof can be rejected.</p></div>
+      <div class="pgcard"><h3>How fast is approval?</h3><p>Approval time depends on the employer&rsquo;s review flow. Some tasks may allow auto-approval after a set period, others require manual review.</p></div>
+      <div class="pgcard"><h3>How do withdrawals work?</h3><p>Once your wallet has available funds, you can request a withdrawal to your linked payout method (e.g., bank transfer), subject to platform rules, verification, and anti-fraud checks.</p></div>
+      <div class="pgcard"><h3>Why was my submission rejected?</h3><p>Common reasons: proof doesn&rsquo;t match instructions, missing screenshots/links, low-quality evidence, or the task wasn&rsquo;t completed as required. Review the task rules and resubmit if allowed.</p></div>
+    </section>
+
+    <section data-p="support" hidden>
+      <h1>Support Center</h1>
+      <p>Need help with tasks, approvals, withdrawals, or account access? Contact us and we&rsquo;ll respond as soon as possible.</p>
+      <div class="pgcard"><h3>Email Support</h3><p>Email us at: <a href="mailto:supportstl@yahoo.com">supportstl@yahoo.com</a></p></div>
+      <h2>Suggested subject lines</h2>
+      <ul>
+        <li><a href="mailto:supportstl@yahoo.com?subject=Withdrawal%20Issue">&ldquo;Withdrawal Issue&rdquo;</a></li>
+        <li><a href="mailto:supportstl@yahoo.com?subject=Task%20Dispute">&ldquo;Task Dispute&rdquo;</a></li>
+        <li><a href="mailto:supportstl@yahoo.com?subject=Account%20Access">&ldquo;Account Access&rdquo;</a></li>
+        <li><a href="mailto:supportstl@yahoo.com?subject=Account%20Deletion%20Request">&ldquo;Account Deletion Request&rdquo;</a></li>
+      </ul>
+    </section>
+
+    <section data-p="contact" hidden>
+      <h1>Contact Us</h1>
+      <p>Need help with tasks, approvals, withdrawals, or account access? Contact us and we&rsquo;ll respond as soon as possible.</p>
+      <div class="pgcard"><h3>Email Support</h3><p>Email us at: <a href="mailto:supportstl@yahoo.com">supportstl@yahoo.com</a></p></div>
+    </section>
+
+    <section data-p="delete" hidden>
+      <h1>Delete Account</h1>
+      <p>You can request deletion of your account and associated personal data by emailing <a href="mailto:supportstl@yahoo.com?subject=Account%20Deletion%20Request">supportstl@yahoo.com</a> from your registered email address with the subject line &ldquo;Account Deletion Request&rdquo;.</p>
+      <ul>
+        <li>We may ask you to verify your identity before deleting to prevent unauthorized requests.</li>
+        <li>Some records may be retained where required for compliance, fraud prevention, dispute resolution, or legal obligations.</li>
+        <li>After deletion, you may lose access to wallet history and task records.</li>
+      </ul>
+      <p><a class="btn btn-main" style="color:var(--on-brand)" href="mailto:supportstl@yahoo.com?subject=Account%20Deletion%20Request">Email deletion request</a></p>
+    </section>
+
+    <section data-p="privacy" hidden>
+      <h1>Privacy Policy</h1>
+      <p>This Privacy Policy explains how Selar Technology Limited collects, uses, shares, and protects your information.</p>
+      <p><b>Last updated: October 14, 2026</b></p>
+      <div class="pgnote"><b>Note:</b> The information and documentation made available through Selar Technology Limited are provided for general informational purposes only. While every effort is made to ensure accuracy and relevance, they may not address your specific circumstances, transaction structure, or applicable regulatory obligations. You are strongly advised to seek independent legal advice from a qualified professional to ensure compliance with all relevant laws and requirements.</div>
+      <h2>1. Information We Collect</h2>
+      <ul>
+        <li><b>Account information:</b> name, email, phone number, login credentials (hashed), and profile details you provide.</li>
+        <li><b>Task activity:</b> tasks posted/completed, submissions, proof content (text/links/screenshots), approvals, disputes.</li>
+        <li><b>Wallet &amp; payout data:</b> transaction history, wallet balances, payout requests, and verification checks (as applicable).</li>
+        <li><b>Device/usage data:</b> IP address, device identifiers, browser/app events, cookies, log files (for security and analytics).</li>
+        <li><b>Support communications:</b> messages you send to support and related metadata.</li>
+      </ul>
+      <h2>2. How We Use Information</h2>
+      <ul>
+        <li>To provide and maintain the platform (accounts, tasks, submissions, approvals, wallet).</li>
+        <li>To prevent fraud, spam, and abuse; enforce our Terms and User Policy.</li>
+        <li>To process payouts and reconcile transactions (including compliance checks where required).</li>
+        <li>To improve product features, safety tooling, and user experience.</li>
+        <li>To communicate with you about updates, security alerts, and support requests.</li>
+      </ul>
+      <h2>3. Sharing of Information</h2>
+      <p>We do not sell your personal information. We may share information in these cases:</p>
+      <ul>
+        <li><b>Service providers:</b> vendors that help run the service (hosting, analytics, email delivery, payment processing).</li>
+        <li><b>Compliance &amp; legal:</b> to comply with lawful requests or protect users/platform from fraud or harm.</li>
+        <li><b>Business transfers:</b> if we undergo a merger/acquisition, information may transfer as part of that process.</li>
+      </ul>
+      <h2>4. Cookies &amp; Tracking</h2>
+      <p>We use cookies or similar technologies to keep you signed in, protect sessions, and understand site usage. You can adjust browser settings to block cookies, but some features may not work correctly.</p>
+      <h2>5. Security</h2>
+      <p>We use technical and organizational measures to protect information (e.g., access controls, monitoring, and secure session handling). However, no method of transmission or storage is 100% secure.</p>
+      <h2>6. Data Retention</h2>
+      <p>We retain information as long as needed to provide the service, meet legal/compliance obligations, resolve disputes, prevent fraud, and enforce agreements. Retention periods may vary based on data type and legal requirements.</p>
+      <h2>7. Your Choices &amp; Rights</h2>
+      <ul>
+        <li>You can update your profile information within your account settings (where available).</li>
+        <li>You can request access, correction, or deletion of certain information by contacting support.</li>
+        <li>You may opt out of non-essential communications where the product supports it.</li>
+      </ul>
+      <h2>8. Account Deletion &amp; Data Deletion (App Store / Play Store)</h2>
+      <p>You can request deletion of your account and associated personal data by emailing <a href="mailto:supportstl@yahoo.com?subject=Account%20Deletion%20Request">supportstl@yahoo.com</a> from your registered email address with the subject line &ldquo;Account Deletion Request&rdquo;.</p>
+      <ul>
+        <li>We may ask you to verify your identity before deleting to prevent unauthorized requests.</li>
+        <li>Some records may be retained where required for compliance, fraud prevention, dispute resolution, or legal obligations.</li>
+        <li>After deletion, you may lose access to wallet history and task records.</li>
+      </ul>
+      <h2>9. Children&rsquo;s Privacy</h2>
+      <p>Selar Technology Limited is not intended for children. If you believe a child has provided personal data, contact us and we will take appropriate action.</p>
+      <h2>10. Contact</h2>
+      <p>Questions or requests? Contact us at <a href="mailto:supportstl@yahoo.com">supportstl@yahoo.com</a></p>
+    </section>
+
+    <section data-p="terms" hidden>
+      <h1>Terms of Use</h1>
+      <p>These Terms govern use of Selar Technology Limited (&ldquo;we&rdquo;, &ldquo;us&rdquo;) and its website and related services.</p>
+      <p><b>Last updated: October 14, 2026</b></p>
+      <div class="pgnote"><b>Important:</b> The information and documentation made available through Selar Technology Limited are provided for general informational purposes only. While every effort is made to ensure accuracy and relevance, they may not address your specific circumstances, transaction structure, or applicable regulatory obligations. You are strongly advised to seek independent legal advice from a qualified professional to ensure compliance with all relevant laws and requirements.</div>
+      <h2>1. Definitions</h2>
+      <ul>
+        <li><b>Employer:</b> a user who posts a task and funds payment for completion.</li>
+        <li><b>Worker:</b> a user who completes tasks and submits proof.</li>
+        <li><b>Task:</b> a unit of work posted with instructions and proof rules.</li>
+        <li><b>Proof:</b> evidence required to verify a task is completed (e.g., link/screenshot/text).</li>
+        <li><b>Wallet:</b> a balance shown on the platform reflecting available, pending, or held funds.</li>
+      </ul>
+      <h2>2. Eligibility &amp; Account</h2>
+      <ul>
+        <li>You must provide accurate information and keep your account secure.</li>
+        <li>You may not create accounts to abuse the platform, misrepresent identity, or evade enforcement actions.</li>
+        <li>We may request additional verification (including identity/payment verification) to reduce fraud and comply with obligations.</li>
+      </ul>
+      <h2>3. Platform Role</h2>
+      <p>Selar Technology Limited provides a platform for Employers and Workers to connect. Employers define the work and proof requirements. Workers choose tasks to complete. We may provide dispute handling, fraud prevention, and workflow tools, but do not guarantee that any task will be completed, approved, or profitable.</p>
+      <h2>4. Task Rules</h2>
+      <ul>
+        <li>Employers must provide clear instructions, proof rules, and any restrictions (e.g., region/device limitations).</li>
+        <li>Workers must follow instructions and submit truthful proof for the exact task requested.</li>
+        <li>Spam submissions, copied proof, automation abuse, or misleading submissions are prohibited.</li>
+      </ul>
+      <h2>5. Payments, Wallet, Fees</h2>
+      <ul>
+        <li>Employers are responsible for funding tasks they post.</li>
+        <li>Workers earn payment only when a submission is approved according to the task&rsquo;s rules and platform policies.</li>
+        <li>We may hold, delay, or reverse wallet availability for fraud prevention, chargebacks, disputes, compliance reviews, or policy violations.</li>
+        <li>Platform fees (if applicable) will be shown in the product flow or pricing pages.</li>
+      </ul>
+      <h2>6. Withdrawals</h2>
+      <ul>
+        <li>Withdrawals may require account verification and may be subject to limits or processing time.</li>
+        <li>We may refuse or pause withdrawals linked to suspected fraud, policy violations, or incomplete verification.</li>
+        <li>Users are responsible for accurate payout details. Errors may result in failed or misdirected transfers.</li>
+      </ul>
+      <h2>7. Disputes &amp; Moderation</h2>
+      <p>Disputes should be evidence-based and reference the task instructions/proof rules. We may review disputes and take action such as rejecting/approving submissions, limiting accounts, or removing tasks that violate policy.</p>
+      <h2>8. Prohibited Activities</h2>
+      <ul>
+        <li>Fraud, impersonation, or deceptive submissions.</li>
+        <li>Spam, harassment, or abusive conduct.</li>
+        <li>Attempting to bypass platform security, automation abuse, or scraping.</li>
+        <li>Posting illegal content or tasks that violate law or third-party rights.</li>
+      </ul>
+      <h2>9. Termination</h2>
+      <p>We may suspend or terminate accounts for violations, fraud risk, legal compliance reasons, or platform integrity. You may stop using the platform at any time. See our <a href="#/p/policy">User Policy</a> for enforcement details.</p>
+      <h2>10. Disclaimer &amp; Limitation of Liability</h2>
+      <p>The platform is provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo;. To the maximum extent permitted by law, we disclaim warranties and limit liability for indirect or consequential damages, lost profits, or losses from user-to-user interactions.</p>
+      <h2>11. Changes</h2>
+      <p>We may update these Terms. If changes are material, we will take reasonable steps to notify users via the platform. Continued use after changes means you accept the updated Terms.</p>
+      <h2>12. Contact</h2>
+      <p>Questions about these Terms? Contact us at <a href="mailto:supportstl@yahoo.com">supportstl@yahoo.com</a>.</p>
+    </section>
+
+    <section data-p="policy" hidden>
+      <h1>User Policy</h1>
+      <p>This policy explains acceptable use, proof standards, disputes, and enforcement on Selar Technology Limited.</p>
+      <p><b>Last updated: October 14, 2026</b></p>
+      <h2>1. Core Principles</h2>
+      <ul>
+        <li><b>Honesty:</b> Submit only real proof for tasks you genuinely completed.</li>
+        <li><b>Clarity:</b> Employers must provide clear proof rules and fair instructions.</li>
+        <li><b>Respect:</b> No harassment, threats, hate, or abusive content.</li>
+        <li><b>Safety:</b> No illegal tasks or content that violates third-party rights.</li>
+      </ul>
+      <h2>2. Proof &amp; Submission Rules</h2>
+      <ul>
+        <li>Proof must match the specific task instructions and be readable/clear.</li>
+        <li>Reused/cropped/misleading screenshots or copied links intended to deceive are prohibited.</li>
+        <li>If a task requires unique identifiers (username/order number/receipt), submit the correct one for your completion.</li>
+      </ul>
+      <h2>3. Employer Responsibilities</h2>
+      <ul>
+        <li>Tasks must not be illegal, exploitative, or deceptive.</li>
+        <li>Approval decisions should follow the posted proof rules.</li>
+        <li>Do not move users off-platform for payment or demand sensitive personal data not required for the task.</li>
+      </ul>
+      <h2>4. Fraud, Abuse &amp; Prohibited Activity</h2>
+      <ul>
+        <li>Account farming, automation abuse, or bots used to submit tasks.</li>
+        <li>Impersonation, stolen identities, or false payment details.</li>
+        <li>Spamming employers or workers, including repeated low-quality submissions.</li>
+        <li>Attempting to exploit vulnerabilities or bypass security mechanisms.</li>
+      </ul>
+      <h2>5. Disputes</h2>
+      <p>Disputes should be resolved by referencing task instructions and the submitted proof. The platform may review disputes to protect users and platform integrity.</p>
+      <h2>6. Enforcement</h2>
+      <p>We may take actions including warnings, temporary restrictions, task removals, wallet holds, withdrawal limitations, or account suspension/termination for policy violations or fraud risk.</p>
+      <ul>
+        <li><b>Warnings:</b> for minor first-time violations.</li>
+        <li><b>Restrictions:</b> limited access to posting/working/withdrawing when risk is detected.</li>
+        <li><b>Suspension/termination:</b> for repeated abuse, fraud, or severe violations.</li>
+      </ul>
+      <h2>7. Reporting &amp; Support</h2>
+      <p>Report policy violations and request help via: <a href="mailto:supportstl@yahoo.com">supportstl@yahoo.com</a>.</p>
+    </section>
+
+  </main>
+  <div class="pgfoot">&copy; 2026 Selar Technology Limited. All rights reserved.</div>
+</div>
+
+<script>
+(function(){
+var pages=document.getElementById('pages');
+var TITLES={about:'About Us',faq:'FAQ',support:'Support Center',contact:'Contact Us',delete:'Delete Account',privacy:'Privacy Policy',terms:'Terms of Use',policy:'User Policy'};
+var BY_TEXT={'About Us':'about','FAQ':'faq','Support Center':'support','Contact Us':'contact','Delete Account':'delete','Privacy Policy':'privacy','Terms of Use':'terms','User Policy':'policy'};
+[].forEach.call(document.querySelectorAll('#home footer a'),function(a){
+  var k=BY_TEXT[a.textContent.trim()];
+  if(k)a.setAttribute('href','#/p/'+k);
+});
+[].forEach.call(document.querySelectorAll('#home .final a.btn-line'),function(a){a.setAttribute('href','#/p/contact');});
+[].forEach.call(document.querySelectorAll('#register .terms a'),function(a){
+  a.setAttribute('href',a.textContent.trim()==='Terms'?'#/p/terms':'#/p/privacy');
+});
+function show(){
+  var m=/^#\/p\/([a-z]+)$/.exec(location.hash),key=m&&m[1];
+  if(!key||!TITLES[key]){pages.hidden=true;return;}
+  ['home','register','payout','dashboard'].forEach(function(id){var e=document.getElementById(id);if(e)e.hidden=true;});
+  [].forEach.call(pages.querySelectorAll('section[data-p]'),function(s){s.hidden=s.getAttribute('data-p')!==key;});
+  pages.hidden=false;
+  document.title=TITLES[key]+' \u2013 Selar Technology Limited';
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',show);
+show();
+})();
+</script>
+<style>
+.lgrow{text-align:right;margin:-6px 0 16px;font-size:13px}
+.lgrow a{color:#fff;font-weight:600}
+</style>
+
+<div id="login" class="reg" hidden>
+  <div class="reg-wrap">
+    <div class="reg-intro">
+      <a class="logo" href="#top"><span class="mark" aria-hidden="true">ST</span><span class="lname">Selar Technology Limited</span></a>
+      <h1>Welcome back.<br>Let&rsquo;s get earning.</h1>
+      <p>Log in to see open tasks, your submissions and your wallet.</p>
+      <ul class="ticks"><li>Check your task status</li><li>Track your wallet</li><li>Withdraw to your bank</li></ul>
+    </div>
+    <form class="reg-card" id="loginForm" novalidate>
+      <h2>Log in</h2><p class="sub">Enter your email and password</p>
+      <div class="fld"><label for="lgEmail">Email</label><input id="lgEmail" name="email" type="email" placeholder="you@example.com" autocomplete="email"><span class="err" aria-live="polite"></span></div>
+      <div class="fld"><label for="lgPass">Password</label><input id="lgPass" name="password" type="password" placeholder="Your password" autocomplete="current-password"><span class="err" aria-live="polite"></span></div>
+      <p class="lgrow"><a href="#/p/contact">Forgot password?</a></p>
+      <button class="reg-btn" type="submit">Log In</button>
+      <p class="signin">New here? <a href="#/register">Create an account</a></p>
+    </form>
+  </div>
+</div>
+
+<script>
+/* login page */
+(function(){
+var login=document.getElementById('login'),f=document.getElementById('loginForm');
+function show(){
+  if(location.hash!=='#/login'){login.hidden=true;return;}
+  ['home','register','payout','dashboard','pages'].forEach(function(id){var e=document.getElementById(id);if(e)e.hidden=true;});
+  login.hidden=false;
+  document.title='Login \u2013 Selar Technology Limited';
+  window.scrollTo(0,0);
+}
+function bad(i,t){i.parentNode.querySelector('.err').textContent=t||'';i.setAttribute('aria-invalid',t?'true':'false');return !!t;}
+f.addEventListener('submit',function(e){
+  e.preventDefault();
+  var em=f.elements.email,pw=f.elements.password;
+  var a=bad(em,/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value.trim())?'':'Enter a valid email address.');
+  var b=bad(pw,pw.value?'':'Enter your password.');
+  if(a||b)return;
+  /* TODO: send email + password to your backend here and only continue if it says they are correct */
+  var saved={};try{saved=JSON.parse(sessionStorage.getItem('stUser'))||{};}catch(x){}
+  if(!saved.email||saved.email.toLowerCase()!==em.value.trim().toLowerCase()){
+    bad(em,'No account found for this email. Please create an account first.');return;
+  }
+  f.reset();
+  location.hash='#/dashboard';
+});
+window.addEventListener('hashchange',show);
+if(location.pathname.replace(/\/$/,'')==='/login'&&!location.hash)location.hash='#/login';
+show();
+})();
+</script>
+<style>
+#delayOv{position:fixed;inset:0;z-index:100;background:rgba(10,18,36,.55);display:grid;place-items:center;cursor:progress}
+#delayOv .dlyBox{display:flex;flex-direction:column;align-items:center;gap:14px;background:#0a1224;color:#fff;border-radius:16px;padding:26px 34px;font-weight:600;font-size:15px}
+.dlySpin{width:44px;height:44px;border:5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite}
+@media (prefers-reduced-motion:reduce){.dlySpin{animation-duration:3s}}
+</style>
+<div id="delayOv" role="status" aria-live="polite" hidden><div class="dlyBox"><div class="dlySpin" aria-hidden="true"></div><span>Loading, please wait...</span></div></div>
+
+<script>
+/* delay: every button below waits 5, 6 or 7 seconds before it opens */
+(function(){
+var SELECTORS=[
+  '.snav a',                 /* Explore Jobs, My Submissions, Wallet, Redeem Task, Profile */
+  '#cards .tc-act button',   /* Details and Start task on the task cards */
+  '#tkStart',                /* Start task (task 1) */
+  '#tk2Start',               /* Start task (task 2) */
+  '#t3Form button[type="submit"]' /* Start task (task 3) */
+].join(',');
+var ov=document.getElementById('delayOv'),busy=false,pass=false;
+document.addEventListener('click',function(e){
+  if(pass)return;
+  var m=e.target.closest&&e.target.closest(SELECTORS);
+  if(!m||m.disabled)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  if(busy)return;
+  busy=true;ov.hidden=false;
+  var secs=5+Math.floor(Math.random()*3);   /* 5, 6 or 7 */
+  var n=m.getAttribute('data-n'),a=m.getAttribute('data-a');
+  setTimeout(function(){
+    ov.hidden=true;busy=false;
+    var t=m;
+    if(!document.body.contains(t)&&n&&a)t=document.querySelector('#cards button[data-a="'+a+'"][data-n="'+n+'"]')||t;
+    pass=true;
+    try{t.click();}finally{pass=false;}
+  },secs*1000);
+},true);
+})();
+</script>
+</body>
+</html>
