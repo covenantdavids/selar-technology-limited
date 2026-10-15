@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
 <title>Admin – Selar Technology Limited</title>
 <style>
 :root{--bg:#f4f6fb;--surface:#fff;--ink:#101a33;--muted:#5a6580;--line:#dde3f0;--brand:#1d4ed8;--soft:#e6edfc;--red:#c0343a}
@@ -16,47 +17,72 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
 .side nav a{display:block;color:#9aa8c4;text-decoration:none;padding:10px 12px;border-radius:10px;font-weight:500}
 .side nav a:hover{background:#16213b;color:#fff}
 .side nav a[aria-current]{background:var(--brand);color:#fff}
-.side small{margin-top:auto;color:#7886a3}
-.main{flex:1;min-width:0;padding:24px 28px 60px;max-width:1100px}
-.warn{background:#fff8e1;border:1px solid #f3dd9b;color:#7a4a00;border-radius:12px;padding:12px 16px;font-size:13.5px}
-h1{font-size:26px;margin:22px 0 14px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.side .out{margin-top:auto;background:none;border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:10px;padding:10px;font:inherit;font-weight:600;cursor:pointer}
+.main{flex:1;min-width:0;padding:24px 28px 60px;max-width:1150px}
+h1{font-size:26px;margin:6px 0 14px}
+h2{font-size:17px;margin:28px 0 4px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .stats small{color:var(--muted);font-size:13px}
-.stats b{display:block;font-size:28px}
-.row{display:grid;grid-template-columns:1.2fr 1.3fr 1.2fr auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-top:12px}
-.row.wd{grid-template-columns:1.1fr 1.4fr 1.2fr auto}
-.row b{display:block}.row span{color:var(--muted);font-size:13px;display:block}
-.shot{display:inline-block;margin-top:6px;border:1.5px dashed var(--line);border-radius:8px;padding:10px 16px;color:var(--muted);font-size:12.5px}
+.stats b{display:block;font-size:26px}
+.row{display:grid;grid-template-columns:1.2fr 1.4fr 1fr auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-top:12px}
+.row.wd{grid-template-columns:1.1fr 1.4fr 1fr auto}
+.row b{display:block;overflow-wrap:anywhere}.row span{color:var(--muted);font-size:13px;display:block;overflow-wrap:anywhere}
+.shot img{display:block;max-width:170px;max-height:130px;margin-top:8px;border-radius:8px;border:1px solid var(--line)}
+.shot em{display:inline-block;margin-top:6px;color:var(--red);font-size:12.5px;font-style:normal}
 .btn{font:inherit;font-weight:600;font-size:14px;border:1.5px solid transparent;border-radius:9px;padding:8px 16px;cursor:pointer}
 .ok{background:var(--brand);color:#fff}
 .no{background:#fff;color:var(--red);border-color:#f0c4c6}
-.acts{display:flex;flex-direction:column;gap:8px;min-width:150px}
+.acts{display:flex;flex-direction:column;gap:8px;min-width:160px}
 .acts select{font:inherit;font-size:13px;padding:7px;border:1px solid var(--line);border-radius:8px}
 .chip{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px;margin-top:4px}
 .good{background:var(--soft);color:var(--brand)}
 .bad{background:#fde8e8;color:var(--red)}
-.empty{text-align:center;padding:40px;border:1.5px dashed var(--line);border-radius:14px;margin-top:12px;color:var(--muted)}
+.empty{text-align:center;padding:36px;border:1.5px dashed var(--line);border-radius:14px;margin-top:12px;color:var(--muted)}
+.tw{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);font-weight:600;font-size:12.5px}
+.hist{font-size:13.5px;color:var(--muted);margin-top:8px}
+.hist div{padding:7px 0;border-bottom:1px solid var(--line)}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#0a1224;color:#fff;padding:12px 20px;border-radius:12px;max-width:90vw;z-index:9}
-@media (max-width:860px){.app{flex-direction:column}.side{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center}.side small{display:none}.stats{grid-template-columns:1fr 1fr}.row,.row.wd{grid-template-columns:1fr}.acts{flex-direction:row;flex-wrap:wrap}.main{padding:18px 16px 60px}}
+.lg{min-height:100vh;display:grid;place-items:center;padding:20px}
+.lg form{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;width:100%;max-width:380px}
+.lg h1{margin:0 0 4px}.lg p{margin:0 0 16px;color:var(--muted);font-size:14px}
+.lg label{display:block;font-size:13px;font-weight:600;margin:12px 0 5px}
+.lg input{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:9px}
+.lg .btn{width:100%;margin-top:18px;padding:12px}
+.lg .e{color:var(--red);font-size:13px;margin-top:10px;min-height:1em}
+@media (max-width:860px){.app{flex-direction:column}.side{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center}.side .out{margin:0 0 0 auto}.stats{grid-template-columns:1fr 1fr}.row,.row.wd{grid-template-columns:1fr}.acts{flex-direction:row;flex-wrap:wrap}.main{padding:18px 16px 60px}}
 </style>
 </head>
 <body>
-<div class="app">
+<div class="lg" id="login" hidden>
+  <form id="lf">
+    <div class="logo" style="color:var(--ink);margin-bottom:14px"><span class="mark" style="color:#fff">ST</span><span>Selar Technology Limited</span></div>
+    <h1>Admin login</h1><p>Owner access only.</p>
+    <label for="em">Email</label><input id="em" type="email" autocomplete="username" required>
+    <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required>
+    <div class="e" id="le" role="alert"></div>
+    <button class="btn ok" type="submit">Log in</button>
+  </form>
+</div>
+
+<div class="app" id="app" hidden>
   <aside class="side">
     <div class="logo"><span class="mark">ST</span><span>Selar Technology Limited<br><small style="color:#9aa8c4;font-weight:500">Admin</small></span></div>
     <nav aria-label="Admin">
       <a href="#/overview" data-v="overview">Overview</a>
+      <a href="#/users" data-v="users">Users</a>
       <a href="#/submissions" data-v="submissions">Submissions</a>
       <a href="#/withdrawals" data-v="withdrawals">Withdrawals</a>
     </nav>
-    <small>Owner only</small>
+    <button class="out" id="logout" type="button">Log out</button>
   </aside>
   <main class="main">
-    <div class="warn"><b>Preview with sample data.</b> This page is not protected. Before real use it must sit behind a secure server login that only you can pass. Never share its address with workers.</div>
-
     <section id="overview"><h1>Overview</h1>
       <div class="stats">
+        <div class="card"><small>Registered users</small><b id="sUsers">0</b></div>
         <div class="card"><small>Submissions to review</small><b id="sSubs">0</b></div>
         <div class="card"><small>Withdrawals to pay</small><b id="sWd">0</b></div>
         <div class="card"><small>Approved today</small><b id="sApp">0</b></div>
@@ -64,13 +90,19 @@ h1{font-size:26px;margin:22px 0 14px}
       </div>
     </section>
 
+    <section id="users" hidden><h1>Users</h1>
+      <div class="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Bank</th><th>Account no.</th><th>Account name</th><th>Balance</th><th>Joined</th></tr></thead><tbody id="uBody"></tbody></table></div>
+    </section>
+
     <section id="submissions" hidden><h1>Submissions to review</h1>
       <div id="subList"></div>
+      <h2>Recently reviewed</h2><div class="hist" id="subHist"></div>
     </section>
 
     <section id="withdrawals" hidden><h1>Withdrawals to pay</h1>
-      <p style="color:var(--muted);margin:0">You pay these by hand from your own bank. Check the account name before you send.</p>
+      <p style="color:var(--muted);margin:0">You pay these by hand from your own bank. Check the account name before you send, then press Mark as paid. If you reject one, the money goes back to the worker's wallet.</p>
       <div id="wdList"></div>
+      <h2>Recently done</h2><div class="hist" id="wdHist"></div>
     </section>
   </main>
 </div>
@@ -79,69 +111,99 @@ h1{font-size:26px;margin:22px 0 14px}
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)};
-function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function norm(s){return s.toLowerCase().split(/\s+/).filter(Boolean).sort().join(' ')}
-function naira(n){return '\u20A6'+n.toLocaleString('en-NG')}
-/* sample data: this will come from the database later */
-var subs=[
- {worker:'Ada Obi',task:'Download Kuda App',id:'4N844ML6KX3REJM',at:'13 Oct, 10:42 AM',pay:100},
- {worker:'Chika Nwosu',task:'Create new email account',id:'T7QWB93HXK2LMPD',at:'13 Oct, 11:05 AM',pay:50},
- {worker:'Tunde Adeyemi',task:'Download Kuda App',id:'M2KX8RB4ZP6VNHC',at:'13 Oct, 11:20 AM',pay:100}
-];
-var wds=[
- {worker:'Ada Obi',reg:'Ada Obi',amt:1000,bank:'Guaranty Trust Bank',no:'0123456789',name:'ADA OBI'},
- {worker:'Tunde Adeyemi',reg:'Tunde Adeyemi',amt:500,bank:'OPay',no:'8012345678',name:'GRACE OKAFOR'}
-];
-var REASONS=['It shows an old email account','Email address cut off or unreadable','Edited, copied or blurry screenshot','Kuda not installed (no Open button)'];
-var approved=0,paid=0;
-function toast(t){var e=$('toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){e.hidden=true},4500);}
-function stats(){$('sSubs').textContent=subs.length;$('sWd').textContent=wds.length;$('sApp').textContent=approved;$('sPaid').textContent=naira(paid);}
-function drawSubs(){
-  $('subList').innerHTML=subs.length?subs.map(function(s,i){
-    return '<div class="row"><div><b>'+esc(s.worker)+'</b><span>'+esc(s.at)+'</span></div>'
-    +'<div><b>'+esc(s.task)+'</b><span>Task ID: '+esc(s.id)+'</span><span class="shot">Screenshot appears here</span></div>'
-    +'<div><b>'+naira(s.pay)+'</b><span>Reward if approved</span></div>'
-    +'<div class="acts"><button class="btn ok" data-a="ok" data-i="'+i+'">Approve</button>'
-    +'<select aria-label="Reject reason" data-r="'+i+'"><option value="">Reject reason...</option>'+REASONS.map(function(r){return '<option>'+esc(r)+'</option>'}).join('')+'</select>'
-    +'<button class="btn no" data-a="no" data-i="'+i+'">Reject</button></div></div>';
-  }).join(''):'<div class="empty">No submissions waiting. Nice work.</div>';
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function norm(s){return String(s||'').toLowerCase().split(/\s+/).filter(Boolean).sort().join(' ')}
+function naira(n){return '\u20A6'+Number(n||0).toLocaleString('en-NG')}
+function when(t){return t?new Date(t).toLocaleString('en-GB',{timeZone:'Africa/Lagos',day:'numeric',month:'short',hour:'numeric',minute:'2-digit',hour12:true}):'-'}
+var REASONS=['It shows an old email account','Email address cut off or unreadable','Edited, copied or blurry screenshot','Kuda not installed (no Open button)','PalmPay name or phone does not match','Wrong or unreadable screenshot'];
+var D=null;
+function api(path,body){
+  var o={credentials:'same-origin'};
+  if(body){o.method='POST';o.headers={'Content-Type':'application/json'};o.body=JSON.stringify(body);}
+  return fetch(path,o).then(function(r){return r.json().catch(function(){return {}}).then(function(d){d.__s=r.status;return d;});});
 }
-function drawWds(){
-  $('wdList').innerHTML=wds.length?wds.map(function(w,i){
-    var same=norm(w.reg)===norm(w.name);
-    return '<div class="row wd"><div><b>'+esc(w.worker)+'</b><span>Registered name: '+esc(w.reg)+'</span></div>'
-    +'<div><b>'+esc(w.bank)+' &middot; '+esc(w.no)+'</b><span>Account name: '+esc(w.name)+'</span>'
+function toast(t){var e=$('toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){e.hidden=true},5000);}
+
+function draw(){
+  var s=D.stats;
+  $('sUsers').textContent=s.users;$('sSubs').textContent=s.subs;$('sWd').textContent=s.wds;$('sApp').textContent=s.approvedToday;$('sPaid').textContent=naira(s.paidToday);
+
+  $('uBody').innerHTML=D.users.length?D.users.map(function(u){
+    return '<tr><td><b>'+esc(u.name)+'</b></td><td>'+esc(u.email)+'</td><td>'+esc(u.phone)+'</td><td>'+esc(u.bank_name||'-')+'</td><td>'+esc(u.account_number||'-')+'</td><td>'+esc(u.account_name||'-')+'</td><td>'+naira(u.balance)+'</td><td>'+when(u.created_at)+'</td></tr>';
+  }).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:30px">No users yet.</td></tr>';
+
+  var saved={};[].forEach.call(document.querySelectorAll('select[data-r]'),function(x){saved[x.dataset.r]=x.value;});
+  $('subList').innerHTML=D.subs.length?D.subs.map(function(x){
+    var u=x.users||{},ex=x.extra?'<span>Submitted name: '+esc(x.extra.name)+' &middot; phone: '+esc(x.extra.phone)+'</span>':'';
+    var img=x.screenshot_url?'<a href="'+esc(x.screenshot_url)+'" target="_blank" rel="noopener"><img src="'+esc(x.screenshot_url)+'" alt="Screenshot"></a>':'<em>Screenshot not available</em>';
+    return '<div class="row"><div><b>'+esc(u.name)+'</b><span>'+esc(u.email)+'</span><span>'+esc(u.phone)+'</span><span>'+when(x.created_at)+'</span></div>'
+    +'<div class="shot"><b>'+esc(x.task_name)+'</b><span>Task ID: '+esc(x.task_code)+'</span>'+ex+img+'</div>'
+    +'<div><b>'+naira(x.reward)+'</b><span>Reward if approved</span></div>'
+    +'<div class="acts"><button class="btn ok" data-a="approve" data-id="'+esc(x.id)+'">Approve</button>'
+    +'<select aria-label="Reject reason" data-r="'+esc(x.id)+'"><option value="">Reject reason...</option>'+REASONS.map(function(r){return '<option>'+esc(r)+'</option>'}).join('')+'</select>'
+    +'<button class="btn no" data-a="reject" data-id="'+esc(x.id)+'">Reject</button></div></div>';
+  }).join(''):'<div class="empty">No submissions waiting.</div>';
+  [].forEach.call(document.querySelectorAll('select[data-r]'),function(x){if(saved[x.dataset.r])x.value=saved[x.dataset.r];});
+  $('subHist').innerHTML=D.recentSubs.length?D.recentSubs.map(function(x){
+    return '<div>'+esc((x.users||{}).name)+' &middot; '+esc(x.task_name)+' &middot; <b>'+esc(x.status)+'</b>'+(x.reject_reason?' ('+esc(x.reject_reason)+')':'')+' &middot; '+when(x.reviewed_at)+'</div>';
+  }).join(''):'<div>Nothing yet.</div>';
+
+  $('wdList').innerHTML=D.wds.length?D.wds.map(function(w){
+    var reg=(w.users||{}).name,same=norm(reg)===norm(w.account_name);
+    return '<div class="row wd"><div><b>'+esc(reg)+'</b><span>Requested '+when(w.created_at)+'</span></div>'
+    +'<div><b>'+esc(w.bank_name)+' &middot; '+esc(w.account_number)+'</b><span>Account name: '+esc(w.account_name)+'</span>'
     +'<span class="chip '+(same?'good':'bad')+'">'+(same?'Names match':'Name mismatch: check before paying')+'</span></div>'
-    +'<div><b>'+naira(w.amt)+'</b><span>To pay</span></div>'
-    +'<div class="acts"><button class="btn ok" data-a="paid" data-i="'+i+'">Mark as paid</button></div></div>';
+    +'<div><b>'+naira(w.amount)+'</b><span>To pay</span></div>'
+    +'<div class="acts"><button class="btn ok" data-a="paid" data-id="'+esc(w.id)+'">Mark as paid</button><button class="btn no" data-a="wreject" data-id="'+esc(w.id)+'">Reject &amp; refund</button></div></div>';
   }).join(''):'<div class="empty">No withdrawals waiting.</div>';
+  $('wdHist').innerHTML=D.recentWds.length?D.recentWds.map(function(w){
+    return '<div>'+esc((w.users||{}).name)+' &middot; '+naira(w.amount)+' &middot; <b>'+esc(w.status)+'</b> &middot; '+when(w.done_at)+'</div>';
+  }).join(''):'<div>Nothing yet.</div>';
+}
+
+function load(){
+  return api('/api/admin/data').then(function(d){
+    if(d.__s===401){$('app').hidden=true;$('login').hidden=false;return;}
+    if(!d.ok){toast(d.error||'Could not load data.');return;}
+    D=d;$('login').hidden=true;$('app').hidden=false;draw();
+  });
+}
+$('lf').addEventListener('submit',function(e){
+  e.preventDefault();$('le').textContent='';
+  api('/api/admin/login',{email:$('em').value,password:$('pw').value}).then(function(d){
+    if(!d.ok){$('le').textContent=d.error||'Could not log in.';return;}
+    $('pw').value='';load();
+  });
+});
+$('logout').addEventListener('click',function(){api('/api/admin/logout',{}).then(function(){D=null;$('app').hidden=true;$('login').hidden=false;});});
+
+function act(a,id,reason,okMsg){
+  api('/api/admin/act',{type:a,id:id,reason:reason}).then(function(d){
+    if(d.__s===401){load();return;}
+    if(!d.ok){toast(d.error||'Failed.');return;}
+    toast(okMsg);load();
+  });
 }
 $('subList').addEventListener('click',function(e){
   var b=e.target.closest('button[data-a]');if(!b)return;
-  var i=+b.dataset.i,s=subs[i];
-  if(b.dataset.a==='ok'){
-    subs.splice(i,1);approved++;
-    toast(s.task==='Download Kuda App'?'Approved. '+naira(s.pay)+' added to '+s.worker+'. Their next task now starts its 00:35:00 countdown.':'Approved. '+naira(s.pay)+' added to '+s.worker+'.');
-  }else{
-    var r=document.querySelector('select[data-r="'+i+'"]').value;
-    if(!r){toast('Choose a reject reason first.');return;}
-    subs.splice(i,1);toast('Rejected '+s.worker+': '+r+'.');
-  }
-  drawSubs();stats();
+  if(b.dataset.a==='approve'){act('approve',b.dataset.id,'','Approved. The reward was added to the worker\u2019s wallet.');return;}
+  var sel=document.querySelector('select[data-r="'+b.dataset.id+'"]');
+  if(!sel||!sel.value){toast('Choose a reject reason first.');return;}
+  act('reject',b.dataset.id,sel.value,'Rejected.');
 });
 $('wdList').addEventListener('click',function(e){
-  var b=e.target.closest('button[data-a="paid"]');if(!b)return;
-  var w=wds.splice(+b.dataset.i,1)[0];paid+=w.amt;
-  toast('Marked as paid: '+naira(w.amt)+' to '+w.name+'.');drawWds();stats();
+  var b=e.target.closest('button[data-a]');if(!b)return;
+  if(b.dataset.a==='wreject'&&!confirm('Reject this withdrawal and refund the worker\u2019s wallet?'))return;
+  act(b.dataset.a,b.dataset.id,'',b.dataset.a==='paid'?'Marked as paid.':'Rejected and refunded.');
 });
 function route(){
-  var v=(location.hash.replace('#/','')||'overview');if(!$(v))v='overview';
-  ['overview','submissions','withdrawals'].forEach(function(x){$(x).hidden=x!==v;});
+  var v=(location.hash.replace('#/','')||'overview');if(!$(v)||v==='app'||v==='login')v='overview';
+  ['overview','users','submissions','withdrawals'].forEach(function(x){$(x).hidden=x!==v;});
   [].forEach.call(document.querySelectorAll('.side nav a'),function(a){if(a.dataset.v===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
-  window.scrollTo(0,0);
 }
 window.addEventListener('hashchange',route);
-drawSubs();drawWds();stats();route();
+route();load();
+setInterval(function(){if(D&&!$('app').hidden&&!(document.activeElement&&document.activeElement.tagName==='SELECT'))load();},30000);
 })();
 </script>
 </body>
