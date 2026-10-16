@@ -318,6 +318,22 @@ function refresh(){
     if(d.ok){paint(d);apply(d);}
   });
 }
+/* keep started/submitted tasks 2 and 3 showing "Reward pending" on Explore Jobs */
+var CLK_SVG='<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="M24 13v11l7 4"/></svg>';
+function keepPending(){
+  var j=gs('stJobs')||{};
+  [2,3].forEach(function(n){
+    var job=j[n];if(!job||job.fail)return;
+    var b=document.querySelector('#cards button[data-n="'+n+'"]');
+    var a=b&&b.closest('article');if(!a)return;
+    var chip=a.querySelector('.lockchip'),lb=a.querySelector('.lockbox');
+    if(!chip||!lb)return;
+    if(chip.classList.contains('tpend')&&lb.textContent.indexOf('Reward pending')>-1)return;
+    chip.className='lockchip tpend';chip.textContent='OPEN';
+    lb.className='lockbox lpend';lb.innerHTML=CLK_SVG+'<span>Reward pending</span>';
+  });
+}
+setInterval(keepPending,400);
 window.addEventListener('hashchange',refresh);
 setInterval(refresh,20000);
 refresh();
