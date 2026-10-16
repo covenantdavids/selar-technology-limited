@@ -83,7 +83,7 @@ document.addEventListener('submit',function(e){
       ss('stProfile',profileFor(u));
       f.reset();
       location.hash='#/dashboard';
-      setTimeout(function(){location.reload();},50);
+      location.replace('/dashboard#/dashboard');
     });
     return;
   }
@@ -101,7 +101,7 @@ document.addEventListener('submit',function(e){
       if(no===3){var x=gs('stT3form');if(x)fd.append('extra',JSON.stringify({name:x.name,phone:x.phone}));}
       return api('/api/submit',{method:'POST',body:fd});
     }).then(function(d){
-      if(d.ok){pass=true;try{f.requestSubmit();}finally{pass=false;}shot=null;return;}
+      if(d.ok){pass=true;try{f.requestSubmit();}finally{pass=false;}shot=null;refresh();return;}
       btn.disabled=false;btn.textContent='Redeem Reward';
       if(d.__s===401){location.hash='#/login';return;}
       $('rIdErr').textContent=d.error||'Could not submit. Please try again.';
@@ -208,7 +208,85 @@ function notifyApproved(d){
   document.body.appendChild(p);
   setTimeout(function(){if(p.parentNode)p.remove();},10000);
 }
+/* ---------- Notifications (bell) ---------- */
+var NOTE_UID=null;
+var TASKN={1:'Download Kuda App',2:'Create new email account',3:'Create New PalmPay Account'};
+function noteKey(){return 'stNotes_'+NOTE_UID;}
+function noteGet(){try{return JSON.parse(localStorage.getItem(noteKey()))||[];}catch(e){return [];}}
+function notePut(a){try{localStorage.setItem(noteKey(),JSON.stringify(a.slice(0,40)));}catch(e){}}
+function noteEsc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function noteBadge(){
+  var b=document.getElementById('stBadge');if(!b)return;
+  var n=noteGet().filter(function(x){return !x.r;}).length;
+  b.textContent=n>9?'9+':n;b.style.display=n?'flex':'none';
+}
+function noteDraw(){
+  var p=document.getElementById('stNotes');if(!p)return;
+  var a=noteGet();
+  p.innerHTML='<div style="padding:14px 16px;font-weight:800;border-bottom:1px solid #dde3f0">Notifications</div>'+
+  (a.length?a.map(function(x){
+    return '<div style="display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid #eef1f7;'+(x.r?'':'background:#eef4ff')+'"><span style="font-size:20px;line-height:1.2">'+x.i+'</span><div><b style="display:block;font-size:14px">'+noteEsc(x.t)+'</b><span style="display:block;font-size:13px;color:#55607a;line-height:1.4">'+noteEsc(x.m)+'</span><small style="color:#8a94ad;font-size:11.5px">'+when(x.a)+'</small></div></div>';
+  }).join(''):'<div style="padding:26px 16px;text-align:center;color:#55607a;font-size:14px">No notifications yet.</div>');
+}
+function noteUI(){
+  var bell=document.querySelector('.bell');if(!bell||document.getElementById('stBadge'))return;
+  bell.style.position='relative';
+  var badge=document.createElement('span');badge.id='stBadge';
+  badge.style.cssText='position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:#dc2626;color:#fff;font-size:11px;font-weight:700;display:none;align-items:center;justify-content:center';
+  bell.appendChild(badge);
+  var panel=document.createElement('div');panel.id='stNotes';panel.hidden=true;
+  panel.style.cssText='position:absolute;right:0;top:52px;width:330px;max-width:92vw;max-height:420px;overflow:auto;background:#fff;color:#101a33;border:1px solid #dde3f0;border-radius:14px;box-shadow:0 18px 40px -22px rgba(29,78,216,.45);z-index:50;text-align:left';
+  bell.parentNode.appendChild(panel);
+  bell.addEventListener('click',function(e){
+    e.stopPropagation();panel.hidden=!panel.hidden;
+    if(!panel.hidden){
+      noteDraw();
+      var a=noteGet();a.forEach(function(x){x.r=1;});notePut(a);noteBadge();
+    }
+  });
+  document.addEventListener('click',function(e){if(!panel.hidden&&!panel.contains(e.target))panel.hidden=true;});
+}
+function noteToast(n){
+  var old=document.getElementById('stToast');if(old)old.remove();
+  var t=document.createElement('div');t.id='stToast';
+  t.innerHTML='<b style="display:block;font-size:14px;margin-bottom:3px">'+n.i+' '+noteEsc(n.t)+'</b>'+noteEsc(n.m);
+  t.style.cssText='position:fixed;z-index:99998;top:70px;right:16px;max-width:300px;background:#0a1224;color:#fff;padding:14px 16px;border-radius:14px;font-size:13px;line-height:1.4;box-shadow:0 10px 30px rgba(0,0,0,.3);cursor:pointer';
+  t.onclick=function(){t.remove();};
+  document.body.appendChild(t);
+  setTimeout(function(){if(t.parentNode)t.remove();},8000);
+}
+function noteSync(d){
+  NOTE_UID=d.user.id;noteUI();
+  var a=noteGet(),have={},fresh=[],week=Date.now()-7*86400000;
+  a.forEach(function(x){have[x.k]=1;});
+  function add(k,ic,t,m,at,ty){
+    at=at||Date.now();
+    if(have[k]||at<week)return;
+    have[k]=1;var n={k:k,i:ic,t:t,m:m,a:at,r:0,y:ty};a.push(n);fresh.push(n);
+  }
+  d.submissions.forEach(function(s){
+    var nm=s.task_name;
+    add('sub-'+s.id,'\u23F3','Reward pending','Your proof for "'+nm+'" was received. Your '+money(s.reward)+' reward is being verified and will land in your wallet once approved.',Date.parse(s.created_at),'sub');
+    if(s.status==='approved')add('ok-'+s.id,'\uD83C\uDF89','Reward paid!','Great news! '+money(s.reward)+' for "'+nm+'" has been approved and paid to your wallet. You can withdraw it anytime.',Date.parse(s.reviewed_at),'ok');
+    if(s.status==='rejected')add('rej-'+s.id,'\u274C','Submission rejected','Your proof for "'+nm+'" was not accepted: '+(s.reject_reason||'proof not accepted')+'. You can start the task again.',Date.parse(s.reviewed_at),'rej');
+  });
+  d.withdrawals.forEach(function(w){
+    add('wd-'+w.id,'\uD83D\uDCB8','Withdrawal placed','Your withdrawal of '+money(w.amount)+' has been received and is being processed. It will be sent to your bank account shortly.',Date.parse(w.created_at),'wd');
+    if(w.status==='paid')add('wdp-'+w.id,'\u2705','Withdrawal paid','Done! '+money(w.amount)+' has been sent to your bank account. Check your bank app.',Date.now(),'wdp');
+    if(w.status==='rejected')add('wdr-'+w.id,'\u21A9\uFE0F','Withdrawal refunded','Your withdrawal of '+money(w.amount)+' could not be processed. The money is back in your wallet.',Date.now(),'wdr');
+  });
+  var j=gs('stJobs')||{};
+  Object.keys(j).forEach(function(n){
+    if(j[n].fail&&!j[n].sub)add('fail-'+n+'-'+j[n].end,'\u26A0\uFE0F','Task not completed','Time ran out on "'+(TASKN[n]||'your task')+'" before you submitted proof. Tap the task to start it again.',j[n].end,'fail');
+  });
+  a.sort(function(x,y){return y.a-x.a;});
+  notePut(a);noteBadge();
+  var panel=document.getElementById('stNotes');if(panel&&!panel.hidden)noteDraw();
+  var show=fresh.filter(function(n){return n.y!=='ok'&&n.a>Date.now()-120000;})[0];
+  if(show)noteToast(show);
+}
 function apply(d){
+  try{noteSync(d);}catch(e){}
   try{notifyApproved(d);}catch(e){}
   var ok=gs('stOK')||[];
   d.submissions.forEach(function(s){
