@@ -287,6 +287,7 @@ function noteSync(d){
 }
 function apply(d){
   try{noteSync(d);}catch(e){}
+  try{window.stSrv=d.submissions;}catch(e){}
   try{notifyApproved(d);}catch(e){}
   var ok=gs('stOK')||[];
   d.submissions.forEach(function(s){
@@ -334,6 +335,43 @@ function keepPending(){
   });
 }
 setInterval(keepPending,400);
+
+/* My Submissions: show real approved / pending / rejected tasks from the server */
+var subTab='a';
+(function(){var st=document.createElement('style');st.textContent='#viewSubs .sempty{display:none!important}';document.head.appendChild(st);})();
+function subEsc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function subsRender(){
+  var v=document.getElementById('viewSubs');if(!v||v.hidden||!window.stSrv)return;
+  var S=window.stSrv,A=S.filter(function(s){return s.status==='approved';}),
+      P=S.filter(function(s){return s.status==='pending';}),
+      R=S.filter(function(s){return s.status==='rejected';});
+  var c;
+  if((c=v.querySelector('.sst.ok b')))c.textContent=A.length;
+  if((c=v.querySelector('.sst.pe b')))c.textContent=P.length;
+  if((c=v.querySelector('.sst.di b')))c.textContent=R.length;
+  var tabs=document.getElementById('stabs');
+  [['a','Approved',A],['p','Pending',P],['d','Disputes',R]].forEach(function(t){
+    var b=tabs.querySelector('[data-t="'+t[0]+'"]');
+    if(b){b.textContent=t[1]+' ('+t[2].length+')';b.setAttribute('aria-selected',subTab===t[0]?'true':'false');}
+  });
+  var empty=v.querySelector('.sempty'),box=document.getElementById('stSrv');
+  if(!box){box=document.createElement('div');box.id='stSrv';empty.parentNode.insertBefore(box,empty.nextSibling);}
+  var sib=empty.nextElementSibling;
+  while(sib){if(sib.id!=='stSrv')sib.style.setProperty('display','none','important');sib=sib.nextElementSibling;}
+  var list=subTab==='a'?A:subTab==='p'?P:R;
+  var chip={a:['PAID','#eafaf1','#16794a','#bfead2'],p:['PENDING REVIEW','#fff4d6','#a35f00','#f3dd9b'],d:['REJECTED','#fde8e8','#b4232f','#f5c2c7']}[subTab];
+  var none={a:'No approved submissions yet',p:'No pending submissions',d:'No disputes'}[subTab];
+  box.innerHTML=list.length?list.map(function(s){
+    var when2=subTab==='p'?s.created_at:(s.reviewed_at||s.created_at);
+    var extra=subTab==='a'?' \u00B7 '+money(s.reward)+' paid to wallet':subTab==='d'&&s.reject_reason?' \u00B7 '+subEsc(s.reject_reason):'';
+    return '<div class="subrow"><div class="subtx"><b>'+subEsc(s.task_name)+'</b><span>Task ID: '+subEsc(s.task_code)+extra+'<br>'+when(when2)+'</span></div><span class="subst" style="background:'+chip[1]+';color:'+chip[2]+';border-color:'+chip[3]+'">'+chip[0]+'</span></div>';
+  }).join(''):'<div style="text-align:center;padding:40px 16px;color:#55607a;font-weight:600">'+none+'</div>';
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('#stabs button[data-t]');
+  if(b){subTab=b.getAttribute('data-t');setTimeout(subsRender,0);}
+},true);
+setInterval(subsRender,300);
 window.addEventListener('hashchange',refresh);
 setInterval(refresh,20000);
 refresh();
