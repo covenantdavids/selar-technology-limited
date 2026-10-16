@@ -296,7 +296,7 @@ function apply(d){
       ok=gs('stOK')||[];
     }
   });
-  var t2=d.submissions.filter(function(s){return s.task_no===2&&s.status==='approved';})[0];
+  ss('stT1',String(Date.parse(d.user.created_at)||Date.now()));var t2=d.submissions.filter(function(s){return s.task_no===2&&s.status==='approved';})[0];
 ss('stAppr2',t2?String(Date.parse(t2.reviewed_at)||Date.now()):null);
   var seen=[];try{seen=JSON.parse(localStorage.getItem('stRejSeen'))||[];}catch(e){}
   var rej=d.submissions.filter(function(s){return s.status==='rejected'&&seen.indexOf(s.id)<0;});
