@@ -1629,7 +1629,7 @@ var cards=$('cards'),view=$('viewTask3');
 if(cards)new MutationObserver(skin).observe(cards,{childList:true});
 setInterval(function(){
   var e=document.querySelector('[data-cd3]');if(e)e.textContent=fmt(left());
-  var cc=cardOf();if(cc&&state()==='open'&&!cc.querySelector('h3'))skin();if(cc&&state()==='count'&&!cc.querySelector('[data-cd3]')&&!cc.getAttribute('data-st'))skin();
+  var cc=cardOf();if(cc&&state()==='open'&&!cc.querySelector('h3'))skin();if(cc&&state()==='count'&&!cc.querySelector('[data-cd3]')&&!cc.getAttribute('data-st'))skin();if(cc&&state()==='locked'&&(cc.querySelector('[data-cd3]')||cc.querySelector('h3'))&&!cc.getAttribute('data-st'))skin();if(cc&&state()==='locked'&&(cc.querySelector('[data-cd3]')||cc.querySelector('h3'))&&!cc.getAttribute('data-st'))skin();
 },1000);
 skin();
 function open(){var x=$('viewExplore');if(x)x.hidden=true;view.hidden=false;window.scrollTo(0,0);}

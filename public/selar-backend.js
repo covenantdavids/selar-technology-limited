@@ -3,7 +3,7 @@
 (function(){
 var $=function(i){return document.getElementById(i)};
 var DASH=/^#\/(dashboard|submissions|wallet|profile|redeem)/;
-var STATE=['stJobs','stRetry','stOK','stDone','stTaskState','stCur','stRsv','stRsvTask','stSubs','stAppr1','stRes','stRes3'];
+var STATE=['stJobs','stRetry','stOK','stDone','stTaskState','stCur','stRsv','stRsvTask','stSubs','stAppr1','stAppr2','stT3form','stRes','stRes3'];
 
 function api(path,opt){
   opt=opt||{};opt.credentials='same-origin';
@@ -296,6 +296,8 @@ function apply(d){
       ok=gs('stOK')||[];
     }
   });
+  var t2=d.submissions.filter(function(s){return s.task_no===2&&s.status==='approved';})[0];
+ss('stAppr2',t2?String(Date.parse(t2.reviewed_at)||Date.now()):null);
   var seen=[];try{seen=JSON.parse(localStorage.getItem('stRejSeen'))||[];}catch(e){}
   var rej=d.submissions.filter(function(s){return s.status==='rejected'&&seen.indexOf(s.id)<0;});
   if(rej.length){
