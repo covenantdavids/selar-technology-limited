@@ -160,7 +160,7 @@ document.addEventListener('click',function(e){
   e.preventDefault();
   post('/api/logout',{}).then(function(){
     wipe();ss('stUser',null);ss('stProfile',null);
-    location.hash='#top';location.reload();
+    location.replace('/');
   });
 },true);
 

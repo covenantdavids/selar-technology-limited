@@ -1419,7 +1419,7 @@ if(rsv){fresh();if(rsv.id)showId();}
 })();
 </script>
 <script>
-/* task 2 (Create new email account): unlocks 01:25:00 after task 1 is approved */
+/* task 2 (Create New Email Account): unlocks 01:25:00 after task 1 is approved */
 (function(){
 var $=function(i){return document.getElementById(i)},DELAY=35*60*1000,KEY='stAppr1';
 var LK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V7z"/></svg>';
@@ -1596,7 +1596,7 @@ run();setInterval(run,500);
 })();
 </script>
 <script>
-/* task 3: Create New PalmPay Account (card, countdown, task page, form, reservation) */
+/* task 3: Register New PalmPay Account (card, countdown, task page, form, reservation) */
 (function(){
 var $=function(i){return document.getElementById(i)},UNLOCK=85*60*1000,AT='stT3at',FORM='stT3form';
 function apprAt(){try{return +sessionStorage.getItem('stAppr2')||0}catch(e){return 0}}function state(){var a=apprAt();if(!a)return 'locked';return a+UNLOCK>Date.now()?'count':'open';}
