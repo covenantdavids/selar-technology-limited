@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 import { getDb } from '../../../lib/db';
-import { sign, setCookie, clearCookie, getUserId } from '../../../lib/auth';
+import { sign, setCookie, clearCookie, getUserId, isAdmin } from '../../../lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +30,11 @@ async function startSession(u) {
 
 export async function GET(req, { params }) {
   const { action } = await params;
+  if (action === 'palmpay') {
+    if (!(await isAdmin())) return fail('Not allowed.', 401);
+    const r = await getDb().from('palmpay_requests').select('id,name,phone,created_at,users(name,email,phone)').order('created_at', { ascending: false }).limit(200);
+    return out({ ok: true, items: r.data || [] });
+  }
   if (action !== 'me') return fail('Not found', 404);
   const uid = await getUserId();
   if (!uid) return fail('Please log in again.', 401);
@@ -77,6 +82,15 @@ export async function POST(req, { params }) {
 
     const uid = await getUserId();
     if (!uid) return fail('Please log in again.', 401);
+
+    if (action === 'palmpay') {
+      const b = await req.json().catch(() => ({}));
+      const name = String(b.name || '').trim().slice(0, 80);
+      const phone = String(b.phone || '').replace(/\s/g, '').slice(0, 20);
+      if (!NAME.test(name) || !PHONE.test(phone)) return fail('Check the name and phone number.');
+      const { error } = await db.from('palmpay_requests').insert({ user_id: uid, name, phone });
+      return error ? fail('Could not save.', 500) : out({ ok: true });
+    }
 
     if (action === 'payout') {
       const b = await req.json().catch(() => ({}));

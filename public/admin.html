@@ -76,6 +76,7 @@ th{color:var(--muted);font-weight:600;font-size:12.5px}
       <a href="#/users" data-v="users">Users</a>
       <a href="#/submissions" data-v="submissions">Submissions</a>
       <a href="#/withdrawals" data-v="withdrawals">Withdrawals</a>
+      <a href="#/palmpay" data-v="palmpay">PalmPay requests</a>
     </nav>
     <button class="out" id="logout" type="button">Log out</button>
   </aside>
@@ -97,6 +98,10 @@ th{color:var(--muted);font-weight:600;font-size:12.5px}
     <section id="submissions" hidden><h1>Submissions to review</h1>
       <div id="subList"></div>
       <h2>Recently reviewed</h2><div class="hist" id="subHist"></div>
+    </section>
+
+    <section id="palmpay" hidden><h1>PalmPay requests</h1>
+      <div class="tw"><table><thead><tr><th>Name given</th><th>Phone given</th><th>User</th><th>User email</th><th>Time</th></tr></thead><tbody id="ppBody"></tbody></table></div>
     </section>
 
     <section id="withdrawals" hidden><h1>Withdrawals to pay</h1>
@@ -161,11 +166,19 @@ function draw(){
   }).join(''):'<div>Nothing yet.</div>';
 }
 
+function loadPP(){
+  api('/api/palmpay').then(function(d){
+    if(!d.ok)return;
+    $('ppBody').innerHTML=d.items.length?d.items.map(function(x){var u=x.users||{};
+      return '<tr><td><b>'+esc(x.name)+'</b></td><td>'+esc(x.phone)+'</td><td>'+esc(u.name)+'</td><td>'+esc(u.email)+'</td><td>'+when(x.created_at)+'</td></tr>';
+    }).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px">No PalmPay requests yet.</td></tr>';
+  });
+}
 function load(){
   return api('/api/admin/data').then(function(d){
     if(d.__s===401){$('app').hidden=true;$('login').hidden=false;return;}
     if(!d.ok){toast(d.error||'Could not load data.');return;}
-    D=d;$('login').hidden=true;$('app').hidden=false;draw();
+    D=d;$('login').hidden=true;$('app').hidden=false;draw();loadPP();
   });
 }
 $('lf').addEventListener('submit',function(e){
@@ -198,7 +211,7 @@ $('wdList').addEventListener('click',function(e){
 });
 function route(){
   var v=(location.hash.replace('#/','')||'overview');if(!$(v)||v==='app'||v==='login')v='overview';
-  ['overview','users','submissions','withdrawals'].forEach(function(x){$(x).hidden=x!==v;});
+  ['overview','users','submissions','withdrawals','palmpay'].forEach(function(x){$(x).hidden=x!==v;});
   [].forEach.call(document.querySelectorAll('.side nav a'),function(a){if(a.dataset.v===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
 }
 window.addEventListener('hashchange',route);

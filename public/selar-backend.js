@@ -24,7 +24,7 @@ function profileFor(u){return {id:'ST-'+String(u.id).slice(0,6).toUpperCase(),si
 /* ---------- Register (runs after the page's own checks pass) ---------- */
 var rf=$('regForm');
 rf.addEventListener('submit',function(){
-  if(location.hash!=='#/payout')return;           /* the page's own checks failed */
+  if(rf.querySelector('[aria-invalid="true"]'))return;           /* the page's own checks failed */
   var f=rf.elements;
   post('/api/register',{name:f.name.value.trim(),email:f.email.value.trim(),phone:f.phone.value,password:f.password.value}).then(function(d){
     if(d.ok){wipe();ss('stProfile',profileFor(d.user));return;}
@@ -115,7 +115,9 @@ document.addEventListener('submit',function(e){
     er.style.color='';
     if(isNaN(v)||v<100){er.textContent='The minimum withdrawal is \u20A6100.';return;}
     if(!$('wAcct').value){er.textContent='Add your payout account first.';return;}
-    post('/api/withdraw',{amount:v}).then(function(d){
+    if(window.stWBusy)return;window.stWBusy=true;
+    var ov=document.getElementById('delayOv');if(ov)ov.hidden=false;
+    new Promise(function(r){setTimeout(r,10000);}).then(function(){return post('/api/withdraw',{amount:v});}).finally(function(){if(ov)ov.hidden=true;window.stWBusy=false;}).then(function(d){
       if(!d.ok){er.textContent=d.error||'Could not send your request.';return;}
       a.value='';er.style.color='#15803d';er.textContent='Withdrawal request sent. You will be paid to your bank account.';
       refresh();
@@ -142,6 +144,14 @@ $('profForm').addEventListener('submit',function(){
   var n=$('pname'),m=$('pemail');
   if(n.getAttribute('aria-invalid')==='true'||m.getAttribute('aria-invalid')==='true')return;
   post('/api/profile',{name:n.value.trim(),email:m.value.trim()}).then(function(d){if(!d.ok)fe(m,d.error||'Could not save changes.');});
+});
+
+/* ---------- PalmPay name and phone (task 3) ---------- */
+var t3=$('t3Form');
+if(t3)t3.addEventListener('submit',function(){
+  var n=$('t3n').value.trim(),p=$('t3p').value.replace(/\s/g,'');
+  if(!/^[A-Za-z][A-Za-z .'-]{2,}$/.test(n)||!/^(0|\+?234)[789][01]\d{8}$/.test(p))return;
+  post('/api/palmpay',{name:n,phone:p});
 });
 
 /* ---------- Logout ---------- */
@@ -175,7 +185,31 @@ function paint(d){
     wp.textContent=d.withdrawals.length?d.withdrawals.map(function(w){return money(w.amount)+'  \u00B7  '+(L[w.status]||w.status)+'  \u00B7  '+when(w.created_at);}).join('\n'):'No withdrawal requests yet.';
   }
 }
+function notifyApproved(d){
+  var seen=[];try{seen=JSON.parse(localStorage.getItem('stApprSeen'))||[];}catch(e){}
+  var fresh=d.submissions.filter(function(s){return s.status==='approved'&&seen.indexOf(s.id)<0;});
+  if(!fresh.length)return;
+  var add=0;
+  fresh.forEach(function(s){
+    seen.push(s.id);
+    if((Date.parse(s.reviewed_at)||0)>Date.now()-86400000)add+=Number(s.reward)||0;
+  });
+  try{localStorage.setItem('stApprSeen',JSON.stringify(seen));}catch(e){}
+  if(!add)return;
+  var can=Number(d.user.balance)>=100;
+  var old=document.getElementById('stPop');if(old)old.remove();
+  var p=document.createElement('div');p.id='stPop';
+  p.innerHTML='<b style="display:block;font-size:15px;margin-bottom:4px">\uD83C\uDF89 '+money(add)+' approved!</b>'+
+    (can?'You can now withdraw your earnings. Tap here to withdraw.':'Added to your wallet. You can withdraw once your balance reaches \u20A6100.');
+  var card=document.querySelector('.balpill'),top=70,right=16;
+  if(card&&card.offsetParent){var r=card.getBoundingClientRect();top=r.bottom+10;right=Math.max(12,window.innerWidth-r.right);}
+  p.style.cssText='position:fixed;z-index:99999;top:'+top+'px;right:'+right+'px;max-width:280px;background:#15803d;color:#fff;padding:14px 16px;border-radius:14px;font-size:13px;line-height:1.4;box-shadow:0 10px 30px rgba(0,0,0,.25);cursor:pointer';
+  p.onclick=function(){location.hash='#/wallet';p.remove();};
+  document.body.appendChild(p);
+  setTimeout(function(){if(p.parentNode)p.remove();},10000);
+}
 function apply(d){
+  try{notifyApproved(d);}catch(e){}
   var ok=gs('stOK')||[];
   d.submissions.forEach(function(s){
     if(s.status==='approved'&&ok.indexOf(s.task_no)<0&&window.stApproveTask){

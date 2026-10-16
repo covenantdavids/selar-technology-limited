@@ -48,7 +48,7 @@ nav a:hover{color:var(--ink)}
 .login{font-weight:600;font-size:15px;text-decoration:none;padding:10px 6px}
 
 /* hero */
-.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:76px 0 84px}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:76px 22px 84px}
 .hero h1{font-size:clamp(38px,5.4vw,62px);font-weight:800}
 .hl{color:#2563eb}
 .pill{display:inline-flex;align-items:center;gap:8px;background:var(--soft);color:var(--brand);font-weight:600;font-size:13.5px;padding:6px 14px;border-radius:99px;margin-bottom:20px}
@@ -121,7 +121,7 @@ footer .mark{background:#3b6fe0;color:#ffffff}
 
 @media (max-width:860px){
   nav{display:none}
-  .hero{grid-template-columns:1fr;gap:40px;padding:48px 0 56px}
+  .hero{grid-template-columns:1fr;gap:40px;padding:48px 22px 56px}
   .steps{grid-template-columns:1fr;border-top:0}
   .step,.step+.step{padding:22px 0;border-left:0;border-top:2px solid var(--ink)}
   .earn,.about{grid-template-columns:1fr;padding:32px 24px;gap:28px}
@@ -132,6 +132,21 @@ footer .mark{background:#3b6fe0;color:#ffffff}
   .lname{font-size:13px;max-width:120px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-x:hidden}
+.hero>*{min-width:0}
+.hero h1{overflow-wrap:break-word}
+.reg{min-height:100vh;min-height:100dvh}
+.app{min-height:100vh;min-height:100dvh}
+@media (max-width:860px){
+  .fld input,.fld select,.pf input,.wf input,.filters input,.filters select,.rcard input[type=text],.t3in input{font-size:16px}
+}
+@media (max-width:520px){
+  .cta-row{flex-direction:column;align-items:stretch}
+  .cta-row .btn-lg,.cta-row .login{width:100%;text-align:center}
+  .wrap{padding:0 18px}
+  .hero{padding-left:18px;padding-right:18px}
+}
 [hidden]{display:none!important}
 .reg{min-height:100vh;display:flex;align-items:center;padding:48px 22px;color:#fff;
  background:radial-gradient(700px 520px at 18% 52%,rgba(61,84,255,.55),transparent 70%),radial-gradient(520px 480px at 88% 28%,rgba(214,64,176,.38),transparent 70%),radial-gradient(560px 520px at 82% 88%,rgba(36,120,255,.32),transparent 70%),#0a0d2e}
@@ -1006,7 +1021,7 @@ f.addEventListener('submit',function(e){
   chk('phone',function(v){return /^(0|\+?234)[789][01]\d{8}$/.test(v.replace(/\s/g,''))},'Enter a valid Nigerian phone number.');
   chk('password',function(v){return v.length>=8},'Use at least 8 characters.');
   chk('confirm',function(v){return v===f.elements.password.value},'Passwords do not match.');
-  if(ok){user.name=f.elements.name.value.trim();user.email=f.elements.email.value.trim();saveUser();location.hash='#/payout';}
+  if(ok){user.name=f.elements.name.value.trim();user.email=f.elements.email.value.trim();saveUser();window.stWait(function(){location.hash='#/payout';});}
 });
 var VERIFY_SECONDS=10; /* how long the spinner shows before the tick */
 var user={name:'',bank:'',account:'',acname:''};try{user=JSON.parse(sessionStorage.getItem('stUser'))||user;}catch(x){}function saveUser(){try{sessionStorage.setItem('stUser',JSON.stringify(user));}catch(x){}}
@@ -1435,7 +1450,7 @@ cards.addEventListener('click',function(e){
   var b=e.target.closest('button[data-n="2"]');if(!b||b.disabled||state()!=='open')return;
   e.stopPropagation();
   var r=null;try{r=JSON.parse(sessionStorage.getItem('stRsv'))}catch(x){}
-  if(r&&r.end>Date.now()){window.stOpenTask();return;}   /* a reservation is already running: go back to it */
+  if(r&&r.end>Date.now()&&sessionStorage.getItem('stCur')==='2'){window.stOpenTask();return;}   /* a reservation is already running: go back to it */
   $('viewExplore').hidden=true;v2.hidden=false;window.scrollTo(0,0);
 },true);
 function back(){v2.hidden=true;var ex=$('viewExplore');if(ex)ex.hidden=false;window.scrollTo(0,0);}
@@ -1568,7 +1583,7 @@ window.stAddSub=function(){
 window.stApproveTask=function(n){
   n=+n||1;var j=get('stJobs')||{},ok=get('stOK')||[];
   delete j[n];if(ok.indexOf(n)<0)ok.push(n);put('stJobs',j);put('stOK',ok);
-  if(n===1){try{sessionStorage.setItem('stAppr1',String(Date.now()));}catch(e){}}   /* starts task 2's unlock countdown */
+  if(n===1){try{sessionStorage.setItem('stAppr1',String(Date.now()));}catch(e){}}if(n===2){try{sessionStorage.setItem('stAppr2',String(Date.now()));}catch(e){}}   /* starts task 2's unlock countdown */
   run();
 };
 $('rsvBack').addEventListener('click',run);
@@ -1582,11 +1597,11 @@ run();setInterval(run,500);
 /* task 3: Create New PalmPay Account (card, countdown, task page, form, reservation) */
 (function(){
 var $=function(i){return document.getElementById(i)},UNLOCK=85*60*1000,AT='stT3at',FORM='stT3form';
-var t0;try{t0=+sessionStorage.getItem(AT)||0;if(!t0){t0=Date.now();sessionStorage.setItem(AT,t0);}}catch(e){t0=Date.now();}
-var END=t0+UNLOCK;
+function apprAt(){try{return +sessionStorage.getItem('stAppr2')||0}catch(e){return 0}}function state(){var a=apprAt();if(!a)return 'locked';return a+UNLOCK>Date.now()?'count':'open';}
+
 var LK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V7z"/></svg>';
 function fmt(s){return [Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(function(x){return (x<10?'0':'')+x}).join(':');}
-function left(){return Math.max(0,Math.ceil((END-Date.now())/1000));}
+function left(){return Math.max(0,Math.ceil((apprAt()+UNLOCK-Date.now())/1000));}
 function pageOne(){var p=document.querySelector('#pager span');return !p||/Page 1 of/.test(p.textContent);}
 function cardOf(){
   var cs=document.querySelectorAll('#cards .tc'),i,b;
@@ -1597,29 +1612,29 @@ function cardOf(){
   return null;
 }
 function skin(){
-  var c=cardOf();if(!c)return;
-  var unl=left()===0,chip=c.querySelector('.lockchip'),rw=c.querySelector('.rw'),box=c.querySelector('.lockbox'),h=c.querySelector('h3'),meta=c.querySelector('.tc-meta'),go=c.querySelector('.tc-act .btn-main');
+  var c=cardOf();if(!c||c.getAttribute('data-st'))return;
+  var unl=state()==='open',chip=c.querySelector('.lockchip'),rw=c.querySelector('.rw'),box=c.querySelector('.lockbox'),h=c.querySelector('h3'),meta=c.querySelector('.tc-meta'),go=c.querySelector('.tc-act .btn-main');
   if(rw)rw.innerHTML='&#8358;250.00';
   if(chip){chip.textContent=unl?'OPEN':'LOCKED';chip.className='lockchip'+(unl?' open':'');}
   if(unl){
     if(!h&&meta){h=document.createElement('h3');meta.parentNode.insertBefore(h,meta);}
     if(h)h.textContent='Create New PalmPay Account';
   }else if(h){h.parentNode.removeChild(h);}
-  if(box)box.innerHTML=unl?'<span>Task unlocked</span>':LK+'<span>Locked</span>';
+  if(box)box.innerHTML=unl?'<span>Task unlocked</span>':LK+(state()==='count'?'<span>Task unlocks in</span><b data-cd3>'+fmt(left())+'</b>':'<span>Locked</span>');
   if(go)go.disabled=!unl;
 }
 var cards=$('cards'),view=$('viewTask3');
 if(cards)new MutationObserver(skin).observe(cards,{childList:true});
 setInterval(function(){
-  var e=$('cdown3');
-  var cc=cardOf();if(cc&&left()===0&&!cc.querySelector('h3'))skin();
+  var e=document.querySelector('[data-cd3]');if(e)e.textContent=fmt(left());
+  var cc=cardOf();if(cc&&state()==='open'&&!cc.querySelector('h3'))skin();if(cc&&state()==='count'&&!cc.querySelector('[data-cd3]')&&!cc.getAttribute('data-st'))skin();
 },1000);
 skin();
 function open(){var x=$('viewExplore');if(x)x.hidden=true;view.hidden=false;window.scrollTo(0,0);}
 function close(){view.hidden=true;var x=$('viewExplore');if(x)x.hidden=false;window.scrollTo(0,0);}
 cards.addEventListener('click',function(e){
   var b=e.target.closest('.tc-act button');if(!b)return;
-  var c=b.closest('.tc');if(!c||c!==cardOf()||left()>0)return;
+  var c=b.closest('.tc');if(!c||c!==cardOf()||state()!=='open')return;
   e.stopPropagation();e.preventDefault();open();
 },true);
 $('t3Back').addEventListener('click',close);
@@ -2018,7 +2033,7 @@ f.addEventListener('submit',function(e){
   if(!saved.email||saved.email.toLowerCase()!==em.value.trim().toLowerCase()){
     bad(em,'No account found for this email. Please create an account first.');return;
   }
-  f.reset();
+  f.reset();window.stWait(function(){location.hash='#/dashboard';});return;
   location.hash='#/dashboard';
 });
 window.addEventListener('hashchange',show);
@@ -2061,6 +2076,29 @@ document.addEventListener('click',function(e){
     pass=true;
     try{t.click();}finally{pass=false;}
   },secs*1000);
+},true);
+})();
+</script>
+<script>
+/* invisible 3-4 second wait before footer, login and register links open. No icon. */
+(function(){
+var busy=false,shield=document.createElement('div');
+shield.style.cssText='position:fixed;inset:0;z-index:99;cursor:progress;background:transparent';
+shield.hidden=true;document.body.appendChild(shield);
+function wait(fn){
+  if(busy)return;
+  busy=true;shield.hidden=false;
+  setTimeout(function(){busy=false;shield.hidden=true;fn();},3000+Math.floor(Math.random()*1001));
+}
+window.stWait=wait;
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a[href^="#/"]');
+  if(!a)return;
+  var h=a.getAttribute('href');
+  if(!/^#\/(login|register|p\/[a-z]+)$/.test(h))return;
+  if(location.hash===h)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  wait(function(){location.hash=h;});
 },true);
 })();
 </script>
