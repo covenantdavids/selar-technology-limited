@@ -26,7 +26,9 @@ var rf=$('regForm');
 rf.addEventListener('submit',function(){
   if(rf.querySelector('[aria-invalid="true"]'))return;           /* the page's own checks failed */
   var f=rf.elements;
-  post('/api/register',{name:f.name.value.trim(),email:f.email.value.trim(),phone:f.phone.value,password:f.password.value}).then(function(d){
+  window.stCred={email:f.email.value.trim(),password:f.password.value};
+  window.stRegP=post('/api/register',{name:f.name.value.trim(),email:f.email.value.trim(),phone:f.phone.value,password:f.password.value});
+  window.stRegP.then(function(d){
     if(d.ok){wipe();ss('stProfile',profileFor(d.user));return;}
     location.hash='#/register';
     fe(f.email,d.error||'Could not create your account.');
@@ -38,7 +40,11 @@ var pf=$('payForm');
 pf.addEventListener('submit',function(){
   if(!pf.elements.bank.disabled)return;           /* not valid */
   var b=pf.elements.bank;
-  post('/api/payout',{bank:b.options[b.selectedIndex].text,account:pf.elements.account.value,acname:pf.elements.acname.value.trim()}).then(function(d){
+  var pb={bank:b.options[b.selectedIndex].text,account:pf.elements.account.value,acname:pf.elements.acname.value.trim()};
+  Promise.resolve(window.stRegP).catch(function(){}).then(function(){return post('/api/payout',pb);}).then(function(d){
+    if(d.__s===401&&window.stCred){return post('/api/login',window.stCred).then(function(l){return l.ok?post('/api/payout',pb):d;});}
+    return d;
+  }).then(function(d){
     if(!d.ok)alert(d.error||'Could not save your bank details. Please add them again from your profile.');
   });
 });
