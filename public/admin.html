@@ -92,6 +92,7 @@ th{color:var(--muted);font-weight:600;font-size:12.5px}
     </section>
 
     <section id="users" hidden><h1>Users</h1>
+      <form id="rpForm" class="card" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center"><b>Reset a user's password</b><input id="rpEmail" type="email" placeholder="User email" required style="flex:1;min-width:180px;padding:9px;border:1px solid var(--line);border-radius:8px"><input id="rpPass" type="text" placeholder="New password (8+ characters)" required minlength="8" style="flex:1;min-width:180px;padding:9px;border:1px solid var(--line);border-radius:8px"><button class="btn ok" type="submit">Reset</button></form>
       <div class="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Bank</th><th>Account no.</th><th>Account name</th><th>Balance</th><th>Joined</th></tr></thead><tbody id="uBody"></tbody></table></div>
     </section>
 
@@ -188,6 +189,7 @@ $('lf').addEventListener('submit',function(e){
     $('pw').value='';load();
   });
 });
+$('rpForm').addEventListener('submit',function(e){e.preventDefault();api('/api/resetpw',{email:$('rpEmail').value,password:$('rpPass').value}).then(function(d){if(d.ok){toast('Password reset. Tell the user their new password.');$('rpPass').value='';}else toast(d.error||'Failed.');});});
 $('logout').addEventListener('click',function(){api('/api/admin/logout',{}).then(function(){D=null;$('app').hidden=true;$('login').hidden=false;});});
 
 function act(a,id,reason,okMsg){

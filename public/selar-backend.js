@@ -21,6 +21,8 @@ function money(n){return '\u20A6'+Number(n||0).toLocaleString('en-NG',{minimumFr
 function when(t){return new Date(t).toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit',hour12:true});}
 function profileFor(u){return {id:'ST-'+String(u.id).slice(0,6).toUpperCase(),since:Date.parse(u.created_at)||Date.now()};}
 
+['lgEmail','email','lgPass','password','confirm'].forEach(function(i){var e=$(i);if(e){e.setAttribute('autocapitalize','none');e.setAttribute('autocorrect','off');e.setAttribute('spellcheck','false');}});
+
 /* ---------- Register (runs after the page's own checks pass) ---------- */
 var rf=$('regForm');
 rf.addEventListener('submit',function(){

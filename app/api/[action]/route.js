@@ -60,7 +60,7 @@ export async function POST(req, { params }) {
       const name = String(b.name || '').trim();
       const email = String(b.email || '').trim().toLowerCase();
       const phoneRaw = String(b.phone || '').replace(/\s/g, '');
-      const pw = String(b.password || '');
+      const pw = String(b.password || '').trim();
       if (name.length < 3 || !EMAIL.test(email) || !PHONE.test(phoneRaw) || pw.length < 8) return fail('Please check your details and try again.');
       const { data, error } = await db.from('users')
         .insert({ name, email, phone: phoneNorm(phoneRaw), password_hash: await bcrypt.hash(pw, 10) })
@@ -68,6 +68,16 @@ export async function POST(req, { params }) {
       if (error) return error.code === '23505' ? fail('An account with this email or phone number already exists.', 409) : fail('Could not create your account. Please try again.', 500);
       await startSession(data);
       return out({ ok: true, user: pub(data) });
+    }
+
+    if (action === 'resetpw') {
+      if (!(await isAdmin())) return fail('Not allowed.', 401);
+      const b = await req.json().catch(() => ({}));
+      const email = String(b.email || '').trim().toLowerCase();
+      const pw = String(b.password || '').trim();
+      if (!EMAIL.test(email) || pw.length < 8) return fail('Enter the email and a password of at least 8 characters.');
+      const { data, error } = await db.from('users').update({ password_hash: await bcrypt.hash(pw, 10) }).eq('email', email).select('id');
+      return error || !data || !data.length ? fail('No user with that email.', 404) : out({ ok: true });
     }
 
     if (action === 'login') {
@@ -114,7 +124,7 @@ export async function POST(req, { params }) {
 
     if (action === 'password') {
       const b = await req.json().catch(() => ({}));
-      const next = String(b.next || '');
+      const next = String(b.next || '').trim();
       if (next.length < 8) return fail('Use at least 8 characters.');
       const { data: u } = await db.from('users').select('password_hash').eq('id', uid).maybeSingle();
       if (!u || !(await bcrypt.compare(String(b.current || ''), u.password_hash))) return fail('Your current password is wrong.', 401);
