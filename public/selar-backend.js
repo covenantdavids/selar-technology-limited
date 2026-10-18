@@ -356,7 +356,31 @@ function keepPending(){
     lb.className='lockbox lpend';lb.innerHTML=CLK_SVG+'<span>Reward pending</span>';
   });
 }
-setInterval(keepPending,400);
+/* tasks 2 and 3 behave like task 1: Reward pending, Start task goes back to the reservation page, locked after redeeming */
+function keepTasks(){
+  keepPending();
+  var j=gs('stJobs')||{};
+  [2,3].forEach(function(n){
+    var job=j[n];if(!job||job.fail)return;
+    var b=document.querySelector('#cards button[data-n="'+n+'"]');
+    var a=b&&b.closest('article');if(!a)return;
+    [].forEach.call(a.querySelectorAll('.tc-act button'),function(x){x.disabled=!!job.sub;});
+  });
+}
+var cardsBox=$('cards');
+if(cardsBox)new MutationObserver(keepTasks).observe(cardsBox,{childList:true});
+setInterval(keepTasks,300);
+document.addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('#cards .tc-act button[data-n]');
+  if(!b)return;
+  var n=+b.getAttribute('data-n');
+  if(n!==2&&n!==3)return;
+  var job=(gs('stJobs')||{})[n];
+  if(job&&job.fail)return;
+  if(job&&job.sub){e.preventDefault();e.stopImmediatePropagation();return;}
+  var r=gs('stRsv');
+  if(r&&r.end>Date.now()){e.preventDefault();e.stopImmediatePropagation();if(window.stOpenTask)window.stOpenTask();}
+},true);
 
 /* My Submissions: show real approved / pending / rejected tasks from the server */
 var subTab='a';
