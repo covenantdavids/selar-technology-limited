@@ -228,7 +228,21 @@ function noteBadge(){
   var n=noteGet().filter(function(x){return !x.r;}).length;
   b.textContent=n>9?'9+':n;b.style.display=n?'flex':'none';
 }
-function noteDraw(){
+function noteDraw2(){
+  var p=document.getElementById('stNotes');if(!p)return;
+  var a=noteGet();
+  p.style.width='375px';
+  var head='<div style="padding:16px;text-align:center;font-weight:700;font-size:16px;color:#111827;border-bottom:1px solid #e5e7eb">Latest changes</div>';
+  var body=a.length?a.map(function(x){
+    var pend=(x.y==='sub'||x.y==='wd');
+    var t=String(x.t||'');if(!/[.!?]$/.test(t))t+='.';
+    var m=String(x.m||'');if(m.length>230)m=m.slice(0,230).replace(/\s+\S*$/,'')+'...';
+    return '<div style="padding:12px 14px;line-height:1.5;font-size:14px;color:#6b7280;'+(x.r?'':'background:#faf5ff;')+'"><span style="display:inline-block;padding:1px 10px;border-radius:99px;font-size:13px;color:#fff;background:'+(pend?'#d97706':'#a855f7')+'">'+(pend?'Pending':'Update')+'</span> <b style="color:#111827">'+noteEsc(t)+'</b> '+noteEsc(m)+'</div>';
+  }).join(''):'<div style="padding:26px 16px;text-align:center;color:#6b7280;font-size:14px">No updates yet.</div>';
+  p.innerHTML=head+'<div style="border-left:4px solid #5b0f4e">'+body+'</div>';
+}
+function noteDraw(){noteDraw2();}
+function noteDraw_old(){
   var p=document.getElementById('stNotes');if(!p)return;
   var a=noteGet();
   p.innerHTML='<div style="padding:14px 16px;font-weight:800;border-bottom:1px solid #dde3f0">Notifications</div>'+
@@ -285,7 +299,7 @@ function noteSync(d){
   });
   var j=gs('stJobs')||{};
   Object.keys(j).forEach(function(n){
-    if(j[n].fail&&!j[n].sub)add('fail-'+n+'-'+j[n].end,'\u26A0\uFE0F','Task not completed','Time ran out on "'+(TASKN[n]||'your task')+'" before you submitted proof. Tap the task to start it again.',j[n].end,'fail');
+    if(j[n].fail&&!j[n].sub)add('fail-'+n+'-'+j[n].end,'\u26A0\uFE0F',n==3?'Verification failed':'Task not completed',n==3?'We could not verify a new PalmPay account with the details you submitted. Submit your name and the new phone number before registering your new account so we can track your task.':'Time ran out on "'+(TASKN[n]||'your task')+'" before you submitted proof. Tap the task to start it again.',j[n].end,'fail');
   });
   a.sort(function(x,y){return y.a-x.a;});
   notePut(a);noteBadge();
