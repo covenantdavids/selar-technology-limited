@@ -1,4 +1,4 @@
-/* Selar Technology Limited: connects the website to the server
+/* SureTask: connects the website to the server
    (accounts, bank details, task submissions, withdrawals, wallet). */
 (function(){
 var $=function(i){return document.getElementById(i)};

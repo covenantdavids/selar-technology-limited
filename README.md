@@ -1,4 +1,4 @@
-# Selar Technology Limited — Phase 1
+# SureTask — Phase 1
 
 This is the uploaded website converted into a runnable Next.js project. The original source is preserved verbatim at `original/selar-landing.html`. The route handler serves that source with minimal URL/navigation substitutions; its styling, text, and layout remain unchanged.
 

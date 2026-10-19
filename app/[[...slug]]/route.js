@@ -30,7 +30,7 @@ export async function GET(request) {
     .replaceAll('href="#/payout"', 'href="/payout"')
     .replaceAll('href="#/dashboard"', 'href="/dashboard"');
   html = html.replace(/function route\(\)\{.*?window\.scrollTo\(0,0\);\}/s,
-    `function route(){var h=location.pathname,r=h==='/register',p=h==='/payout',d=h.startsWith('/dashboard'),login=h==='/login';reg.hidden=!(r||login);pay.hidden=!p;dash.hidden=!d;home.hidden=r||p||d||login;document.title=r?'Create your account – Selar Technology Limited':p?'Set up payout details – Selar Technology Limited':d?'Dashboard – Selar Technology Limited':homeTitle;window.scrollTo(0,0);}`);
+    `function route(){var h=location.pathname,r=h==='/register',p=h==='/payout',d=h.startsWith('/dashboard'),login=h==='/login';reg.hidden=!(r||login);pay.hidden=!p;dash.hidden=!d;home.hidden=r||p||d||login;document.title=r?'Create your account – SureTask':p?'Set up payout details – SureTask':d?'Dashboard – SureTask':homeTitle;window.scrollTo(0,0);}`);
   html = html.replace("window.addEventListener('hashchange',route);route();", 'route();');
   html = html.replace("location.hash='#/payout'", "location.href='/payout'")
     .replace("location.hash='#/dashboard'", "location.href='/dashboard'")
