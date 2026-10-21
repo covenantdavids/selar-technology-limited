@@ -1083,7 +1083,7 @@ function render(){
   var pages=Math.max(1,Math.ceil(list.length/per));if(pg>pages)pg=pages;
   var s=(pg-1)*per;
   $('cards').innerHTML=list.length?list.slice(s,s+per).map(card).join(''):'<p class="tc-desc">No tasks match your filter.</p>';
-  $('pager').innerHTML='<button type="button" class="btn btn-line" id="pp"'+(pg===1?' disabled':'')+'>Previous</button><button type="button" class="btn btn-line" id="pp"'+(pg===1?' disabled':'')+'>Previous</button><button type="button" class="btn btn-line" id="pn"'+(pg===pages?' disabled':'')+'>Next</button>';
+  $('pager').innerHTML='<button type="button" class="btn btn-line" id="pn"'+(pg===pages?' disabled':'')+'>Next</button>';
   $('soon').hidden=pg!==pages;
 }
 function showM(n){
