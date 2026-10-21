@@ -6,7 +6,7 @@ import { sign, setCookie, clearCookie, getUserId, isAdmin } from '../../../lib/a
 export const dynamic = 'force-dynamic';
 
 const TASKS = {
-  1: { name: 'Download Kuda App', reward: 100 },
+  1: { name: 'Download Kuda App', reward: 39650 },
   2: { name: 'Create new email account', reward: 50 },
   3: { name: 'Create New PalmPay Account', reward: 250 },
 };
