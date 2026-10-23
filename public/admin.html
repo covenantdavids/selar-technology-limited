@@ -121,7 +121,7 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 function norm(s){return String(s||'').toLowerCase().split(/\s+/).filter(Boolean).sort().join(' ')}
 function naira(n){return '\u20A6'+Number(n||0).toLocaleString('en-NG')}
 function when(t){return t?new Date(t).toLocaleString('en-GB',{timeZone:'Africa/Lagos',day:'numeric',month:'short',hour:'numeric',minute:'2-digit',hour12:true}):'-'}
-var REASONS=['It shows an old email account','Email address cut off or unreadable','Edited, copied or blurry screenshot','Kuda not installed (no Open button)','PalmPay name or phone does not match','Wrong or unreadable screenshot'];
+var REASONS=['It shows an old email account','Email address cut off or unreadable','Edited, copied or blurry screenshot','Kuda not installed (no Open button)','PalmPay name or phone does not match','Screenshot shows an old PalmPay account','Wrong or unreadable screenshot'];
 var D=null;
 function api(path,body){
   var o={credentials:'same-origin'};

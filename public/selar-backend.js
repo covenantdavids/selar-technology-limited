@@ -236,7 +236,7 @@ function noteDraw2(){
   var body=a.length?a.map(function(x){
     var pend=(x.y==='sub'||x.y==='wd');
     var t=String(x.t||'');if(!/[.!?]$/.test(t))t+='.';
-    var m=String(x.m||'');if(m.length>230)m=m.slice(0,230).replace(/\s+\S*$/,'')+'...';
+    var m=String(x.m||'');if(m.length>600)m=m.slice(0,600).replace(/\s+\S*$/,'')+'...';
     return '<div style="padding:12px 14px;line-height:1.5;font-size:14px;color:#6b7280;'+(x.r?'':'background:#faf5ff;')+'"><span style="display:inline-block;padding:1px 10px;border-radius:99px;font-size:13px;color:#fff;background:'+(pend?'#d97706':'#a855f7')+'">'+(pend?'Pending':'Update')+'</span> <b style="color:#111827">'+noteEsc(t)+'</b> '+noteEsc(m)+'</div>';
   }).join(''):'<div style="padding:26px 16px;text-align:center;color:#6b7280;font-size:14px">No updates yet.</div>';
   p.innerHTML=head+'<div style="border-left:4px solid #5b0f4e">'+body+'</div>';
@@ -290,7 +290,7 @@ function noteSync(d){
     var nm=s.task_name;
     add('sub-'+s.id,'\u23F3','Reward pending','Your proof for "'+nm+'" was received. Your '+money(s.reward)+' reward is being verified and will land in your wallet once approved.',Date.parse(s.created_at),'sub');
     if(s.status==='approved')add('ok-'+s.id,'\uD83C\uDF89','Reward paid!','Great news! '+money(s.reward)+' for "'+nm+'" has been approved and paid to your wallet. You can withdraw it anytime.',Date.parse(s.reviewed_at),'ok');
-    if(s.status==='rejected')add('rej-'+s.id,'\u274C','Submission rejected','Your proof for "'+nm+'" was not accepted: '+(s.reject_reason||'proof not accepted')+'. You can start the task again.',Date.parse(s.reviewed_at),'rej');
+    if(s.status==='rejected')add('rej-'+s.id,'\u274C','Submission rejected',(s.reject_reason==='Screenshot shows an old PalmPay account'?'This phone number is already registered on PalmPay, so your screenshot for "'+nm+'" shows an old account. Register a new PalmPay account using your name and a new phone number, then submit again. Note: submit your name and the new phone number and get your task id to track your task!!!':'Your proof for "'+nm+'" was not accepted: '+(s.reject_reason||'proof not accepted')+'. You can start the task again.'),Date.parse(s.reviewed_at),'rej');
   });
   d.withdrawals.forEach(function(w){
     add('wd-'+w.id,'\uD83D\uDCB8','Withdrawal placed','Your withdrawal of '+money(w.amount)+' has been received and is being processed. It will be sent to your bank account shortly.',Date.parse(w.created_at),'wd');
@@ -328,7 +328,7 @@ ss('stAppr2',t2?String(Date.parse(t2.reviewed_at)||Date.now()):null);
     rej.forEach(function(s){seen.push(s.id);delete j[s.task_no];delete o[s.task_no];});
     ss('stJobs',j);ss('stTaskState',o);ss('stRsv',null);ss('stRsvTask',null);
     try{localStorage.setItem('stRejSeen',JSON.stringify(seen));}catch(e){}
-    alert('Your submission "'+rej[0].task_name+'" was rejected: '+(rej[0].reject_reason||'proof not accepted')+'. You can start the task again.');
+    alert(rej[0].reject_reason==='Screenshot shows an old PalmPay account'?'This phone number is already registered on PalmPay. Register a new PalmPay account using your name and a new phone number, then submit again. Note: submit your name and the new phone number and get your task id to track your task!!!':'Your submission "'+rej[0].task_name+'" was rejected: '+(rej[0].reject_reason||'proof not accepted')+'. You can start the task again.');
     location.reload();return;
   }
   var l=gs('stUser')||{};
