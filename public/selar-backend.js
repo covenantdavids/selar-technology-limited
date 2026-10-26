@@ -308,7 +308,16 @@ function noteSync(d){
   if(show)noteToast(show);
 }
 function apply(d){
-  try{noteSync(d);}catch(e){}
+  try{
+  var su=d.user,scu=gs('stUser')||{},scp=gs('stProfile')||{},snp=profileFor(su);
+  var localOnly=!su.account&&scu.account;
+  if(!localOnly&&(scu.name!==su.name||scu.email!==su.email||scu.bank!==su.bank||scu.account!==su.account||scu.acname!==su.acname||scp.id!==snp.id)){
+    ss('stUser',{name:su.name,email:su.email,bank:su.bank,account:su.account,acname:su.acname});
+    ss('stProfile',snp);
+    location.reload();return;
+  }
+}catch(e){}
+try{noteSync(d);}catch(e){}
   try{window.stSrv=d.submissions;}catch(e){}
   try{notifyApproved(d);}catch(e){}
   var ok=gs('stOK')||[];
