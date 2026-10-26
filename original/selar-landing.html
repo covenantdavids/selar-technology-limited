@@ -214,6 +214,8 @@ body{overflow-x:hidden}
 .balpill{background:#0a1224;color:#fff;border-radius:99px;padding:9px 18px;font-size:14px}
 .balpill b{font-family:var(--head)}
 .ubtn{font:inherit;font-weight:600;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 16px;cursor:pointer}
+#ubtn:has(#dName:empty){visibility:hidden}
+.atop:has(#dName:empty) .balpill{visibility:hidden}
 .ubox{position:absolute;right:0;top:52px;width:270px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:0 18px 40px -22px rgba(29,78,216,.45);z-index:3}
 .ubox h4{margin:0;font-family:var(--head);font-size:16px}
 .ubox .hint{color:var(--muted)}
@@ -691,7 +693,7 @@ body{overflow-x:hidden}
     <div class="atop">
       <button class="bell" type="button" aria-label="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 22a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5-6.7V3a2 2 0 0 0-4 0v1.3A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2z"/></svg></button>
       <div class="balpill">Balance: <b>&#8358;0.00</b></div>
-      <button class="ubtn" id="ubtn" type="button" aria-expanded="false" aria-controls="ubox"><span id="dName">there</span> &#9662;</button>
+      <button class="ubtn" id="ubtn" type="button" aria-expanded="false" aria-controls="ubox"><span id="dName"></span> &#9662;</button>
       <div class="ubox" id="ubox" hidden>
         <h4>Payout account</h4>
         <dl class="acct"><dt>Bank</dt><dd id="dBank">Not added yet</dd><dt>Account number</dt><dd id="dAcct">-</dd><dt>Account name</dt><dd id="dAcName">-</dd></dl>
@@ -1036,7 +1038,7 @@ function chk(el,test,msg){var bad=!test(el.value);errOf(el).textContent=bad?msg:
 function setLocked(l){bank.disabled=l;acct.disabled=l;nm.disabled=l;btn.disabled=l;}
 function resetPay(){clearTimeout(timer);setLocked(false);busy.hidden=true;done.hidden=true;}
 function fillDash(){
-  document.getElementById('dName').textContent=(user.name||'there').split(' ')[0];
+  document.getElementById('dName').textContent=(user.name||'').split(' ')[0];
   document.getElementById('dBank').textContent=user.bank||'Not added yet';
   document.getElementById('dAcct').textContent=user.account?'******'+user.account.slice(-4):'-';
   document.getElementById('dAcName').textContent=user.acname||'-';document.getElementById('wBank').value=user.bank||'';document.getElementById('wAcct').value=user.account||'';document.getElementById('wName').value=user.acname||'';
