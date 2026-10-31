@@ -3,7 +3,7 @@
 (function(){
 var $=function(i){return document.getElementById(i)};
 var DASH=/^#\/(dashboard|submissions|wallet|profile|redeem)/;
-var STATE=['stJobs','stRetry','stOK','stDone','stTaskState','stCur','stRsv','stRsvTask','stSubs','stAppr1','stAppr2','stT3form','stRes','stRes3'];
+var STATE=['stJobs','stRetry','stOK','stDone','stTaskState','stCur','stRsv','stRsvTask','stSubs','stAppr1','stAppr2','stT3form','stRes','stRes3','stT1'];
 
 function api(path,opt){
   opt=opt||{};opt.credentials='same-origin';
@@ -31,7 +31,7 @@ rf.addEventListener('submit',function(){
   window.stCred={email:f.email.value.trim(),password:f.password.value};
   window.stRegP=post('/api/register',{name:f.name.value.trim(),email:f.email.value.trim(),phone:f.phone.value,password:f.password.value});
   window.stRegP.then(function(d){
-    if(d.ok){wipe();ss('stProfile',profileFor(d.user));return;}
+    if(d.ok){wipe();ss('stProfile',profileFor(d.user));ss('stT1',String(Date.parse(d.user.created_at)||Date.now()));return;}
     location.hash='#/register';
     fe(f.email,d.error||'Could not create your account.');
   });
@@ -87,7 +87,7 @@ document.addEventListener('submit',function(e){
       if(!d.ok){fe(pw,d.error||'Could not log in.');return;}
       var u=d.user;
       wipe();
-      ss('stUser',{name:u.name,email:u.email,bank:u.bank,account:u.account,acname:u.acname});
+      ss('stUser',{name:u.name,email:u.email,bank:u.bank,account:u.account,acname:u.acname});ss('stT1',String(Date.parse(u.created_at)||Date.now()));
       ss('stProfile',profileFor(u));
       f.reset();
       location.hash='#/dashboard';
