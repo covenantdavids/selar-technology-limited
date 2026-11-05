@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 const TASKS = {
   1: { name: 'Download Kuda App', reward: 100 },
   2: { name: 'Create new email account', reward: 50 },
-  3: { name: 'Create New PalmPay Account', reward: 250 },
+  3: { name: 'Use PalmPay Reward', reward: 250 },
 };
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE = /^(0|\+?234)[789][01]\d{8}$/;
@@ -152,7 +152,7 @@ export async function POST(req, { params }) {
       if (file.size > 4 * 1024 * 1024) return fail('The screenshot is too large. Use one under 4 MB.');
 
       let extra = null;
-      if (taskNo === 3) {
+      if (false) {
         try {
           const x = JSON.parse(String(fd.get('extra') || '{}'));
           extra = { name: String(x.name || '').slice(0, 80), phone: String(x.phone || '').slice(0, 20) };
@@ -161,7 +161,7 @@ export async function POST(req, { params }) {
 
       const path = `${uid}/${Date.now()}-${taskNo}.jpg`;
       const up = await db.storage.from('screenshots').upload(path, Buffer.from(await file.arrayBuffer()), { contentType: file.type });
-      if (up.error) return fail('Could not upload the screenshot. Please try again.', 500);
+      if (up.error) { console.error('UPLOAD ERROR:', up.error); return fail('Could not upload the screenshot. Please try again.', 500); }
 
       const { error } = await db.from('submissions').insert({
         user_id: uid, task_no: taskNo, task_name: task.name, task_code: code,

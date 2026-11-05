@@ -218,7 +218,7 @@ function notifyApproved(d){
 }
 /* ---------- Notifications (bell) ---------- */
 var NOTE_UID=null;
-var TASKN={1:'Download Kuda App',2:'Create new email account',3:'Create New PalmPay Account'};
+var TASKN={1:'Download Kuda App',2:'Create new email account',3:'Use PalmPay Reward'};
 function noteKey(){return 'stNotes_'+NOTE_UID;}
 function noteGet(){try{return JSON.parse(localStorage.getItem(noteKey()))||[];}catch(e){return [];}}
 function notePut(a){try{localStorage.setItem(noteKey(),JSON.stringify(a.slice(0,40)));}catch(e){}}
@@ -299,7 +299,7 @@ function noteSync(d){
   });
   var j=gs('stJobs')||{};
   Object.keys(j).forEach(function(n){
-    if(j[n].fail&&!j[n].sub)add('fail-'+n+'-'+j[n].end,'\u26A0\uFE0F',n==3?'Verification failed':'Task not completed',n==3?'We could not verify a new PalmPay account with the details you submitted. Submit your name and the new phone number before registering your new account so we can track your task.':'Time ran out on "'+(TASKN[n]||'your task')+'" before you submitted proof. Tap the task to start it again.',j[n].end,'fail');
+    if(j[n].fail&&!j[n].sub)add('fail-'+n+'-'+j[n].end,'\u26A0\uFE0F','Task not completed','Time ran out on "'+(TASKN[n]||'your task')+'" before you submitted proof. Tap the task to start it again.',j[n].end,'fail');
   });
   a.sort(function(x,y){return y.a-x.a;});
   notePut(a);noteBadge();
@@ -427,6 +427,26 @@ document.addEventListener('click',function(e){
   if(b){subTab=b.getAttribute('data-t');setTimeout(subsRender,0);}
 },true);
 setInterval(subsRender,300);
+/* TASK POSTER badge on unlocked cards 1 to 3 */
+var POSTERS={1:'Toyosi Wills',2:'King\u2019s Digital',3:'Ediomo Empire'};
+(function(){
+  var st=document.createElement('style');
+  st.textContent='.tposter{display:inline-flex;flex-direction:column;align-items:center;gap:3px;background:var(--cc,#16a34a);color:#fff;border-radius:12px;padding:7px 14px 8px;line-height:1.1;white-space:nowrap}.tposter i{font-style:normal;background:rgba(0,0,0,.62);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:5px}.tposter b{display:block;font-family:var(--head);font-size:15px;font-weight:800;color:inherit;margin:0}.tc.c2 .tposter{color:#2a1d00}.tc.c2 .tposter i{background:rgba(42,29,0,.8);color:#fff}';
+  document.head.appendChild(st);
+})();
+function posters(){
+  [1,2,3].forEach(function(n){
+    var b=document.querySelector('#cards button[data-n="'+n+'"]');
+    var a=b&&b.closest('article');if(!a)return;
+    var slot=a.querySelector('.tc-top > span:first-child');if(!slot)return;
+    var unl=!!a.querySelector('h3'),has=!!slot.querySelector('.tposter');
+    if(unl&&!has)slot.innerHTML='<span class="tposter"><i>TASK POSTER</i><b>'+POSTERS[n]+'</b></span>';
+    else if(!unl&&has)slot.innerHTML='';
+  });
+}
+var cardsEl=document.getElementById('cards');
+if(cardsEl)new MutationObserver(posters).observe(cardsEl,{childList:true});
+setInterval(posters,300);
 window.addEventListener('hashchange',refresh);
 setInterval(refresh,20000);
 refresh();

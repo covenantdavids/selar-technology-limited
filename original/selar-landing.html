@@ -944,43 +944,33 @@ body{overflow-x:hidden}
 <div id="viewTask3" hidden>
   <div class="t3wrap">
     <div class="t3head">
-      <div><p class="t3lab">Task</p><h1 class="t3name">Create New PalmPay Account</h1></div>
+      <div><p class="t3lab">Task</p><h1 class="t3name">Use PalmPay Reward</h1></div>
       <div class="t3earn"><small>YOU WILL EARN</small><b>&#8358;250.00</b><span>&#8358;250.00 will be credited after approval.</span></div>
     </div>
     <div class="t3grid">
       <div class="t3card">
         <h2><span aria-hidden="true">&#128203;</span>Instructions</h2>
-        <ol class="t3steps">
-          <li>Submit your name and your new phone number, your request will be placed on the waitlist while your submission is being tracked.</li>
-          <li>Go to Google Play Store and download the official PalmPay app. Create a new PalmPay account using the same phone number you submitted on SureTask.</li>
-          <li>Complete the required PalmPay registration process and make sure the information provided is accurate and belongs to you.</li>
-          <li>Submit your name and the new phone number before registering your new account so we can track your task.</li>
-        </ol>
+        <ol class="t3steps"><li>Open the PalmPay app.</li><li>Tap Reward.</li><li>Scroll down and tap Lucky Link.</li><li>Tap the reward icon above.</li><li>Tap Use Now to use your reward to buy airtime.</li></ol>
       </div>
       <div class="t3card">
         <h2><span class="t3chk" aria-hidden="true">&#10003;</span>Proof Required</h2>
-        <p class="t3proof">Upload a screenshot of your newly created PalmPay account profile, showing your name or phone number. Do not show your password or PIN.</p>
+        <p class="t3proof">Upload a screenshot that shows you used your PalmPay reward to buy airtime (the confirmation after tapping Use Now). Do not show your password or PIN.</p>
         <div class="t3rules">
           <b>Your proof will be rejected if:</b>
-          <ul>
-            <li>The screenshot is edited, cropped to hide details, or not clear.</li>
-            <li>It does not show your name or phone number.</li>
-            <li>The name or phone number does not match what you submitted.</li>
-            <li>The screenshot belongs to someone else, or the same screenshot is used for more than one submission.</li>
-          </ul>
+          <ul><li>The screenshot is edited, cropped or not clear.</li><li>It does not show that the reward was used to buy airtime.</li><li>The screenshot belongs to someone else, or the same screenshot is used for more than one submission.</li></ul>
         </div>
       </div>
     </div>
     <form class="t3form" id="t3Form" novalidate>
-      <div class="t3fh"><h2>Create a new PalmPay account</h2><p>This must be a brand new account, not one you already use</p></div>
+      <div class="t3fh"><h2>Use your PalmPay reward</h2><p>Follow the steps above, then submit your proof when you are done</p></div>
       <div class="t3fb">
         <div class="t3safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>We never ask for your existing account, PIN, or password.</div>
-        <div class="t3f">
+        <div class="t3f" style="display:none">
           <label for="t3n">Full name</label>
           <div class="t3in" id="t3nb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><input id="t3n" type="text" placeholder="Name used on your new PalmPay account" autocomplete="name"></div>
           <span class="t3err" id="t3ne"></span>
         </div>
-        <div class="t3f">
+        <div class="t3f" style="display:none">
           <label for="t3p">New phone number</label>
           <div class="t3in" id="t3pb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg><input id="t3p" type="tel" inputmode="numeric" placeholder="Number used to sign up" autocomplete="tel"></div>
           <span class="t3hint">Must be the number on your new account, not an existing one</span>
@@ -1070,7 +1060,7 @@ var FIRST={title:'Your task',steps:'Your task instructions will appear here.'};
 var R=[100,300,200,250,120,180,220,160,280,140],T=[487,16,36,50,100,200,300,60,25,40];
 var L=[],i;
 for(i=0;i<50;i++){var t=T[i%10];L.push({n:i+1,r:(i===4?50:R[i%10]+Math.floor(i/10)*10),s:t,k:i===0?480:Math.round(t*(((i*17)%90)+5)/100)});}
-var per=10,pg=1,list=L,cd=600,tm=null,unl=false,T0=0;function calcCd(){try{var s=+sessionStorage.getItem('stT1');if(s)T0=s;}catch(e){}return Math.max(0,600-Math.floor((Date.now()-T0)/1000));}
+var per=10,pg=1,list=L,cd=600,tm=null,unl=false,T0=0;function calcCd(){try{var s=+sessionStorage.getItem('stT1');if(s)T0=s;}catch(e){}return 0;}
 var LK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V7z"/></svg>';
 function fmt(s){return [Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(function(x){return (x<10?'0':'')+x}).join(':')}
 function card(x){
@@ -1425,7 +1415,7 @@ if(rsv){fresh();if(rsv.id)showId();}
 <script>
 /* task 2 (Create New Email Account): unlocks 01:25:00 after task 1 is approved */
 (function(){
-var $=function(i){return document.getElementById(i)},DELAY=35*60*1000,KEY='stAppr1';
+var $=function(i){return document.getElementById(i)},DELAY=0,KEY='stAppr1';
 var LK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V7z"/></svg>';
 var cards=$('cards'),v2=$('viewTask2'),pb=$('prevAppr'),tm=null,last='';
 /* when task 1 is approved this is set. For now the preview button below sets it; your admin panel will do it later. */
@@ -1602,7 +1592,7 @@ run();setInterval(run,500);
 <script>
 /* task 3: Register New PalmPay Account (card, countdown, task page, form, reservation) */
 (function(){
-var $=function(i){return document.getElementById(i)},UNLOCK=85*60*1000,AT='stT3at',FORM='stT3form';
+var $=function(i){return document.getElementById(i)},UNLOCK=0,AT='stT3at',FORM='stT3form';
 function apprAt(){try{return +sessionStorage.getItem('stAppr2')||0}catch(e){return 0}}function state(){var a=apprAt();if(!a)return 'locked';return a+UNLOCK>Date.now()?'count':'open';}
 
 var LK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V7z"/></svg>';
@@ -1624,7 +1614,7 @@ function skin(){
   if(chip){chip.textContent=unl?'OPEN':'LOCKED';chip.className='lockchip'+(unl?' open':'');}
   if(unl){
     if(!h&&meta){h=document.createElement('h3');meta.parentNode.insertBefore(h,meta);}
-    if(h)h.textContent='Create New PalmPay Account';
+    if(h)h.textContent='Use PalmPay Reward';
   }else if(h){h.parentNode.removeChild(h);}
   if(box)box.innerHTML=unl?'<span>Task unlocked</span>':LK+(state()==='count'?'<span>Task unlocks in</span><b data-cd3>'+fmt(left())+'</b>':'<span>Locked</span>');
   if(go)go.disabled=!unl;
@@ -1648,13 +1638,13 @@ $('navExplore').addEventListener('click',function(){if(!view.hidden)close();});
 window.addEventListener('hashchange',function(){view.hidden=true;});
 $('t3Form').addEventListener('submit',function(e){
   e.preventDefault();
-  var n=$('t3n').value.trim(),p=$('t3p').value.replace(/\s/g,'');
-  var okN=/^[A-Za-z][A-Za-z .'-]{2,}$/.test(n),okP=/^(0|\+?234)[789][01]\d{8}$/.test(p);
+  var n='',p='';
+  var okN=true,okP=true;
   $('t3ne').textContent=okN?'':'Enter the name used on your new PalmPay account.';
   $('t3pe').textContent=okP?'':'Enter a valid Nigerian phone number.';
   $('t3nb').className='t3in'+(okN?'':' bad');$('t3pb').className='t3in'+(okP?'':' bad');
   if(!(okN&&okP))return;
-  try{sessionStorage.setItem(FORM,JSON.stringify({name:n,phone:p,at:Date.now()}));}catch(x){}
+  try{sessionStorage.removeItem(FORM);}catch(x){}
   view.hidden=true;window.__t3=true;
   var s=$('tkStart');if(s)s.click();
 });
