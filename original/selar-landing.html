@@ -437,6 +437,10 @@ body{overflow-x:hidden}
 .tksteps li::before{content:counter(k);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--soft);color:var(--brand);font-weight:700;font-size:13px;display:grid;place-items:center}
 .tkproof{margin:0;border-top:1.5px dashed var(--line);padding-top:14px;font-size:15px;line-height:1.55;color:var(--muted)}
 .tkback{margin:20px 0 0}
+.tkvid{margin:18px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
+.tkvid h2{font-size:18px;font-weight:700;margin:0 0 14px}
+.tkvidbox{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}
+.tkvidbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 @media (max-width:860px){.tkgrid{grid-template-columns:1fr}.tkearn{text-align:left}}
 /* task reservation page */
 .tkact{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:20px 0 0}
@@ -872,7 +876,8 @@ body{overflow-x:hidden}
         <p class="tkproof">Upload one screenshot that shows the Kuda app was installed successfully from the Google Play Store or the App Store.</p>
       </div>
     </div>
-    <div class="tkact"><button type="button" class="btn btn-line" id="tkBack">&larr; Back to tasks</button><button type="button" class="btn btn-main" id="tkStart">Start task</button></div>
+    <div class="tkvid"><h2>Need help? Watch how it&rsquo;s done</h2><div class="tkvidbox"><iframe src="https://www.youtube.com/embed/IEW1oKzDbg8?rel=0" title="Download Kuda App tutorial" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div></div>
+<div class="tkact"><button type="button" class="btn btn-line" id="tkBack">&larr; Back to tasks</button><button type="button" class="btn btn-main" id="tkStart">Start task</button></div>
   </div>
 </div>
 <div id="viewReserve" hidden>
@@ -937,7 +942,8 @@ body{overflow-x:hidden}
         </div>
       </div>
     </div>
-    <div class="tkact"><button type="button" class="btn btn-line" id="tk2Back">&larr; Back to tasks</button><button type="button" class="btn btn-main" id="tk2Start">Start task</button></div>
+    <div class="tkvid"><h2>Need help? Watch how it&rsquo;s done</h2><div class="tkvidbox"><iframe src="https://www.youtube.com/embed/Yd7qrToK6zI?rel=0" title="Create email account tutorial" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div></div>
+<div class="tkact"><button type="button" class="btn btn-line" id="tk2Back">&larr; Back to tasks</button><button type="button" class="btn btn-main" id="tk2Start">Start task</button></div>
   </div>
 </div>
 <button type="button" class="prevbtn" id="prevAppr" hidden>Preview only: approve task 1</button>
@@ -961,7 +967,8 @@ body{overflow-x:hidden}
         </div>
       </div>
     </div>
-    <form class="t3form" id="t3Form" novalidate>
+    <div class="tkvid"><h2>Need help? Watch how it&rsquo;s done</h2><div class="tkvidbox"><iframe src="https://www.youtube.com/embed/zT9HLy3FYdA?rel=0" title="PalmPay tutorial" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div></div>
+<form class="t3form" id="t3Form" novalidate>
       <div class="t3fh"><h2>Use your PalmPay reward</h2><p>Follow the steps above, then submit your proof when you are done</p></div>
       <div class="t3fb">
         <div class="t3safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>We never ask for your existing account, PIN, or password.</div>
