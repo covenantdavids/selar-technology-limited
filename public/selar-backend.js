@@ -448,6 +448,16 @@ var cardsEl=document.getElementById('cards');
 if(cardsEl)new MutationObserver(posters).observe(cardsEl,{childList:true});
 setInterval(posters,300);
 window.addEventListener('hashchange',refresh);
+/* Task 2 removed: keep its card hidden */
+(function(){var st=document.createElement('style');st.textContent='.tc-gone{display:none!important}';document.head.appendChild(st);})();
+function hideTask2(){
+  var b=document.querySelector('#cards button[data-n="2"]');
+  var a=b&&b.closest('article');
+  if(a)a.classList.add('tc-gone');
+}
+var cardsBox2=document.getElementById('cards');
+if(cardsBox2)new MutationObserver(hideTask2).observe(cardsBox2,{childList:true});
+setInterval(hideTask2,200);
 setInterval(refresh,20000);
 refresh();
 })();
