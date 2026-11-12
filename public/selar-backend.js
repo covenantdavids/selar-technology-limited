@@ -458,6 +458,91 @@ function hideTask2(){
 var cardsBox2=document.getElementById('cards');
 if(cardsBox2)new MutationObserver(hideTask2).observe(cardsBox2,{childList:true});
 setInterval(hideTask2,200);
+/* ---------- Task 4: Download Email App ---------- */
+TASKN[4]='Download Email App';
+POSTERS[4]='Smith Joker';
+function t4Open(){return (gs('stOK')||[]).indexOf(3)>-1;}
+function skin4(){
+  var b=document.querySelector('#cards button[data-n="4"]');
+  var a=b&&b.closest('article');if(!a||a.getAttribute('data-st'))return;
+  if(!t4Open())return;
+  var chip=a.querySelector('.lockchip'),lb=a.querySelector('.lockbox'),h=a.querySelector('h3'),meta=a.querySelector('.tc-meta');
+  if(!chip||!lb||!meta)return;
+  if(!h){h=document.createElement('h3');meta.parentNode.insertBefore(h,meta);}
+  if(h.textContent!=='Download Email App')h.textContent='Download Email App';
+  if(chip.textContent!=='OPEN'){chip.className='lockchip open';chip.textContent='OPEN';}
+  if(lb.textContent.indexOf('Task unlocked')<0){lb.className='lockbox';lb.innerHTML='<span>Task unlocked</span>';}
+  [].forEach.call(a.querySelectorAll('.tc-act button'),function(x){x.disabled=false;});
+}
+function poster4(){
+  var b=document.querySelector('#cards button[data-n="4"]');
+  var a=b&&b.closest('article');if(!a)return;
+  var slot=a.querySelector('.tc-top > span:first-child');if(!slot)return;
+  var unl=!!a.querySelector('h3'),has=!!slot.querySelector('.tposter');
+  if(unl&&!has)slot.innerHTML='<span class="tposter"><i>TASK POSTER</i><b>'+POSTERS[4]+'</b></span>';
+  else if(!unl&&has)slot.innerHTML='';
+}
+function close4(){
+  var v=document.getElementById('viewTask4');if(v)v.hidden=true;
+  var x=document.getElementById('viewExplore');if(x)x.hidden=false;
+  window.scrollTo(0,0);
+}
+function mkTask4(){
+  var v=document.getElementById('viewTask4');if(v)return v;
+  var v3=document.getElementById('viewTask3');if(!v3)return null;
+  v=document.createElement('div');v.id='viewTask4';v.hidden=true;
+  v.innerHTML='<div class="tkwrap">'+
+   '<div class="tkhead"><div><p class="tklab">Task</p><h1 class="tkname">Download Email App</h1></div>'+
+   '<div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;8,490.00</b><span>&#8358;8,490.00 will be credited after approval.</span></div></div>'+
+   '<div class="tkgrid">'+
+   '<div class="tkcard"><h2><span class="tki" aria-hidden="true">&#128203;</span>Instructions</h2><ol class="tksteps">'+
+   '<li>Open the Google Play Store (Android) or the App Store (iPhone).</li>'+
+   '<li>Search for the email app (Gmail, Outlook or Yahoo Mail).</li>'+
+   '<li>Tap Install and wait for the download to finish.</li>'+
+   '<li>When the button changes to Open, take a screenshot of the app page. Do not tap Uninstall.</li>'+
+   '</ol></div>'+
+   '<div class="tkcard"><h2><span class="tkchk" aria-hidden="true">&#10003;</span>Proof Required</h2><div class="tkproof">'+
+   '<p style="margin:0 0 14px">Upload one screenshot of the email app page in the store, showing the app name and the Open button.</p>'+
+   '<b>Your proof will be rejected if:</b><ul class="tkrej">'+
+   '<li>It shows Install or Update instead of Open.</li>'+
+   '<li>The app name is cut off or can&rsquo;t be read.</li>'+
+   '<li>The screenshot is edited, blurry, or taken from someone else&rsquo;s phone.</li>'+
+   '<li>The same screenshot is used for more than one submission.</li>'+
+   '</ul></div></div></div>'+
+   '<div class="tkact"><button type="button" class="btn btn-line" id="tk4Back">&larr; Back to tasks</button><button type="button" class="btn btn-main" id="tk4Start">Start task</button></div></div>';
+  v3.parentNode.insertBefore(v,v3.nextSibling);
+  document.getElementById('tk4Back').onclick=close4;
+  document.getElementById('tk4Start').onclick=function(){
+    v.hidden=true;window.__t4=true;
+    var s=document.getElementById('tkStart');if(s)s.click();
+  };
+  return v;
+}
+function open4(){
+  var x=document.getElementById('viewExplore');if(x)x.hidden=true;
+  var v=mkTask4();if(v)v.hidden=false;
+  window.scrollTo(0,0);
+}
+var cardsBox4=document.getElementById('cards');
+if(cardsBox4){
+  cardsBox4.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('.tc-act button[data-n="4"]');
+    if(!b||b.disabled||!t4Open())return;
+    var a=b.closest('article'),st=a&&a.getAttribute('data-st');
+    if(st&&st!=='prog')return;
+    e.stopPropagation();e.preventDefault();
+    var r=gs('stRsv');
+    if(r&&r.end>Date.now()&&gs('stCur')===4&&window.stOpenTask){window.stOpenTask();return;}
+    open4();
+  },true);
+  new MutationObserver(function(){skin4();poster4();}).observe(cardsBox4,{childList:true});
+}
+var tks4=document.getElementById('tkStart');
+if(tks4)tks4.addEventListener('click',function(){window.__t4=false;},true);
+window.addEventListener('hashchange',function(){var v=document.getElementById('viewTask4');if(v)v.hidden=true;});
+var nav4=document.getElementById('navExplore');
+if(nav4)nav4.addEventListener('click',function(){var v=document.getElementById('viewTask4');if(v&&!v.hidden)close4();});
+setInterval(function(){skin4();poster4();},300);
 setInterval(refresh,20000);
 refresh();
 })();
