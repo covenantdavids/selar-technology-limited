@@ -493,7 +493,7 @@ function mkTask4(){
   v=document.createElement('div');v.id='viewTask4';v.hidden=true;
   v.innerHTML='<div class="tkwrap">'+
    '<div class="tkhead"><div><p class="tklab">Task</p><h1 class="tkname">Download Email App</h1></div>'+
-   '<div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;8,490.00</b><span>&#8358;8,490.00 will be credited after approval.</span></div></div>'+
+   '<div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;450.00</b><span>&#8358;450.00 will be credited after approval.</span></div></div>'+
    '<div class="tkgrid">'+
    '<div class="tkcard"><h2><span class="tki" aria-hidden="true">&#128203;</span>Instructions</h2><ol class="tksteps">'+
    '<li>Open the Google Play Store (Android) or the App Store (iPhone).</li>'+
