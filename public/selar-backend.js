@@ -11,7 +11,10 @@ function api(path,opt){
     return r.json().catch(function(){return {};}).then(function(d){d.__s=r.status;return d;});
   },function(){return {ok:false,error:'No internet connection. Please try again.',__s:0};});
 }
-function post(p,b){return api(p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});}
+function post(p,b){
+  if(p==='/api/register'&&b&&!b.bank){window.stReg=b;return Promise.resolve({ok:true,__s:200,deferred:true,user:{id:'pending',created_at:new Date().toISOString()}});}
+  return api(p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
+}
 function ss(k,v){try{if(v==null)sessionStorage.removeItem(k);else sessionStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));}catch(e){}}
 function gs(k){try{return JSON.parse(sessionStorage.getItem(k));}catch(e){return null;}}
 function wipe(){STATE.forEach(function(k){ss(k,null);});}
@@ -121,7 +124,7 @@ document.addEventListener('submit',function(e){
     e.preventDefault();e.stopImmediatePropagation();
     var a=$('wAmt'),er=$('wErr'),v=parseInt(a.value,10);
     er.style.color='';
-    if(isNaN(v)||v<100){er.textContent='The minimum withdrawal is \u20A6100.';return;}
+    if(isNaN(v)||v<1000){er.textContent='The minimum withdrawal is \u20A61,000.';return;}
     if(!$('wAcct').value){er.textContent='Add your payout account first.';return;}
     if(window.stWBusy)return;window.stWBusy=true;
     var ov=document.getElementById('delayOv');if(ov)ov.hidden=false;
@@ -204,11 +207,11 @@ function notifyApproved(d){
   });
   try{localStorage.setItem('stApprSeen',JSON.stringify(seen));}catch(e){}
   if(!add)return;
-  var can=Number(d.user.balance)>=100;
+  var can=Number(d.user.balance)>=1000;
   var old=document.getElementById('stPop');if(old)old.remove();
   var p=document.createElement('div');p.id='stPop';
   p.innerHTML='<b style="display:block;font-size:15px;margin-bottom:4px">\uD83C\uDF89 '+money(add)+' approved!</b>'+
-    (can?'You can now withdraw your earnings. Tap here to withdraw.':'Added to your wallet. You can withdraw once your balance reaches \u20A6100.');
+    (can?'You can now withdraw your earnings. Tap here to withdraw.':'Added to your wallet. You can withdraw once your balance reaches \u20A61,000.');
   var card=document.querySelector('.balpill'),top=70,right=16;
   if(card&&card.offsetParent){var r=card.getBoundingClientRect();top=r.bottom+10;right=Math.max(12,window.innerWidth-r.right);}
   p.style.cssText='position:fixed;z-index:99999;top:'+top+'px;right:'+right+'px;max-width:280px;background:#15803d;color:#fff;padding:14px 16px;border-radius:14px;font-size:13px;line-height:1.4;box-shadow:0 10px 30px rgba(0,0,0,.25);cursor:pointer';
@@ -346,6 +349,7 @@ ss('stAppr2',t2?String(Date.parse(t2.reviewed_at)||Date.now()):null);
 function refresh(){
   if(!DASH.test(location.hash))return;
   api('/api/me').then(function(d){
+    if(d.__s===403&&d.need==='payout'){ss('stNeedPayout','1');if(location.hash!=='#/payout')location.hash='#/payout';return;}
     if(d.__s===401){location.hash='#/login';return;}
     if(d.ok){paint(d);apply(d);}
   });
@@ -493,7 +497,7 @@ function mkTask4(){
   v=document.createElement('div');v.id='viewTask4';v.hidden=true;
   v.innerHTML='<div class="tkwrap">'+
    '<div class="tkhead"><div><p class="tklab">Task</p><h1 class="tkname">Download Email App</h1></div>'+
-   '<div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;450.00</b><span>&#8358;450.00 will be credited after approval.</span></div></div>'+
+   '<div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;2,200.00</b><span>&#8358;2,200.00 will be credited after approval.</span></div></div>'+
    '<div class="tkgrid">'+
    '<div class="tkcard"><h2><span class="tki" aria-hidden="true">&#128203;</span>Instructions</h2><ol class="tksteps">'+
    '<li>Open the Google Play Store (Android) or the App Store (iPhone).</li>'+
@@ -543,6 +547,55 @@ window.addEventListener('hashchange',function(){var v=document.getElementById('v
 var nav4=document.getElementById('navExplore');
 if(nav4)nav4.addEventListener('click',function(){var v=document.getElementById('viewTask4');if(v&&!v.hidden)close4();});
 setInterval(function(){skin4();poster4();},300);
+/* Account is created only when payout details are confirmed */
+window.stReg=window.stReg||null;
+function payErr(el,msg){var e=el.parentNode.querySelector('.err');if(e)e.textContent=msg||'';el.setAttribute('aria-invalid',msg?'true':'false');return !msg;}
+function guardPayout(){
+  if(location.hash!=='#/payout')return;
+  if(window.stReg||gs('stNeedPayout'))return;
+  location.replace('/');
+}
+window.addEventListener('hashchange',guardPayout);
+guardPayout();
+document.addEventListener('submit',function(e){
+  var f=e.target;if(!f||f.id!=='payForm')return;
+  e.preventDefault();e.stopImmediatePropagation();
+  if(window.stPayBusy)return;
+  var bank=f.elements.bank,acct=f.elements.account,nm=f.elements.acname;
+  var a=payErr(bank,bank.value?'':'Choose your bank.');
+  var b=payErr(acct,/^\d{10}$/.test(acct.value)?'':'Enter your 10-digit account number.');
+  var c=payErr(nm,/^[A-Za-z][A-Za-z .'-]{2,}$/.test(nm.value.trim())?'':'Enter the account name as it appears at your bank.');
+  if(!(a&&b&&c))return;
+  var reg=window.stReg;
+  if(!reg&&!gs('stNeedPayout')){location.replace('/');return;}
+  var bt=$('payBtn'),busy=$('payBusy'),done=$('payDone');
+  var bankName=bank.options[bank.selectedIndex].text,acNo=acct.value,acName=nm.value.trim();
+  function lock(x){bank.disabled=x;acct.disabled=x;nm.disabled=x;bt.disabled=x;}
+  window.stPayBusy=true;lock(true);done.hidden=true;busy.hidden=false;
+  var body={bank:bankName,account:acNo,acname:acName},req;
+  if(reg){body.name=reg.name;body.email=reg.email;body.phone=reg.phone;body.password=reg.password;req=post('/api/register',body);}
+  else{req=post('/api/payout',body);}
+  var wait=new Promise(function(r){setTimeout(r,8000);});
+  Promise.all([req,wait]).then(function(x){
+    var d=x[0];window.stPayBusy=false;
+    if(!d.ok){
+      busy.hidden=true;lock(false);
+      if(reg){
+        alert(d.error||'Could not create your account. Please try again.');
+        if(d.__s===409||d.__s===400){window.stReg=null;location.hash='#/register';}
+      }else if(d.__s===401){alert('Please log in again.');location.replace('/');}
+      else{alert(d.error||'Could not save your bank details. Please try again.');}
+      return;
+    }
+    busy.hidden=true;done.hidden=false;
+    var u=d.user||{},old=gs('stUser')||{};
+    var nu={name:(reg&&reg.name)||old.name||u.name||'',email:(reg&&reg.email)||old.email||u.email||'',bank:bankName,account:acNo,acname:acName.toUpperCase()};
+    wipe();ss('stUser',nu);
+    if(u.id)ss('stProfile',profileFor(u));
+    ss('stNeedPayout',null);window.stReg=null;
+    setTimeout(function(){location.replace('/dashboard#/dashboard');},2200);
+  });
+},true);
 setInterval(refresh,20000);
 refresh();
 })();

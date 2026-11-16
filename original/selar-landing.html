@@ -611,7 +611,7 @@ body{overflow-x:hidden}
       <details><summary>What kind of tasks are there?</summary><p>Short online tasks such as following a page, trying an app, or answering a survey. Each task lists the steps and the proof you need to send.</p></details>
       <details><summary>How do I get paid?</summary><p>When your proof is approved, the reward is added to your wallet. You can then request a withdrawal to your PalmPay account.</p></details>
       <details><summary>How long does approval take?</summary><p>Submissions are reviewed within 24 hours. If a review is not done in that time, your task is approved automatically.</p></details>
-      <details><summary>What is the minimum withdrawal?</summary><p>The minimum withdrawal is ₦100.</p></details>
+      <details><summary>What is the minimum withdrawal?</summary><p>The minimum withdrawal is ₦1,000.</p></details>
       <details><summary>Can I delete my account?</summary><p>Yes. Use the Delete Account link at the bottom of any page.</p></details>
     </section>
 
@@ -702,7 +702,7 @@ body{overflow-x:hidden}
         <h4>Payout account</h4>
         <dl class="acct"><dt>Bank</dt><dd id="dBank">Not added yet</dd><dt>Account number</dt><dd id="dAcct">-</dd><dt>Account name</dt><dd id="dAcName">-</dd></dl>
         <button class="btn btn-main" type="button" disabled>Withdraw</button>
-        <p class="hint">You can withdraw once your balance reaches &#8358;100.</p>
+        <p class="hint">You can withdraw once your balance reaches &#8358;1,000.</p>
       </div>
     </div>
     <div id="viewExplore"><h1 class="atitle">Explore Tasks</h1>
@@ -721,10 +721,10 @@ body{overflow-x:hidden}
 <div id="viewWallet" hidden>
   <div class="wcard" style="margin-top:26px">
     <h2>Withdraw Funds</h2>
-    <div class="wnote"><b>Withdrawal fee: &#8358;0</b><br>The minimum withdrawal amount is <b>&#8358;100</b>. No transfer fee is deducted from your withdrawal.<br>Example: Withdraw &#8358;100 &rarr; you receive &#8358;100.</div>
+    <div class="wnote"><b>Withdrawal fee: &#8358;0</b><br>The minimum withdrawal amount is <b>&#8358;1,000</b>. No transfer fee is deducted from your withdrawal.<br>Example: Withdraw &#8358;1,000 &rarr; you receive &#8358;1,000.</div>
     <form class="wf" id="wForm" novalidate>
       <div class="wgrid">
-        <div><label for="wAmt">Amount (&#8358;)</label><input id="wAmt" type="number" min="100" inputmode="numeric" placeholder="Minimum &#8358;100"></div>
+        <div><label for="wAmt">Amount (&#8358;)</label><input id="wAmt" type="number" min="1000" inputmode="numeric" placeholder="Minimum &#8358;1,000"></div>
         <div><label for="wBank">Bank Name</label><input id="wBank" type="text" readonly placeholder="Not added yet"></div>
         <div><label for="wAcct">Account Number</label><input id="wAcct" type="text" readonly placeholder="Not added yet"></div>
       </div>
@@ -860,7 +860,7 @@ body{overflow-x:hidden}
   <div class="tkwrap">
     <div class="tkhead">
       <div><p class="tklab">Task</p><h1 class="tkname">Download Kuda App</h1></div>
-      <div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;100.00</b><span>&#8358;100.00 will be credited after approval.</span></div>
+      <div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;500.00</b><span>&#8358;500.00 will be credited after approval.</span></div>
     </div>
     <div class="tkgrid">
       <div class="tkcard">
@@ -917,7 +917,7 @@ body{overflow-x:hidden}
   <div class="tkwrap">
     <div class="tkhead">
       <div><p class="tklab">Task</p><h1 class="tkname">Create new email account</h1></div>
-      <div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;50.00</b><span>&#8358;50.00 will be credited after approval.</span></div>
+      <div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;1,250.00</b><span>&#8358;1,250.00 will be credited after approval.</span></div>
     </div>
     <div class="tkgrid">
       <div class="tkcard">
@@ -951,7 +951,7 @@ body{overflow-x:hidden}
   <div class="t3wrap">
     <div class="t3head">
       <div><p class="t3lab">Task</p><h1 class="t3name">Use PalmPay Reward</h1></div>
-      <div class="t3earn"><small>YOU WILL EARN</small><b>&#8358;250.00</b><span>&#8358;250.00 will be credited after approval.</span></div>
+      <div class="t3earn"><small>YOU WILL EARN</small><b>&#8358;750.00</b><span>&#8358;750.00 will be credited after approval.</span></div>
     </div>
     <div class="t3grid">
       <div class="t3card">
@@ -1065,8 +1065,8 @@ var $=function(id){return document.getElementById(id)};
 /* shown only after the first task unlocks and the person opens it: put the real task here */
 var FIRST={title:'Your task',steps:'Your task instructions will appear here.'};
 var R=[100,300,200,250,120,180,220,160,280,140],T=[487,16,36,50,100,200,300,60,25,40];
-var L=[],i;
-for(i=0;i<50;i++){var t=T[i%10];L.push({n:i+1,r:(i===3?450:i===4?50:R[i%10]+Math.floor(i/10)*10),s:t,k:i===0?480:Math.round(t*(((i*17)%90)+5)/100)});}
+var L=[],i;var REW=[500,1250,750,2200,800,1800,1500,2600,900,1100,2000,650,2850,1350,550,2400,1700,950,3000,1250,700,2100,1600,850,2750,1050,1900,600,2300,1450,2950,800,1150,2500,500,1850,1000,2650,1300,2250,750,1550,2900,1200,2050,1400,2800,1650,2350,1950];
+for(i=0;i<50;i++){var t=T[i%10];L.push({n:i+1,r:REW[i],s:t,k:i===0?480:Math.round(t*(((i*17)%90)+5)/100)});}
 var per=10,pg=1,list=L,cd=600,tm=null,unl=false,T0=0;function calcCd(){try{var s=+sessionStorage.getItem('stT1');if(s)T0=s;}catch(e){}return 0;}
 var LK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V7z"/></svg>';
 function fmt(s){return [Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(function(x){return (x<10?'0':'')+x}).join(':')}
@@ -1136,12 +1136,12 @@ tabs.addEventListener('click',function(e){
 </script>
 <script>
 (function(){
-var MIN=100,BAL=0;
+var MIN=1000,BAL=0;
 var f=document.getElementById('wForm'),a=document.getElementById('wAmt'),e=document.getElementById('wErr');
 f.addEventListener('submit',function(ev){
   ev.preventDefault();
   var v=parseFloat(a.value),m='';
-  if(isNaN(v)||v<MIN)m='The minimum withdrawal is \u20A6100.';
+  if(isNaN(v)||v<MIN)m='The minimum withdrawal is \u20A61,000.';
   else if(!document.getElementById('wAcct').value)m='Add your payout account first.';
   else if(v>BAL)m='Insufficient balance.';
   e.textContent=m;a.setAttribute('aria-invalid',m?'true':'false');
@@ -1434,7 +1434,7 @@ function card2(){var b=cards.querySelector('button[data-n="2"]');return b?b.clos
 function patch(){
   var c=card2();if(!c)return;
   var s=state(),chip=c.querySelector('.lockchip'),rw=c.querySelector('.rw'),lb=c.querySelector('.lockbox'),st=c.querySelector('button[data-a="s"]'),h=c.querySelector('h3');
-  rw.innerHTML='&#8358;50.00';
+  rw.innerHTML='&#8358;1,250.00';
   chip.textContent=s==='open'?'OPEN':'LOCKED';chip.classList.toggle('open',s==='open');
   if(s==='open'){if(!h){h=document.createElement('h3');h.textContent='Create new email account';c.insertBefore(h,c.querySelector('.tc-meta'));}}else if(h){h.remove();}
   lb.innerHTML=s==='open'?'<span>Task unlocked</span>':LK+(s==='count'?'<span>Task unlocks in</span><b data-cd2></b>':'<span>Locked</span>');
@@ -1617,7 +1617,7 @@ function cardOf(){
 function skin(){
   var c=cardOf();if(!c||c.getAttribute('data-st'))return;
   var unl=state()==='open',chip=c.querySelector('.lockchip'),rw=c.querySelector('.rw'),box=c.querySelector('.lockbox'),h=c.querySelector('h3'),meta=c.querySelector('.tc-meta'),go=c.querySelector('.tc-act .btn-main');
-  if(rw)rw.innerHTML='&#8358;250.00';
+  if(rw)rw.innerHTML='&#8358;750.00';
   if(chip){chip.textContent=unl?'OPEN':'LOCKED';chip.className='lockchip'+(unl?' open':'');}
   if(unl){
     if(!h&&meta){h=document.createElement('h3');meta.parentNode.insertBefore(h,meta);}

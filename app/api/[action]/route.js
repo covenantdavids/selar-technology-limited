@@ -46,6 +46,7 @@ export async function GET(req, { params }) {
     db.from('transactions').select('type,amount,note,created_at').eq('user_id', uid).order('created_at', { ascending: false }).limit(100),
   ]);
   if (!u.data) return fail('Please log in again.', 401);
+  if (!u.data.bank_name || !u.data.account_number || !u.data.account_name) return out({ ok: false, error: 'Please add your payout details first.', need: 'payout' }, 403);
   return out({ ok: true, user: pub(u.data), submissions: s.data || [], withdrawals: w.data || [], transactions: t.data || [] });
 }
 
@@ -62,8 +63,12 @@ export async function POST(req, { params }) {
       const phoneRaw = String(b.phone || '').replace(/\s/g, '');
       const pw = String(b.password || '').trim();
       if (name.length < 3 || !EMAIL.test(email) || !PHONE.test(phoneRaw) || pw.length < 8) return fail('Please check your details and try again.');
+      const bank = String(b.bank || '').trim().slice(0, 80);
+      const account = String(b.account || '');
+      const acname = String(b.acname || '').trim().slice(0, 80);
+      if (!bank || !/^\d{10}$/.test(account) || !NAME.test(acname)) return fail('Please add your payout details to finish registering.');
       const { data, error } = await db.from('users')
-        .insert({ name, email, phone: phoneNorm(phoneRaw), password_hash: await bcrypt.hash(pw, 10) })
+        .insert({ name, email, phone: phoneNorm(phoneRaw), password_hash: await bcrypt.hash(pw, 10), bank_name: bank, account_number: account, account_name: acname.toUpperCase() })
         .select(COLS).single();
       if (error) return error.code === '23505' ? fail('An account with this email or phone number already exists.', 409) : fail('Could not create your account. Please try again.', 500);
       await startSession(data);
@@ -135,12 +140,14 @@ export async function POST(req, { params }) {
     if (action === 'withdraw') {
       const b = await req.json().catch(() => ({}));
       const amount = Math.floor(Number(b.amount));
-      if (!Number.isFinite(amount) || amount < 100) return fail('The minimum withdrawal is 100 naira.');
+      if (!Number.isFinite(amount) || amount < 1000) return fail('The minimum withdrawal is 1,000 naira.');
       const { error } = await db.rpc('request_withdrawal', { p_user: uid, p_amount: amount });
       return error ? fail(msg(error)) : out({ ok: true });
     }
 
     if (action === 'submit') {
+      const { data: me } = await db.from('users').select('bank_name,account_number').eq('id', uid).maybeSingle();
+      if (!me || !me.bank_name || !me.account_number) return out({ ok: false, error: 'Please add your payout details first.', need: 'payout' }, 403);
       const fd = await req.formData();
       const taskNo = Number(fd.get('taskNo'));
       const task = TASKS[taskNo];
