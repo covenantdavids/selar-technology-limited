@@ -12,7 +12,7 @@ function api(path,opt){
   },function(){return {ok:false,error:'No internet connection. Please try again.',__s:0};});
 }
 function post(p,b){
-  if(p==='/api/register'&&b&&!b.bank){window.stReg=b;return Promise.resolve({ok:true,__s:200,deferred:true,user:{id:'pending',created_at:new Date().toISOString()}});}
+  if(p==='/api/register'&&b&&!b.bank){window.stReg=b;ss('stRegHold',b);return Promise.resolve({ok:true,__s:200,deferred:true,user:{id:'pending',created_at:new Date().toISOString()}});}
   return api(p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
 }
 function ss(k,v){try{if(v==null)sessionStorage.removeItem(k);else sessionStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));}catch(e){}}
@@ -552,7 +552,7 @@ window.stReg=window.stReg||null;
 function payErr(el,msg){var e=el.parentNode.querySelector('.err');if(e)e.textContent=msg||'';el.setAttribute('aria-invalid',msg?'true':'false');return !msg;}
 function guardPayout(){
   if(location.hash!=='#/payout')return;
-  if(window.stReg||gs('stNeedPayout'))return;
+  if(window.stReg||window.stPayDone||gs('stRegHold')||gs('stNeedPayout'))return;
   location.replace('/');
 }
 window.addEventListener('hashchange',guardPayout);
@@ -566,7 +566,7 @@ document.addEventListener('submit',function(e){
   var b=payErr(acct,/^\d{10}$/.test(acct.value)?'':'Enter your 10-digit account number.');
   var c=payErr(nm,/^[A-Za-z][A-Za-z .'-]{2,}$/.test(nm.value.trim())?'':'Enter the account name as it appears at your bank.');
   if(!(a&&b&&c))return;
-  var reg=window.stReg;
+  var reg=window.stReg||gs('stRegHold');if(!reg){var rfm=$('regForm');if(rfm&&rfm.elements.email.value&&rfm.elements.password.value){reg={name:rfm.elements.name.value.trim(),email:rfm.elements.email.value.trim(),phone:rfm.elements.phone.value,password:rfm.elements.password.value};}}
   if(!reg&&!gs('stNeedPayout')){location.replace('/');return;}
   var bt=$('payBtn'),busy=$('payBusy'),done=$('payDone');
   var bankName=bank.options[bank.selectedIndex].text,acNo=acct.value,acName=nm.value.trim();
@@ -577,7 +577,7 @@ document.addEventListener('submit',function(e){
   else{req=post('/api/payout',body);}
   var wait=new Promise(function(r){setTimeout(r,8000);});
   Promise.all([req,wait]).then(function(x){
-    var d=x[0];window.stPayBusy=false;
+    var d=x[0];if(!d.ok)window.stPayBusy=false;
     if(!d.ok){
       busy.hidden=true;lock(false);
       if(reg){
@@ -592,7 +592,7 @@ document.addEventListener('submit',function(e){
     var nu={name:(reg&&reg.name)||old.name||u.name||'',email:(reg&&reg.email)||old.email||u.email||'',bank:bankName,account:acNo,acname:acName.toUpperCase()};
     wipe();ss('stUser',nu);
     if(u.id)ss('stProfile',profileFor(u));
-    ss('stNeedPayout',null);window.stReg=null;
+    ss('stNeedPayout',null);ss('stRegHold',null);window.stPayDone=true;
     setTimeout(function(){location.replace('/dashboard#/dashboard');},2200);
   });
 },true);
