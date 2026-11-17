@@ -596,6 +596,44 @@ document.addEventListener('submit',function(e){
     setTimeout(function(){location.replace('/dashboard#/dashboard');},2200);
   });
 },true);
+/* Next / Previous buttons: loading box for 4 seconds */
+(function(){
+  var pass=false,busy=false;
+  document.addEventListener('click',function(e){
+    if(pass)return;
+    var b=e.target.closest&&e.target.closest('#pager button');
+    if(!b||b.disabled)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    if(busy)return;
+    busy=true;
+    var ov=document.getElementById('delayOv');if(ov)ov.hidden=false;
+    var id=b.id;
+    setTimeout(function(){
+      if(ov)ov.hidden=true;busy=false;
+      var t=document.getElementById(id)||b;
+      pass=true;
+      try{t.click();}finally{pass=false;}
+    },4000);
+  },true);
+})();
 setInterval(refresh,20000);
+/* Back button: task pages count as a history step, so Back returns to the tasks list */
+(function(){
+  var VIEWS=[['viewReserve','rsvBack'],['viewTask3','t3Back'],['viewTask2','tk2Back'],['viewTask','tkBack']];
+  var pushed=false,fromPop=false;
+  function open(){for(var i=0;i<VIEWS.length;i++){var v=$(VIEWS[i][0]);if(v&&!v.hidden)return VIEWS[i];}return null;}
+  function check(){
+    var o=open();
+    if(o&&!pushed){pushed=true;try{history.pushState({st:'sub'},'',location.href);}catch(e){}}
+    else if(!o&&pushed){pushed=false;if(!fromPop&&history.state&&history.state.st==='sub'){try{history.back();}catch(e){}}}
+  }
+  var mo=new MutationObserver(check);
+  VIEWS.forEach(function(x){var v=$(x[0]);if(v)mo.observe(v,{attributes:true,attributeFilter:['hidden']});});
+  window.addEventListener('hashchange',function(){pushed=false;},true);
+  window.addEventListener('popstate',function(){
+    var o=open();
+    if(o){fromPop=true;pushed=false;var b=$(o[1]);if(b)b.click();setTimeout(function(){fromPop=false;},0);}
+  });
+})();
 refresh();
 })();
