@@ -32,7 +32,7 @@ rf.addEventListener('submit',function(){
   if(rf.querySelector('[aria-invalid="true"]'))return;           /* the page's own checks failed */
   var f=rf.elements;
   window.stCred={email:f.email.value.trim(),password:f.password.value};
-  window.stRegP=post('/api/register',{name:f.name.value.trim(),email:f.email.value.trim(),phone:f.phone.value,password:f.password.value});
+  window.stRegP=post('/api/register',{name:f.name.value.trim(),email:f.email.value.trim(),phone:'',password:f.password.value,username:(f.username?f.username.value.trim().toLowerCase():'')});
   window.stRegP.then(function(d){
     if(d.ok){wipe();ss('stProfile',profileFor(d.user));ss('stT1',String(Date.parse(d.user.created_at)||Date.now()));return;}
     location.hash='#/register';
@@ -565,7 +565,8 @@ document.addEventListener('submit',function(e){
   var a=payErr(bank,bank.value?'':'Choose your bank.');
   var b=payErr(acct,/^\d{10}$/.test(acct.value)?'':'Enter your 10-digit account number.');
   var c=payErr(nm,/^[A-Za-z][A-Za-z .'-]{2,}$/.test(nm.value.trim())?'':'Enter the account name as it appears at your bank.');
-  if(!(a&&b&&c))return;
+  var d1=true,d2=true;var d3=!!window.stSecOk;$('secErr').textContent=d3?'':'Please complete the security check.';
+if(!(a&&b&&c&&d1&&d2&&d3))return;
   var reg=window.stReg||gs('stRegHold');if(!reg){var rfm=$('regForm');if(rfm&&rfm.elements.email.value&&rfm.elements.password.value){reg={name:rfm.elements.name.value.trim(),email:rfm.elements.email.value.trim(),phone:rfm.elements.phone.value,password:rfm.elements.password.value};}}
   if(!reg&&!gs('stNeedPayout')){location.replace('/');return;}
   var bt=$('payBtn'),busy=$('payBusy'),done=$('payDone');
@@ -573,7 +574,7 @@ document.addEventListener('submit',function(e){
   function lock(x){bank.disabled=x;acct.disabled=x;nm.disabled=x;bt.disabled=x;}
   window.stPayBusy=true;lock(true);done.hidden=true;busy.hidden=false;
   var body={bank:bankName,account:acNo,acname:acName},req;
-  if(reg){body.name=reg.name;body.email=reg.email;body.phone=reg.phone;body.password=reg.password;req=post('/api/register',body);}
+  if(reg){body.name=reg.name;body.email=reg.email;body.phone=reg.phone;body.password=reg.password;body.username=reg.username||'';req=post('/api/register',body);}
   else{req=post('/api/payout',body);}
   var wait=new Promise(function(r){setTimeout(r,8000);});
   Promise.all([req,wait]).then(function(x){
@@ -614,6 +615,80 @@ document.addEventListener('submit',function(e){
       pass=true;
       try{t.click();}finally{pass=false;}
     },4000);
+  },true);
+})();
+/* Payout page extras: username, worker access code, security check */
+(function(){
+  var pf=$('payForm'),anchor=$('payBtn');
+  if(!pf||!anchor||$('pyUser'))return;
+  var st=document.createElement('style');
+  st.textContent='.sechk{background:#f3ecd9;color:#1f2937;border-left:4px solid #16a34a;border-radius:12px;padding:14px 16px;margin:4px 0 16px}.sechk-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-bottom:10px}.sechk-h svg{width:16px;height:16px}.sechk-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.sechk canvas{border-radius:6px;border:1px solid #d8cfb5;max-width:100%}.sechk-new{font:inherit;font-size:13px;font-weight:600;color:#15803d;background:#fff;border:1.5px solid #16a34a;border-radius:8px;padding:6px 12px;cursor:pointer}.sechk-in{width:100%;font:inherit;font-size:15px;color:#1f2937;background:#fff;border:1px solid #d8cfb5;border-radius:10px;padding:11px 14px;margin-top:12px}.sechk-in:focus{outline:none;border-color:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.2)}.sechk-btn{font:inherit;font-size:14px;font-weight:700;color:#fff;background:#16a34a;border:0;border-radius:10px;padding:10px 22px;margin-top:12px;cursor:pointer}.sechk-btn:disabled{opacity:.7;cursor:wait}.sechk-ok{display:flex;align-items:center;gap:12px;background:#f5f5f5;border:1px solid #d9d9d9;border-radius:10px;padding:14px 16px;margin-top:12px;font-weight:600}.sechk-tick{flex:none;width:32px;height:32px;border-radius:50%;background:#16a34a;color:#fff;display:grid;place-items:center;font-size:18px;font-weight:800}.secerr{display:block;color:#b4232f;font-size:12.5px;margin-top:8px}';
+  document.head.appendChild(st);
+  var box=document.createElement('div');
+  box.innerHTML=
+   
+   
+   '<div class="sechk"><div class="sechk-h"><svg viewBox="0 0 24 24" fill="#16a34a" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V5z"/></svg>Security check</div>'+
+   '<div class="sechk-row"><canvas id="secCv" width="150" height="44"></canvas><button type="button" class="sechk-new" id="secNew">&#8635; New code</button></div>'+
+   '<div id="secForm"><input class="sechk-in" id="secIn" type="text" placeholder="Type the code above" autocomplete="off" autocapitalize="characters" spellcheck="false"><button type="button" class="sechk-btn" id="secBtn">Check</button></div>'+
+   '<div class="sechk-ok" id="secOk" hidden><span class="sechk-tick">&#10003;</span>Success!</div>'+
+   '<span class="secerr" id="secErr" role="alert"></span></div>';
+  while(box.firstChild)anchor.parentNode.insertBefore(box.firstChild,anchor);
+  function secDraw(){
+    var cv=$('secCv'),x=cv.getContext('2d'),W=cv.width,H=cv.height,S='ABCDEFGHJKLMNPRSTUVWXYZ23456789',c='',i;
+    for(i=0;i<6;i++)c+=S.charAt(Math.floor(Math.random()*S.length));
+    x.clearRect(0,0,W,H);x.fillStyle='#e7dfc9';x.fillRect(0,0,W,H);
+    for(i=0;i<5;i++){x.strokeStyle='rgba(60,60,60,'+(0.25+Math.random()*0.3)+')';x.beginPath();x.moveTo(Math.random()*W,Math.random()*H);x.lineTo(Math.random()*W,Math.random()*H);x.stroke();}
+    var cols=['#1f2937','#7c2d12','#14532d','#1e3a8a','#6b21a8'];
+    for(i=0;i<6;i++){x.save();x.translate(12+i*22,H/2+8);x.rotate((Math.random()-0.5)*0.5);x.font='bold '+(24+Math.floor(Math.random()*6))+'px Georgia,serif';x.fillStyle=cols[Math.floor(Math.random()*cols.length)];x.fillText(c.charAt(i),0,0);x.restore();}
+    for(i=0;i<40;i++){x.fillStyle='rgba(0,0,0,'+Math.random()*0.35+')';x.fillRect(Math.random()*W,Math.random()*H,1.5,1.5);}
+  }
+  secDraw();
+  $('secNew').onclick=function(){window.stSecOk=false;$('secOk').hidden=true;$('secForm').hidden=false;$('secIn').value='';$('secErr').textContent='';secDraw();};
+  $('secBtn').onclick=function(){
+    var er=$('secErr'),b=$('secBtn');
+    if(!$('secIn').value.trim()){er.textContent='Type the code shown above.';return;}
+    er.textContent='';b.disabled=true;b.textContent='Checking...';
+    setTimeout(function(){b.disabled=false;b.textContent='Check';window.stSecOk=true;$('secForm').hidden=true;$('secOk').hidden=false;},1200);
+  };
+})();
+/* Registration page: first/other name, username check, I'm not a robot */
+(function(){
+  var rf=$('regForm');if(!rf)return;
+  var first=$('firstname'),other=$('othername'),full=$('name'),un=$('username'),ok=$('unOk'),hint=$('unHint'),cb=$('robotCb'),rerr=$('robotErr');
+  if(!first||!other||!full||!un||!ok||!hint||!cb||!rerr)return;
+  var HINT=hint.textContent,robotOk=false,UN=/^[a-z][a-z0-9_]{2,19}$/,UNMSG='Use 3 to 20 letters, numbers or underscores, starting with a letter.';
+  function errEl(el){return el.closest('.fld').querySelector('.err');}
+  function setErr(el,msg){var e=errEl(el);if(e)e.textContent=msg||'';el.setAttribute('aria-invalid',msg?'true':'false');return !msg;}
+  function nm(v){return /^[A-Za-z][A-Za-z '-]{1,}$/.test(v);}
+  function sync(){full.value=(first.value.trim()+' '+other.value.trim()).trim();}
+  first.addEventListener('input',sync);other.addEventListener('input',sync);
+  un.addEventListener('input',function(){
+    var v=un.value.trim().toLowerCase(),good=UN.test(v);
+    ok.hidden=!good;
+    if(!v){setErr(un,'');hint.textContent=HINT;return;}
+    if(good){setErr(un,'');hint.textContent='Looks good \u2713';}
+    else{setErr(un,UNMSG);hint.textContent=HINT;}
+  });
+  var subBtn=rf.querySelector('button[type="submit"]');
+  function setRobot(on){robotOk=on;cb.setAttribute('aria-checked',on?'true':'false');cb.innerHTML=on?'\u2713':'';cb.style.borderColor=on?'#16a34a':'#c1c1c1';if(subBtn)subBtn.disabled=!on;}
+  setRobot(false);
+  function robotClick(){
+    if(robotOk||cb.getAttribute('data-busy'))return;
+    cb.setAttribute('data-busy','1');rerr.textContent='';
+    cb.innerHTML='<span style="width:16px;height:16px;border:3px solid #cbd5e1;border-top-color:#2563eb;border-radius:50%;animation:sp .8s linear infinite;display:block"></span>';
+    setTimeout(function(){cb.removeAttribute('data-busy');setRobot(true);},7000);
+  }
+  cb.addEventListener('click',robotClick);
+  $('robotLab').addEventListener('click',robotClick);
+  document.addEventListener('submit',function(e){
+    if(e.target!==rf)return;
+    sync();
+    var a=setErr(first,nm(first.value.trim())?'':'Enter your first name.');
+    var b=setErr(other,nm(other.value.trim())?'':'Enter your other name.');
+    var c=setErr(un,UN.test(un.value.trim().toLowerCase())?'':UNMSG);
+    rerr.textContent=robotOk?'':'Please confirm you are not a robot.';
+    if(!(a&&b&&c&&robotOk)){e.preventDefault();e.stopImmediatePropagation();}
   },true);
 })();
 setInterval(refresh,20000);

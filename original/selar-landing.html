@@ -647,11 +647,16 @@ body{overflow-x:hidden}
     </div>
     <form class="reg-card" id="regForm" novalidate>
     <h2>Create your account</h2><p class="sub">Step 1 of 2: your details</p>
-    <div class="fld"><label for="name">Full Name</label><input id="name" name="name" type="text" placeholder="John Doe" autocomplete="name"><span class="err" aria-live="polite"></span></div>
-    <div class="fld"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"><span class="err" aria-live="polite"></span></div>
-    <div class="fld"><label for="phone">Phone Number</label><input id="phone" name="phone" type="tel" placeholder="e.g. 08012345678" autocomplete="tel"><span class="err" aria-live="polite"></span></div>
+    <div class="fld"><label for="firstname">First name</label><input id="firstname" name="firstname" type="text" placeholder="e.g. Ada" autocomplete="given-name"><span class="err" aria-live="polite"></span></div>
+    <div class="fld"><label for="othername">Other name</label><input id="othername" name="othername" type="text" placeholder="e.g. Chinwe" autocomplete="family-name"><span class="err" aria-live="polite"></span></div>
+    <div class="fld" style="display:none"><input id="name" name="name" type="text" tabindex="-1"><span class="err"></span></div>
+    <div class="fld"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"><span class="err" aria-live="polite"></span></div>
+    <div class="fld"><label for="username">Username</label><div style="position:relative"><input id="username" name="username" type="text" maxlength="20" placeholder="e.g. ada_chinwe" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" style="padding-right:46px"><span id="unOk" hidden style="position:absolute;right:12px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:#16a34a;color:#fff;display:grid;place-items:center;font-size:14px;font-weight:800">&#10003;</span></div><span class="hint" id="unHint">e.g. ada_chinwe or john2026 (3 to 20 letters, numbers or underscore, start with a letter)</span><span class="err" aria-live="polite"></span></div>
+    <div class="fld" style="display:none"><input id="phone" name="phone" type="hidden" value="08000000000"><span class="err"></span></div>
     <div class="fld"><label for="password">Password</label><input id="password" name="password" type="password" placeholder="At least 8 characters" autocomplete="new-password"><span class="err" aria-live="polite"></span></div>
     <div class="fld"><label for="confirm">Confirm Password</label><input id="confirm" name="confirm" type="password" placeholder="Repeat your password" autocomplete="new-password"><span class="err" aria-live="polite"></span></div>
+    <div style="display:flex;align-items:center;gap:14px;background:#f9f9f9;border:1px solid #d3d3d3;border-radius:6px;padding:14px 16px;margin:4px 0 6px;color:#222"><button type="button" id="robotCb" role="checkbox" aria-checked="false" aria-label="I'm not a robot" style="flex:none;width:28px;height:28px;border:2px solid #c1c1c1;border-radius:4px;background:#fff;cursor:pointer;display:grid;place-items:center;padding:0;color:#16a34a;font-size:18px;font-weight:800"></button><label id="robotLab" style="font-size:14px;font-weight:600;color:#222;cursor:pointer;margin:0">I'm not a robot</label><span style="margin-left:auto;text-align:center;font-size:9px;color:#666;line-height:1.2">Security<br>check</span></div>
+    <span class="err" id="robotErr" aria-live="polite" style="margin:0 0 12px"></span>
     <p class="terms">By creating an account, you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>.</p>
     <button class="reg-btn" type="submit">Create Account</button>
     

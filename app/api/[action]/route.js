@@ -62,15 +62,19 @@ export async function POST(req, { params }) {
       const email = String(b.email || '').trim().toLowerCase();
       const phoneRaw = String(b.phone || '').replace(/\s/g, '');
       const pw = String(b.password || '').trim();
-      if (name.length < 3 || !EMAIL.test(email) || !PHONE.test(phoneRaw) || pw.length < 8) return fail('Please check your details and try again.');
+      if (name.length < 3 || !EMAIL.test(email) ||  pw.length < 8) return fail('Please check your details and try again.');
       const bank = String(b.bank || '').trim().slice(0, 80);
       const account = String(b.account || '');
       const acname = String(b.acname || '').trim().slice(0, 80);
       if (!bank || !/^\d{10}$/.test(account) || !NAME.test(acname)) return fail('Please add your payout details to finish registering.');
+      const username = String(b.username || '').trim().toLowerCase();
+      if (!/^[a-z][a-z0-9_]{2,19}$/.test(username)) return fail('Use a username of 3 to 20 letters, numbers or underscores, starting with a letter.', 400);
+      const { data: taken } = await db.from('users').select('id').eq('username', username).maybeSingle();
+      if (taken) return fail('That username is already taken. Please choose another.', 409);
       const { data, error } = await db.from('users')
-        .insert({ name, email, phone: phoneNorm(phoneRaw), password_hash: await bcrypt.hash(pw, 10), bank_name: bank, account_number: account, account_name: acname.toUpperCase() })
+        .insert({ name, email,  password_hash: await bcrypt.hash(pw, 10), username, bank_name: bank, account_number: account, account_name: acname.toUpperCase() })
         .select(COLS).single();
-      if (error) return error.code === '23505' ? fail('An account with this email or phone number already exists.', 409) : fail('Could not create your account. Please try again.', 500);
+      if (error) return error.code === '23505' ? fail('An account with this email already exists.', 409) : fail('Could not create your account. Please try again.', 500);
       await startSession(data);
       return out({ ok: true, user: pub(data) });
     }
@@ -113,7 +117,7 @@ export async function POST(req, { params }) {
       const account = String(b.account || '');
       const acname = String(b.acname || '').trim().slice(0, 80);
       if (!bank || !/^\d{10}$/.test(account) || !NAME.test(acname)) return fail('Check your bank details.');
-      const { error } = await db.from('users').update({ bank_name: bank, account_number: account, account_name: acname.toUpperCase() }).eq('id', uid);
+      const { error } = await db.from('users').update({ bank_name: bank, account_number: account, account_name: acname.toUpperCase(), ...(/^[a-z0-9_]{3,20}$/.test(String(b.username || '').trim().toLowerCase()) ? { username: String(b.username).trim().toLowerCase() } : {}) }).eq('id', uid);
       return error ? fail('Could not save your bank details.', 500) : out({ ok: true });
     }
 
