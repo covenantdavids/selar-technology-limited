@@ -293,7 +293,7 @@ function noteSync(d){
     var nm=s.task_name;
     add('sub-'+s.id,'\u23F3','Reward pending','Your proof for "'+nm+'" was received. Your '+money(s.reward)+' reward is being verified and will land in your wallet once approved.',Date.parse(s.created_at),'sub');
     if(s.status==='approved')add('ok-'+s.id,'\uD83C\uDF89','Reward paid!','Great news! '+money(s.reward)+' for "'+nm+'" has been approved and paid to your wallet. You can withdraw it anytime.',Date.parse(s.reviewed_at),'ok');
-    if(s.status==='rejected')add('rej-'+s.id,'\u274C','Submission rejected',(s.reject_reason==='Screenshot shows an old PalmPay account'?'This phone number is already registered on PalmPay, so your screenshot for "'+nm+'" shows an old account. Register a new PalmPay account using your name and a new phone number, then submit again. Note: submit your name and the new phone number and get your task id to track your task!!!':'Your proof for "'+nm+'" was not accepted: '+(s.reject_reason||'proof not accepted')+'. You can start the task again.'),Date.parse(s.reviewed_at),'rej');
+    if(s.status==='rejected')add('rej-'+s.id,'\u274C','Submission rejected',(OPAYMSG[s.reject_reason]?OPAYMSG[s.reject_reason]:s.reject_reason==='Screenshot shows an old PalmPay account'?'This phone number is already registered on PalmPay, so your screenshot for "'+nm+'" shows an old account. Register a new PalmPay account using your name and a new phone number, then submit again. Note: submit your name and the new phone number and get your task id to track your task!!!':'Your proof for "'+nm+'" was not accepted: '+(s.reject_reason||'proof not accepted')+'. You can start the task again.'),Date.parse(s.reviewed_at),'rej');
   });
   d.withdrawals.forEach(function(w){
     add('wd-'+w.id,'\uD83D\uDCB8','Withdrawal placed','Your withdrawal of '+money(w.amount)+' has been received and is being processed. It will be sent to your bank account shortly.',Date.parse(w.created_at),'wd');
@@ -340,7 +340,7 @@ ss('stAppr2',t2?String(Date.parse(t2.reviewed_at)||Date.now()):null);
     rej.forEach(function(s){seen.push(s.id);delete j[s.task_no];delete o[s.task_no];});
     ss('stJobs',j);ss('stTaskState',o);ss('stRsv',null);ss('stRsvTask',null);
     try{localStorage.setItem('stRejSeen',JSON.stringify(seen));}catch(e){}
-    alert(rej[0].reject_reason==='Screenshot shows an old PalmPay account'?'This phone number is already registered on PalmPay. Register a new PalmPay account using your name and a new phone number, then submit again. Note: submit your name and the new phone number and get your task id to track your task!!!':'Your submission "'+rej[0].task_name+'" was rejected: '+(rej[0].reject_reason||'proof not accepted')+'. You can start the task again.');
+    alert(OPAYMSG[rej[0].reject_reason]?OPAYMSG[rej[0].reject_reason]:rej[0].reject_reason==='Screenshot shows an old PalmPay account'?'This phone number is already registered on PalmPay. Register a new PalmPay account using your name and a new phone number, then submit again. Note: submit your name and the new phone number and get your task id to track your task!!!':'Your submission "'+rej[0].task_name+'" was rejected: '+(rej[0].reject_reason||'proof not accepted')+'. You can start the task again.');
     location.reload();return;
   }
   var l=gs('stUser')||{};
@@ -463,9 +463,11 @@ var cardsBox2=document.getElementById('cards');
 if(cardsBox2)new MutationObserver(hideTask2).observe(cardsBox2,{childList:true});
 setInterval(hideTask2,200);
 /* ---------- Task 4: Download Email App ---------- */
-TASKN[4]='Download Email App';
-POSTERS[4]='Smith Joker';
-function t4Open(){return (gs('stOK')||[]).indexOf(3)>-1;}
+TASKN[4]='Register New OPay Account';
+var OPAYMSG={'Registered without the referral code':'You did not use our referral code when you registered your OPay account, so your reward could not be approved. Register a new OPay account with a new phone number, and enter the referral code while you register.','Screenshot shows an old OPay account':'Your screenshot shows an OPay account that was already registered. Register a brand new OPay account with a new phone number, enter the referral code, then submit again.'};
+POSTERS[4]='Timiyelin Santos';
+var OPAY_CODE='9122645672';
+function t4Open(){return !!OPAY_CODE&&(gs('stOK')||[]).indexOf(3)>-1;}
 function skin4(){
   var b=document.querySelector('#cards button[data-n="4"]');
   var a=b&&b.closest('article');if(!a||a.getAttribute('data-st'))return;
@@ -473,7 +475,7 @@ function skin4(){
   var chip=a.querySelector('.lockchip'),lb=a.querySelector('.lockbox'),h=a.querySelector('h3'),meta=a.querySelector('.tc-meta');
   if(!chip||!lb||!meta)return;
   if(!h){h=document.createElement('h3');meta.parentNode.insertBefore(h,meta);}
-  if(h.textContent!=='Download Email App')h.textContent='Download Email App';
+  if(h.textContent!=='Register New OPay Account')h.textContent='Register New OPay Account';
   if(chip.textContent!=='OPEN'){chip.className='lockchip open';chip.textContent='OPEN';}
   if(lb.textContent.indexOf('Task unlocked')<0){lb.className='lockbox';lb.innerHTML='<span>Task unlocked</span>';}
   [].forEach.call(a.querySelectorAll('.tc-act button'),function(x){x.disabled=false;});
@@ -492,6 +494,59 @@ function close4(){
   window.scrollTo(0,0);
 }
 function mkTask4(){
+  var v=document.getElementById('viewTask4');if(v)return v;
+  var v3=document.getElementById('viewTask3');if(!v3)return null;
+  if(!document.getElementById('opStyle')){
+    var sx=document.createElement('style');sx.id='opStyle';
+    sx.textContent='.opref{margin:18px 0 0;background:#fff8e1;border:2px solid #f2b640;border-radius:16px;padding:18px 20px;color:#5b3a00}.opref h2{font-size:18px;font-weight:800;margin:0 0 6px;color:#7a4a00}.opref p{margin:0 0 12px;font-size:15px;line-height:1.5}.oprow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.oprow code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:clamp(20px,5vw,28px);font-weight:800;letter-spacing:.08em;background:#fff;border:1px solid #f2b640;border-radius:12px;padding:8px 16px;color:#1e2a8a;overflow-wrap:anywhere}.opref .opwarn{margin:14px 0 0;background:#fde8e8;border:1px solid #f5c2c7;border-radius:10px;padding:10px 12px;color:#7f1d1d;font-weight:600}.opok{color:#15803d;font-weight:700;font-size:14px}';
+    document.head.appendChild(sx);
+  }
+  v=document.createElement('div');v.id='viewTask4';v.hidden=true;
+  v.innerHTML='<div class="tkwrap">'+
+   '<div class="tkhead"><div><p class="tklab">Task</p><h1 class="tkname">Register New OPay Account</h1></div>'+
+   '<div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;3,000.00</b><span>&#8358;3,000.00 will be credited after approval.</span></div></div>'+
+   '<div class="opref"><h2>Important: use our referral code</h2><p>Enter this referral code when you register on OPay:</p>'+
+   '<div class="oprow"><code id="opCode"></code><button type="button" class="rsvcopy" id="opCopy" aria-label="Copy referral code" title="Copy"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button><span class="opok" id="opOk" role="status" hidden>Copied</span></div>'+
+   '<p class="opwarn">If you register without this code, your task will be rejected and you will not receive your &#8358;3,000 reward. The code can&rsquo;t be added after you sign up, so enter it while you register.</p></div>'+
+   '<div class="tkgrid">'+
+   '<div class="tkcard"><h2><span class="tki" aria-hidden="true">&#128203;</span>Instructions</h2><ol class="tksteps">'+
+   '<li>Download the official OPay app from the Google Play Store or the App Store.</li>'+
+   '<li>Tap Sign up and create a brand new OPay account with a new phone number that has never been used on OPay.</li>'+
+   '<li>Do not use an account you already have or an existing account.</li>'+
+   '<li>Complete the registration and wait until you reach your OPay home screen.</li>'+
+   '<li>Do not share your password, OTP, BVN, card details, or any personal bank information in your screenshots.</li>'+
+   '</ol></div>'+
+   '<div class="tkcard"><h2><span class="tkchk" aria-hidden="true">&#10003;</span>Proof Required</h2><div class="tkproof">'+
+   '<p style="margin:0 0 14px">Upload one screenshot of your new OPay profile, showing your name or phone number. Do not show your PIN or password.</p>'+
+   '<b>Your proof will be rejected if:</b><ul class="tkrej">'+
+   '<li>You registered without the referral code.</li>'+
+   '<li>The screenshot shows an old OPay account.</li>'+
+   '<li>The screenshot is edited, cropped to hide details or blurry.</li>'+
+   '<li>It doesn&rsquo;t show your name or phone number.</li>'+
+   '<li>It belongs to someone else, or the same screenshot is used for more than one submission.</li>'+
+   '</ul></div></div></div>'+
+   '<div class="tkact"><button type="button" class="btn btn-line" id="tk4Back">&larr; Back to tasks</button><button type="button" class="btn btn-main" id="tk4Start">Start task</button></div></div>';
+  v3.parentNode.insertBefore(v,v3.nextSibling);
+  document.getElementById('opCode').textContent=OPAY_CODE;
+  document.getElementById('opCopy').onclick=function(){
+    var okEl=document.getElementById('opOk');
+    function done(){okEl.hidden=false;setTimeout(function(){okEl.hidden=true;},2500);}
+    function fallback(){
+      var ta=document.createElement('textarea');ta.value=OPAY_CODE;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;opacity:0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');done();}catch(e){}
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(OPAY_CODE).then(done,fallback);}else{fallback();}
+  };
+  document.getElementById('tk4Back').onclick=close4;
+  document.getElementById('tk4Start').onclick=function(){
+    v.hidden=true;window.__t4=true;
+    var s=document.getElementById('tkStart');if(s)s.click();
+  };
+  return v;
+}
+function mkTask4_old(){
   var v=document.getElementById('viewTask4');if(v)return v;
   var v3=document.getElementById('viewTask3');if(!v3)return null;
   v=document.createElement('div');v.id='viewTask4';v.hidden=true;

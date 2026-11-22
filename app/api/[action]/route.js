@@ -6,11 +6,11 @@ import { sign, setCookie, clearCookie, getUserId, isAdmin } from '../../../lib/a
 export const dynamic = 'force-dynamic';
 
 const TASKS = {
-  1: { name: 'Download Kuda App', reward: 100 },
+  1: { name: 'Download Kuda App', reward: 500 },
   2: { name: 'Create new email account', reward: 50 },
-  3: { name: 'Use PalmPay Reward', reward: 250 },
+  3: { name: 'Use PalmPay Reward', reward: 750 },
 };
-TASKS[4] = { name: 'Download Email App', reward: 450 }; const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+TASKS[4] = { name: 'Register New OPay Account', reward: 3000 }; const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE = /^(0|\+?234)[789][01]\d{8}$/;
 const NAME = /^[A-Za-z][A-Za-z .'-]{2,}$/;
 const COLS = 'id,name,email,phone,bank_name,account_number,account_name,balance,created_at';
