@@ -142,9 +142,10 @@ export async function POST(req, { params }) {
     }
 
     if (action === 'withdraw') {
+      { const bb = await req.clone().json().catch(() => ({})); if (!(Math.floor(Number(bb.amount)) >= 5000)) return fail('The minimum withdrawal is 5,000 naira.'); }
       const b = await req.json().catch(() => ({}));
       const amount = Math.floor(Number(b.amount));
-      if (!Number.isFinite(amount) || amount < 1000) return fail('The minimum withdrawal is 1,000 naira.');
+      if (!Number.isFinite(amount) || amount < 5000) return fail('The minimum withdrawal is 5,000 naira.');
       const { error } = await db.rpc('request_withdrawal', { p_user: uid, p_amount: amount });
       return error ? fail(msg(error)) : out({ ok: true });
     }

@@ -124,7 +124,7 @@ document.addEventListener('submit',function(e){
     e.preventDefault();e.stopImmediatePropagation();
     var a=$('wAmt'),er=$('wErr'),v=parseInt(a.value,10);
     er.style.color='';
-    if(isNaN(v)||v<1000){er.textContent='The minimum withdrawal is \u20A61,000.';return;}
+    if(isNaN(v)||v<5000){er.textContent='The minimum withdrawal is \u20A65,000.';return;}
     if(!$('wAcct').value){er.textContent='Add your payout account first.';return;}
     if(window.stWBusy)return;window.stWBusy=true;
     var ov=document.getElementById('delayOv');if(ov)ov.hidden=false;
@@ -207,11 +207,11 @@ function notifyApproved(d){
   });
   try{localStorage.setItem('stApprSeen',JSON.stringify(seen));}catch(e){}
   if(!add)return;
-  var can=Number(d.user.balance)>=1000;
+  var can=Number(d.user.balance)>=5000;
   var old=document.getElementById('stPop');if(old)old.remove();
   var p=document.createElement('div');p.id='stPop';
   p.innerHTML='<b style="display:block;font-size:15px;margin-bottom:4px">\uD83C\uDF89 '+money(add)+' approved!</b>'+
-    (can?'You can now withdraw your earnings. Tap here to withdraw.':'Added to your wallet. You can withdraw once your balance reaches \u20A61,000.');
+    (can?'You can now withdraw your earnings. Tap here to withdraw.':'Added to your wallet. You can withdraw once your balance reaches \u20A65,000.');
   var card=document.querySelector('.balpill'),top=70,right=16;
   if(card&&card.offsetParent){var r=card.getBoundingClientRect();top=r.bottom+10;right=Math.max(12,window.innerWidth-r.right);}
   p.style.cssText='position:fixed;z-index:99999;top:'+top+'px;right:'+right+'px;max-width:280px;background:#15803d;color:#fff;padding:14px 16px;border-radius:14px;font-size:13px;line-height:1.4;box-shadow:0 10px 30px rgba(0,0,0,.25);cursor:pointer';

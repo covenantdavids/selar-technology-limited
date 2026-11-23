@@ -611,7 +611,7 @@ body{overflow-x:hidden}
       <details><summary>What kind of tasks are there?</summary><p>Short online tasks such as following a page, trying an app, or answering a survey. Each task lists the steps and the proof you need to send.</p></details>
       <details><summary>How do I get paid?</summary><p>When your proof is approved, the reward is added to your wallet. You can then request a withdrawal to your PalmPay account.</p></details>
       <details><summary>How long does approval take?</summary><p>Submissions are reviewed within 24 hours. If a review is not done in that time, your task is approved automatically.</p></details>
-      <details><summary>What is the minimum withdrawal?</summary><p>The minimum withdrawal is ₦1,000.</p></details>
+      <details><summary>What is the minimum withdrawal?</summary><p>The minimum withdrawal is ₦5,000.</p></details>
       <details><summary>Can I delete my account?</summary><p>Yes. Use the Delete Account link at the bottom of any page.</p></details>
     </section>
 
@@ -707,7 +707,7 @@ body{overflow-x:hidden}
         <h4>Payout account</h4>
         <dl class="acct"><dt>Bank</dt><dd id="dBank">Not added yet</dd><dt>Account number</dt><dd id="dAcct">-</dd><dt>Account name</dt><dd id="dAcName">-</dd></dl>
         <button class="btn btn-main" type="button" disabled>Withdraw</button>
-        <p class="hint">You can withdraw once your balance reaches &#8358;1,000.</p>
+        <p class="hint">You can withdraw once your balance reaches &#8358;5,000.</p>
       </div>
     </div>
     <div id="viewExplore"><h1 class="atitle">Explore Tasks</h1>
@@ -726,10 +726,10 @@ body{overflow-x:hidden}
 <div id="viewWallet" hidden>
   <div class="wcard" style="margin-top:26px">
     <h2>Withdraw Funds</h2>
-    <div class="wnote"><b>Withdrawal fee: &#8358;0</b><br>The minimum withdrawal amount is <b>&#8358;1,000</b>. No transfer fee is deducted from your withdrawal.<br>Example: Withdraw &#8358;1,000 &rarr; you receive &#8358;1,000.</div>
+    <div class="wnote"><b>Withdrawal fee: &#8358;0</b><br>The minimum withdrawal amount is <b>&#8358;5,000</b>. No transfer fee is deducted from your withdrawal.<br>Example: Withdraw &#8358;5,000 &rarr; you receive &#8358;5,000.</div>
     <form class="wf" id="wForm" novalidate>
       <div class="wgrid">
-        <div><label for="wAmt">Amount (&#8358;)</label><input id="wAmt" type="number" min="1000" inputmode="numeric" placeholder="Minimum &#8358;1,000"></div>
+        <div><label for="wAmt">Amount (&#8358;)</label><input id="wAmt" type="number" min="5000" inputmode="numeric" placeholder="Minimum &#8358;5,000"></div>
         <div><label for="wBank">Bank Name</label><input id="wBank" type="text" readonly placeholder="Not added yet"></div>
         <div><label for="wAcct">Account Number</label><input id="wAcct" type="text" readonly placeholder="Not added yet"></div>
       </div>
@@ -1141,12 +1141,12 @@ tabs.addEventListener('click',function(e){
 </script>
 <script>
 (function(){
-var MIN=1000,BAL=0;
+var MIN=5000,BAL=0;
 var f=document.getElementById('wForm'),a=document.getElementById('wAmt'),e=document.getElementById('wErr');
 f.addEventListener('submit',function(ev){
   ev.preventDefault();
   var v=parseFloat(a.value),m='';
-  if(isNaN(v)||v<MIN)m='The minimum withdrawal is \u20A61,000.';
+  if(isNaN(v)||v<MIN)m='The minimum withdrawal is \u20A65,000.';
   else if(!document.getElementById('wAcct').value)m='Add your payout account first.';
   else if(v>BAL)m='Insufficient balance.';
   e.textContent=m;a.setAttribute('aria-invalid',m?'true':'false');
