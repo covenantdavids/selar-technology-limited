@@ -602,6 +602,102 @@ window.addEventListener('hashchange',function(){var v=document.getElementById('v
 var nav4=document.getElementById('navExplore');
 if(nav4)nav4.addEventListener('click',function(){var v=document.getElementById('viewTask4');if(v&&!v.hidden)close4();});
 setInterval(function(){skin4();poster4();},300);
+/* ---------- Task 5: Purchase Airtime From OPay ---------- */
+TASKN[5]='Purchase Airtime From OPay';
+POSTERS[5]='Vincent Robson';
+if(typeof OPAYMSG!=='undefined'){OPAYMSG['Voucher airtime purchased instead of normal airtime']='You bought voucher airtime, but this task needs normal airtime. Open Airtime Top Up in OPay, buy normal airtime of \u20A6100 for your new registered number, then submit a new screenshot.';}
+function t5Open(){return (gs('stOK')||[]).indexOf(4)>-1;}
+function skin5(){
+  var b=document.querySelector('#cards button[data-n="5"]');
+  var a=b&&b.closest('article');if(!a||a.getAttribute('data-st'))return;
+  if(!t5Open())return;
+  var chip=a.querySelector('.lockchip'),lb=a.querySelector('.lockbox'),h=a.querySelector('h3'),meta=a.querySelector('.tc-meta');
+  if(!chip||!lb||!meta)return;
+  if(!h){h=document.createElement('h3');meta.parentNode.insertBefore(h,meta);}
+  if(h.textContent!=='Purchase Airtime From OPay')h.textContent='Purchase Airtime From OPay';
+  if(chip.textContent!=='OPEN'){chip.className='lockchip open';chip.textContent='OPEN';}
+  if(lb.textContent.indexOf('Task unlocked')<0){lb.className='lockbox';lb.innerHTML='<span>Task unlocked</span>';}
+  [].forEach.call(a.querySelectorAll('.tc-act button'),function(x){x.disabled=false;});
+}
+function poster5(){
+  var b=document.querySelector('#cards button[data-n="5"]');
+  var a=b&&b.closest('article');if(!a)return;
+  var slot=a.querySelector('.tc-top > span:first-child');if(!slot)return;
+  var unl=!!a.querySelector('h3'),has=!!slot.querySelector('.tposter');
+  if(unl&&!has)slot.innerHTML='<span class="tposter"><i>TASK POSTER</i><b>'+POSTERS[5]+'</b></span>';
+  else if(!unl&&has)slot.innerHTML='';
+}
+function close5(){
+  var v=document.getElementById('viewTask5');if(v)v.hidden=true;
+  var x=document.getElementById('viewExplore');if(x)x.hidden=false;
+  window.scrollTo(0,0);
+}
+function mkTask5(){
+  var v=document.getElementById('viewTask5');if(v)return v;
+  var anchor=document.getElementById('viewTask4')||document.getElementById('viewTask3');if(!anchor)return null;
+  if(!document.getElementById('ap5Style')){
+    var sx=document.createElement('style');sx.id='ap5Style';
+    sx.textContent='.novch{margin:18px 0 0;background:#fde8e8;border:2px solid #dc2626;border-radius:16px;padding:18px 20px;color:#7f1d1d}.novch h2{margin:0 0 6px;font-size:20px;font-weight:800;color:#b91c1c}.novch p{margin:0;font-size:15.5px;line-height:1.5;font-weight:600}.costnote{margin:14px 0 0;background:#fff8e1;border:1px solid #f3dd9b;border-radius:12px;padding:12px 14px;color:#7a4a00;font-size:14.5px;line-height:1.5;font-weight:600}';
+    document.head.appendChild(sx);
+  }
+  v=document.createElement('div');v.id='viewTask5';v.hidden=true;
+  v.innerHTML='<div class="tkwrap">'+
+   '<div class="tkhead"><div><p class="tklab">Task</p><h1 class="tkname">Purchase Airtime From OPay</h1></div>'+
+   '<div class="tkearn"><small>YOU WILL EARN</small><b>&#8358;1,000.00</b><span>&#8358;1,000.00 will be credited after approval.</span></div></div>'+
+   '<div class="novch"><h2>Do NOT buy voucher airtime</h2><p>Buy normal airtime only, from Airtime Top Up. If you buy voucher airtime, your task will be rejected and you will not receive your &#8358;1,000 reward.</p></div>'+
+   '<div class="costnote">You will spend &#8358;100 of your own money on this task. The airtime goes to your own new OPay number, so you keep it.</div>'+
+   '<div class="tkgrid">'+
+   '<div class="tkcard"><h2><span class="tki" aria-hidden="true">&#128203;</span>Instructions</h2><ol class="tksteps">'+
+   '<li>Open the OPay app and sign in to your new registered account.</li>'+
+   '<li>Go to Airtime Top Up.</li>'+
+   '<li>Buy normal airtime of &#8358;100 for your new registered number.</li>'+
+   '<li>Wait until the app shows that the purchase was successful.</li>'+
+   '<li>Take a screenshot of the success or receipt screen.</li>'+
+   '<li>Do not show your PIN, password, OTP or card details in your screenshot.</li>'+
+   '</ol></div>'+
+   '<div class="tkcard"><h2><span class="tkchk" aria-hidden="true">&#10003;</span>Proof Required</h2><div class="tkproof">'+
+   '<p style="margin:0 0 14px">Upload one screenshot of the successful airtime purchase, showing the amount, the date and time, and that it was normal airtime (not voucher airtime). Do not show your PIN or password.</p>'+
+   '<b>Your proof will be rejected if:</b><ul class="tkrej">'+
+   '<li>The purchase failed, is still pending, or isn&rsquo;t shown.</li>'+
+   '<li>It shows voucher airtime or any other purchase.</li>'+
+   '<li>The amount is different from the one in the task.</li>'+
+   '<li>The screenshot is edited, cropped to hide details, or blurry.</li>'+
+   '<li>It belongs to someone else, or the same screenshot is used for more than one submission.</li>'+
+   '</ul></div></div></div>'+
+   '<div class="tkact"><button type="button" class="btn btn-line" id="tk5Back">&larr; Back to tasks</button><button type="button" class="btn btn-main" id="tk5Start">Start task</button></div></div>';
+  anchor.parentNode.insertBefore(v,anchor.nextSibling);
+  document.getElementById('tk5Back').onclick=close5;
+  document.getElementById('tk5Start').onclick=function(){
+    v.hidden=true;window.__t5=true;
+    var s=document.getElementById('tkStart');if(s)s.click();
+  };
+  return v;
+}
+function open5(){
+  var x=document.getElementById('viewExplore');if(x)x.hidden=true;
+  var v=mkTask5();if(v)v.hidden=false;
+  window.scrollTo(0,0);
+}
+var cardsBox5=document.getElementById('cards');
+if(cardsBox5){
+  cardsBox5.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('.tc-act button[data-n="5"]');
+    if(!b||b.disabled||!t5Open())return;
+    var a=b.closest('article'),st=a&&a.getAttribute('data-st');
+    if(st&&st!=='prog')return;
+    e.stopPropagation();e.preventDefault();
+    var r=gs('stRsv');
+    if(r&&r.end>Date.now()&&gs('stCur')===5&&window.stOpenTask){window.stOpenTask();return;}
+    open5();
+  },true);
+  new MutationObserver(function(){skin5();poster5();}).observe(cardsBox5,{childList:true});
+}
+var tks5=document.getElementById('tkStart');
+if(tks5)tks5.addEventListener('click',function(){window.__t5=false;},true);
+window.addEventListener('hashchange',function(){var v=document.getElementById('viewTask5');if(v)v.hidden=true;});
+var nav5=document.getElementById('navExplore');
+if(nav5)nav5.addEventListener('click',function(){var v=document.getElementById('viewTask5');if(v&&!v.hidden)close5();});
+setInterval(function(){skin5();poster5();},300);
 /* Account is created only when payout details are confirmed */
 window.stReg=window.stReg||null;
 function payErr(el,msg){var e=el.parentNode.querySelector('.err');if(e)e.textContent=msg||'';el.setAttribute('aria-invalid',msg?'true':'false');return !msg;}

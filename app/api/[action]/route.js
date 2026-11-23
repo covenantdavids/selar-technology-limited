@@ -10,7 +10,7 @@ const TASKS = {
   2: { name: 'Create new email account', reward: 50 },
   3: { name: 'Use PalmPay Reward', reward: 750 },
 };
-TASKS[4] = { name: 'Register New OPay Account', reward: 3000 }; const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+TASKS[4] = { name: 'Register New OPay Account', reward: 3000 }; TASKS[5] = { name: 'Purchase Airtime From OPay', reward: 1000 }; const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE = /^(0|\+?234)[789][01]\d{8}$/;
 const NAME = /^[A-Za-z][A-Za-z .'-]{2,}$/;
 const COLS = 'id,name,email,phone,bank_name,account_number,account_name,balance,created_at';
