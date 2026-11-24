@@ -605,7 +605,7 @@ setInterval(function(){skin4();poster4();},300);
 /* ---------- Task 5: Purchase Airtime From OPay ---------- */
 TASKN[5]='Purchase Airtime From OPay';
 POSTERS[5]='Vincent Robson';
-if(typeof OPAYMSG!=='undefined'){OPAYMSG['Voucher airtime purchased instead of normal airtime']='You bought voucher airtime, but this task needs normal airtime. Open Airtime Top Up in OPay, buy normal airtime of \u20A6100 for your new registered number, then submit a new screenshot.';}
+if(typeof OPAYMSG!=='undefined'){OPAYMSG['Airtime bought for a different phone number']='Your airtime was bought for a different phone number. For this task, buy normal airtime of \u20A6100 for the same new phone number you used to register your OPay account, not another number. Then submit a new screenshot that shows that number.';OPAYMSG['Voucher airtime purchased instead of normal airtime']='You bought voucher airtime, but this task needs normal airtime. Open Airtime Top Up in OPay, buy normal airtime of \u20A6100 for your new registered number, then submit a new screenshot.';}
 function t5Open(){return (gs('stOK')||[]).indexOf(4)>-1;}
 function skin5(){
   var b=document.querySelector('#cards button[data-n="5"]');
